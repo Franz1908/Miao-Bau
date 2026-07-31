@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS miao_bau;
 CREATE DATABASE IF NOT EXISTS miao_bau
     CHARACTER SET utf8mb4 -- codifica che gestisce correttamente accenti e caratteri speciali
     COLLATE utf8mb4_unicode_ci;
@@ -103,7 +104,7 @@ CREATE TABLE order_item (
     product_id    INT           NOT NULL,
     quantity      INT           NOT NULL,
     unit_price    DECIMAL(10,2) NOT NULL,
-    vat_frozen    DECIMAL(5,2)  NOT NULL, --iva
+    vat_frozen    DECIMAL(5,2)  NOT NULL, -- iva
     PRIMARY KEY (order_id, product_id),
     CONSTRAINT fk_item_order
         FOREIGN KEY (order_id) REFERENCES orders(order_id)
