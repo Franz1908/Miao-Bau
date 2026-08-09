@@ -86,6 +86,25 @@ public class ProductDAO {
 
     }
 
+    public List<ProductBean> doRetriveByCategory(int categoryId) throws SQLException{
+        List<ProductBean> products = new ArrayList<>();
+        String query = "SELECT * FROM product WHERE category_id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)){
+
+            ps.setInt(1, categoryId);
+
+            try(ResultSet rs = ps.executeQuery()){
+                while (rs.next()){
+                    products.add(mapRow(rs));
+                }
+            }
+        }
+
+        return products;
+    }
+
 
     // Metodo di supporto: trasforma la riga corrente del ResultSet in un ProductBean.
     private ProductBean mapRow(ResultSet rs) throws SQLException {
