@@ -53,11 +53,11 @@ public class ProductDAO {
         List<ProductBean> products = new ArrayList<>();
         String query = "SELECT * FROM product WHERE on_sale = true";
 
-        try(Connection connection = DBConnection.getConnection();
+        try (Connection connection = DBConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(query);
             ResultSet rs = ps.executeQuery()) {
 
-            while(rs.next()){
+            while (rs.next()) {
                 products.add(mapRow(rs));
             }
 
@@ -75,15 +75,14 @@ public class ProductDAO {
 
             ps.setInt(1, speciesId);
 
-            try(ResultSet rs = ps.executeQuery()){
-                while(rs.next()){
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
                     products.add(mapRow(rs));
                 }
             }
         }
 
         return products;
-
     }
 
     public List<ProductBean> doRetriveByCategory(int categoryId) throws SQLException{
@@ -91,15 +90,36 @@ public class ProductDAO {
         String query = "SELECT * FROM product WHERE category_id = ?";
 
         try (Connection connection = DBConnection.getConnection();
-             PreparedStatement ps = connection.prepareStatement(query)){
+             PreparedStatement ps = connection.prepareStatement(query)) {
 
             ps.setInt(1, categoryId);
 
-            try(ResultSet rs = ps.executeQuery()){
-                while (rs.next()){
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
                     products.add(mapRow(rs));
                 }
             }
+        }
+
+        return products;
+    }
+
+    public List<ProductBean> doRetrieveBySpeciesAndCategory(int speciesId, int categoryId) throws SQLException{
+        List<ProductBean> products = new ArrayList<>();
+        String query = "SELECT * FROM product WHERE category_id = ? AND species_id = ?";
+
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)){
+
+            ps.setInt(1, categoryId);
+            ps.setInt(2, categoryId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    products.add(mapRow(rs));
+                }
+            }
+
         }
 
         return products;

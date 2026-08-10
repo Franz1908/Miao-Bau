@@ -1,7 +1,7 @@
 package com.example.miaobau.config;
 
 import com.example.miaobau.dao.CategoryDAO;
-import com.example.miaobau.dao.SpeciesDao;
+import com.example.miaobau.dao.SpeciesDAO;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -13,7 +13,7 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
        CategoryDAO categoryDAO = new CategoryDAO();
-       SpeciesDao speciesDAO = new SpeciesDao();
+       SpeciesDAO speciesDAO = new SpeciesDAO();
         try {
             sce.getServletContext().setAttribute("categories", categoryDAO.doRetriveAll());
             sce.getServletContext().setAttribute("species", speciesDAO.doRetriveAll());

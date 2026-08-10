@@ -22,8 +22,8 @@ public class CategoryDAO {
 
             while(rs.next()){
                 CategoryBean category = new CategoryBean();
-                category.setCategoriID(rs.getInt("category_id"));
-                category.setCategoryName("category_name");
+                category.setCategoryID(rs.getInt("category_id"));
+                category.setCategoryName(rs.getString("category_name"));
                 categorys.add(category);
             }
 

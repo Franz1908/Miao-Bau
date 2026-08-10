@@ -18,7 +18,7 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ProductDAO productDAO = new ProductDAO();
         try {
-            ProductBean product = productDAO.doRetrieveById(Integer.parseInt(request.getParameter("productID")));
+            ProductBean product = productDAO.doRetrieveById(Integer.parseInt(request.getParameter("productId")));
             request.setAttribute("product", product);
         } catch (SQLException e) {
             throw new ServletException(e);

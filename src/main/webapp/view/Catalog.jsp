@@ -3,13 +3,14 @@
 <%@ page import="com.example.miaobau.model.ProductBean" %>
 <%
     List<ProductBean> products = (List<ProductBean>) request.getAttribute("products");
+    String title = (String) request.getAttribute("title");
 %>
 <html>
 <head>
     <title>Catalogo</title>
 </head>
 <body>
-    <h1>Catalogo prodotti</h1>
+    <h1><%=title%></h1>
     <%
         if (products == null || products.isEmpty()) {
     %>
@@ -22,7 +23,7 @@
             <p>Nome prodotto: <%= product.getName() %></p>
             <p>Marca prodotto: <%= product.getBrand() %></p>
             <p>Prezzo prodotto: <%= product.getPrice() %></p>
-            <a href="${pageContext.request.contextPath}/product?productID=<%= product.getProductID() %>">Scopri di più</a>
+            <a href="${pageContext.request.contextPath}/product?productId=<%= product.getProductID() %>">Scopri di più</a>
         </div>
         <hr>
     <%

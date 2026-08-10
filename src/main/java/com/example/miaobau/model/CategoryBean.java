@@ -2,21 +2,21 @@ package com.example.miaobau.model;
 
 public class CategoryBean {
 
-    private int categoriID;
+    private int categoryID;
     private String categoryName;
 
     public CategoryBean(){}
 
-    public void setCategoriID(int categoriID){
-        this.categoriID = categoriID;
+    public void setCategoryID(int categoryID){
+        this.categoryID = categoryID;
     }
 
     public void setCategoryName(String categoryName){
         this.categoryName = categoryName;
     }
 
-    public int getCategoriID(){
-        return categoriID;
+    public int getCategoryID(){
+        return categoryID;
     }
 
     public String getCategoryName() {

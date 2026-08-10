@@ -2,12 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Home</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="${pageContext.request.contextPath}/catalog">Vai al catalogo</a>
+    <jsp:include page="view/Navbar.jsp" flush="true"/>
 </body>
 </html>

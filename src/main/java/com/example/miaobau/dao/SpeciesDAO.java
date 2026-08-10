@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpeciesDao {
+public class SpeciesDAO {
 
     public List<SpeciesBean> doRetriveAll() throws SQLException {
         List<SpeciesBean> species = new ArrayList<>();
