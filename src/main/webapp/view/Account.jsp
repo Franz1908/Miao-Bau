@@ -12,8 +12,7 @@
     <%
       if(customerBean != null) {
     %>
-      <h2>Bentornato <%=customerBean.getFirstName()%>!</h2>
-      <a href="${pageContext.request.contextPath}/index.jsp">torna alla home</a>
+      <h2>Bentornato <%= customerBean.getFirstName() %>!</h2>
     <%
       } else {
     %>
