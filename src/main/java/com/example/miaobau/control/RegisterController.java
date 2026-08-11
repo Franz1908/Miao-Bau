@@ -34,6 +34,11 @@ public class RegisterController extends HttpServlet {
         customerBean.setEmail(email);
         customerBean.setPasswordHash(PasswordUtil.hashPassword(password));
 
+        if(birthDateStr != null && !birthDateStr.isEmpty()){
+            birthDate = LocalDate.parse(birthDateStr);
+            customerBean.setBirthDate(birthDate);
+        }
+
         if(telephone != null && !telephone.isEmpty()){
             customerBean.setPhone(telephone);
         }
@@ -50,6 +55,9 @@ public class RegisterController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getSession().getAttribute("customer") != null){
+            response.sendRedirect(request.getContextPath() + "/account");
+        }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/Register.jsp");
         dispatcher.forward(request, response);
     }

@@ -2,9 +2,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.miaobau.model.CategoryBean" %>
 <%@ page import="com.example.miaobau.model.SpeciesBean" %>
+<%@ page import="com.example.miaobau.model.CustomerBean" %>
 <%
     List<CategoryBean> categories = (List<CategoryBean>) application.getAttribute("categories");
     List<SpeciesBean> species = (List<SpeciesBean>) application.getAttribute("species");
+    CustomerBean customerBean = (CustomerBean) session.getAttribute("customer");
 %>
 <nav>
     <ul>
@@ -27,5 +29,16 @@
     </ul>
     <a href="${pageContext.request.contextPath}/catalog">Vai al catalogo</a>
     <br>
-    <a href="${pageContext.request.contextPath}/account">Account</a>
+    <%
+        if(customerBean != null) {
+    %>
+        <a href="${pageContext.request.contextPath}/account">Account</a>
+    <%
+        } else {
+    %>
+        <a href="${pageContext.request.contextPath}/account">Accedi</a>
+    <%
+        }
+    %>
+
 </nav>
