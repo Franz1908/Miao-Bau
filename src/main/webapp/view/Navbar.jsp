@@ -26,4 +26,6 @@
         <% } %>
     </ul>
     <a href="${pageContext.request.contextPath}/catalog">Vai al catalogo</a>
+    <br>
+    <a href="${pageContext.request.contextPath}/account">Account</a>
 </nav>
