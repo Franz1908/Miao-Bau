@@ -6,6 +6,8 @@ import java.util.Map;
 public class CartBean {
     private Map<Integer, CartItem> cart = new HashMap<>();
 
+    public CartBean() {}
+
     public Map<Integer, CartItem> getCart(){
         return cart;
     }
