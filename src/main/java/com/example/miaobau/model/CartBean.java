@@ -21,6 +21,17 @@ public class CartBean {
         }
     }
 
+    public void addToCart(ProductBean product, int quantity) {
+        int id = product.getProductID();
+
+        if (cart.containsKey(id)) {
+            CartItem item = cart.get(id);
+            item.setQuantity(item.getQuantity() + quantity);
+        } else {
+            cart.put(id, new CartItem(product, quantity));
+        }
+    }
+
     public void decreaseQuantity(ProductBean product){
         int id = product.getProductID();
 
