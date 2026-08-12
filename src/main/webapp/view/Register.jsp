@@ -1,17 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: francesco
-  Date: 11/08/26
-  Time: 11:28
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Register</title>
 </head>
 <body>
-    <form method="post" action="register">
+    <form method="post" action="${pageContext.request.contextPath}/register">
 
         <label for="firstName">Nome</label>
         <input type="text" name="firstName" id="firstName" required>

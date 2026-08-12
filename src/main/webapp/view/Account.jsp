@@ -13,6 +13,9 @@
       if(customerBean != null) {
     %>
       <h2>Bentornato <%= customerBean.getFirstName() %>!</h2>
+      <form method="post" action="${pageContext.request.contextPath}/logout">
+        <button type="submit">Logout</button>
+      </form>
     <%
       } else {
     %>
