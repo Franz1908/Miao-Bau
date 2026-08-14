@@ -40,5 +40,7 @@
     <%
         }
     %>
+    <br>
+    <a href="${pageContext.request.contextPath}/cart">Carrello</a>
 
 </nav>

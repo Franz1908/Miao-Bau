@@ -35,13 +35,11 @@ public class CartBean {
         }
     }
 
-    public void decreaseQuantity(ProductBean product){
-        int id = product.getProductID();
-
-        if(cart.containsKey(id)){
-            CartItem item = cart.get(id);
+    public void decreaseQuantity(int productId){
+        if(cart.containsKey(productId)){
+            CartItem item = cart.get(productId);
             if (item.getQuantity() == 1) {
-                removeFromCart(product);
+                removeFromCart(productId);
             }
             else {
                 item.setQuantity(item.getQuantity() - 1);
@@ -49,8 +47,8 @@ public class CartBean {
         }
     }
 
-    public void removeFromCart(ProductBean product){
-        cart.remove(product.getProductID());
+    public void removeFromCart(int productId){
+        cart.remove(productId);
     }
 
     public void clearCart(){

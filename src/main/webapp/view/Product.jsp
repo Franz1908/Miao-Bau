@@ -19,6 +19,11 @@
         <p>Descrizione: <%= product.getDescription() %></p>
         <p>Marca: <%= product.getBrand() %></p>
         <p>Prezzo: <%= product.getPrice() %></p>
+        <form method="post" action="${pageContext.request.contextPath}/cart">
+            <input type="hidden" name="action" value="add">
+            <input type="hidden" name="productId" value="<%= product.getProductID() %>">
+            <button type="submit">Aggiungi al carrello</button>
+        </form>
     <%
         }
     %>
