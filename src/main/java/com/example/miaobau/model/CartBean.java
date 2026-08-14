@@ -1,5 +1,6 @@
 package com.example.miaobau.model;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +55,16 @@ public class CartBean {
 
     public void clearCart(){
         cart.clear();
+    }
+
+    public BigDecimal getTotal(){
+        BigDecimal total = BigDecimal.ZERO;
+
+        for(CartItem item : cart.values()){
+            total = total.add(item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+        }
+
+        return total;
     }
 
 }
