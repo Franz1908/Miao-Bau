@@ -22,6 +22,7 @@
         <form method="post" action="${pageContext.request.contextPath}/cart">
             <input type="hidden" name="action" value="add">
             <input type="hidden" name="productId" value="<%= product.getProductID() %>">
+            <input type="number" name="quantity" min="1" value="1" step="1">
             <button type="submit">Aggiungi al carrello</button>
         </form>
     <%

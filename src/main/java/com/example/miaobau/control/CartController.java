@@ -40,7 +40,8 @@ public class CartController extends HttpServlet {
             switch (action) {
                 case "add":
                 case "increase":
-                    add(cart, productId);
+                    int quantity = Integer.parseInt(request.getParameter("quantity"));
+                    add(cart, productId, quantity);
                     break;
                 case "remove":
                     remove(cart, productId);
@@ -54,10 +55,13 @@ public class CartController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/cart");
     }
 
-    private void add(CartBean cart, int productId) throws ServletException {
+    private void add(CartBean cart, int productId, int quantity) throws ServletException {
         try {
             ProductBean product = new ProductDAO().doRetrieveById(productId);
-            cart.addToCart(product);
+            if(quantity < 1){
+                quantity = 1;
+            }
+            cart.addToCart(product, quantity);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
@@ -70,5 +74,5 @@ public class CartController extends HttpServlet {
     private void decrease(CartBean cart, int productId) {
         cart.decreaseQuantity(productId);
     }
-    
+
 }
