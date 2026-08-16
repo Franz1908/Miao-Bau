@@ -12,7 +12,7 @@
     <%
         }
     %>
-    <form method="post" action="login">
+    <form method="post" action="${pageContext.request.contextPath}/login">
 
         <label for="email">E-mail</label>
         <input type="email" name="email" id="email" required>

@@ -3,6 +3,7 @@
 <%
     ProductBean product = (ProductBean) request.getAttribute("product");
 %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Dettaglio prodotto</title>

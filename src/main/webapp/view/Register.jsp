@@ -1,11 +1,31 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%
+    List<String>errors = (List <String>) request.getAttribute("errors");
+%>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Register</title>
+    <title>Registrazione</title>
 </head>
 <body>
-    <form method="post" action="${pageContext.request.contextPath}/register">
+    <%
+        if (errors != null && !errors.isEmpty()) {
+    %>
+        <ul>
+            <%
+                for (String error : errors) {
+            %>
+                <li><%= error %></li>
+            <%
+                }
+            %>
+        </ul>
+    <%
+        }
+    %>
 
+    <form method="post" action="${pageContext.request.contextPath}/register">
         <label for="firstName">Nome</label>
         <input type="text" name="firstName" id="firstName" required>
         <br>
@@ -15,7 +35,7 @@
         <br>
 
         <label for="email">E-mail</label>
-        <input type="email" name="email" id="email" required>
+        <input type="email" name="email" id="email" required formnovalidate>
         <br>
 
         <label for="password">Password</label>
@@ -31,9 +51,7 @@
         <br>
 
         <button type="submit">Registrati</button>
-
     </form>
+
 </body>
 </html>
-
-
