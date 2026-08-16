@@ -22,6 +22,7 @@ public class LoginController extends HttpServlet {
         String email = request.getParameter("email").trim();
         String password = request.getParameter("password");
         CustomerDAO customerDAO = new CustomerDAO();
+
         try {
             CustomerBean customerBean = customerDAO.doRetriveByEmail(email);
             if(customerBean != null && PasswordUtil.verifyPassword(password, customerBean.getPasswordHash())){

@@ -20,7 +20,6 @@ public class CatalogController extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
         ProductDAO productDAO = new ProductDAO();
         String speciesParam = request.getParameter("speciesId");
         String categoryParam = request.getParameter("categoryId");
