@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderBean {
+public class OrdersBean {
 
     private int orderID;
     private int customerID;
@@ -13,7 +13,7 @@ public class OrderBean {
     private BigDecimal totalPrice;
     private List <OrderItemBean> items = new ArrayList<>();
 
-    public OrderBean(){}
+    public OrdersBean(){}
 
     public void setOrderID(int orderID){
         this.orderID = orderID;
@@ -53,6 +53,10 @@ public class OrderBean {
 
     public List<OrderItemBean> getItems(){
         return items;
+    }
+
+    public void addItem(OrderItemBean item){
+        items.add(item);
     }
 
 }
