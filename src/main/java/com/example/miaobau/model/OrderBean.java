@@ -2,6 +2,8 @@ package com.example.miaobau.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderBean {
 
@@ -9,6 +11,7 @@ public class OrderBean {
     private int customerID;
     private LocalDateTime orderDate;
     private BigDecimal totalPrice;
+    private List <OrderItemBean> items = new ArrayList<>();
 
     public OrderBean(){}
 
@@ -16,7 +19,7 @@ public class OrderBean {
         this.orderID = orderID;
     }
 
-    public void setProductID(int customerID){
+    public void setCustomerID(int customerID){
         this.customerID = customerID;
     }
 
@@ -28,20 +31,28 @@ public class OrderBean {
         this.totalPrice = totalPrice;
     }
 
+    public void setItems(List<OrderItemBean> items){
+        this.items = items;
+    }
+
     public int getOrderID(){
         return orderID;
     }
 
-    public int getProductID(){
+    public int getCustomerID(){
         return customerID;
     }
 
-    private LocalDateTime getOrderDate(){
+    public LocalDateTime getOrderDate(){
         return orderDate;
     }
 
-    private BigDecimal getTotalPrice(){
+    public BigDecimal getTotalPrice(){
         return totalPrice;
+    }
+
+    public List<OrderItemBean> getItems(){
+        return items;
     }
 
 }
