@@ -13,7 +13,7 @@ import java.util.List;
 public class CategoryDAO {
 
     public List<CategoryBean> doRetriveAll() throws SQLException {
-        List<CategoryBean> categorys = new ArrayList<>();
+        List<CategoryBean> categories = new ArrayList<>();
         String query = "SELECT * FROM category";
 
         try (Connection connection = DBConnection.getConnection();
@@ -24,12 +24,12 @@ public class CategoryDAO {
                 CategoryBean category = new CategoryBean();
                 category.setCategoryID(rs.getInt("category_id"));
                 category.setCategoryName(rs.getString("category_name"));
-                categorys.add(category);
+                categories.add(category);
             }
 
         }
 
-        return categorys;
+        return categories;
     }
 
 

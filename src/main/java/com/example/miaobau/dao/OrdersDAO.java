@@ -14,7 +14,6 @@ public class OrdersDAO {
         try {
             connection = DBConnection.getConnection();
             connection.setAutoCommit(false);   // inizio transazione
-
             int orderID;
 
             // Inserimento della testata dell'ordine

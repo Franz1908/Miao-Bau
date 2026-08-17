@@ -17,11 +17,6 @@ import java.sql.SQLException;
 public class CartController extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/view/Cart.jsp").forward(request, response);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         CartBean cart = (CartBean) session.getAttribute("cart");
@@ -53,6 +48,11 @@ public class CartController extends HttpServlet {
         }
 
         response.sendRedirect(request.getContextPath() + "/cart");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/view/Cart.jsp").forward(request, response);
     }
 
     private void add(CartBean cart, int productId, int quantity) throws ServletException {
