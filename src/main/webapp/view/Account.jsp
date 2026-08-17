@@ -16,6 +16,7 @@
       <form method="post" action="${pageContext.request.contextPath}/logout">
         <button type="submit">Logout</button>
       </form>
+     <a href="${pageContext.request.contextPath}/cart">Carrello</a>
     <%
       } else {
     %>

@@ -48,6 +48,10 @@
     %>
         <p><strong>Totale: <%= cart.getTotal() %></strong></p>
 
+        <form method="post" action="${pageContext.request.contextPath}/checkout">
+            <button type="submit">Procedi all'ordine</button>
+        </form>
+
         <form method="post" action="${pageContext.request.contextPath}/cart">
             <input type="hidden" name="action" value="clear">
             <button type="submit">Svuota carrello</button>
