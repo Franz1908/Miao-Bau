@@ -9,6 +9,7 @@ public class OrderItemBean {
     private int quantity;
     private BigDecimal unitPrice;
     private BigDecimal vatFrozen;
+    private String productName;
 
     public OrderItemBean() {}
 
@@ -32,6 +33,8 @@ public class OrderItemBean {
         this.vatFrozen = vatFrozen;
     }
 
+    public void setProductName(String productName) { this.productName = productName; }
+
     public int getOrderID(){
         return orderID;
     }
@@ -51,5 +54,7 @@ public class OrderItemBean {
     public BigDecimal getVatFrozen(){
         return vatFrozen;
     }
+
+    public String getProductName() { return productName; }
 
 }

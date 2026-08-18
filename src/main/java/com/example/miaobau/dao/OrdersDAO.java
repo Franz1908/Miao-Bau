@@ -38,8 +38,8 @@ public class OrdersDAO {
 
             // Inserimento delle righe dell'ordine, con prezzo e IVA congelati
             try (PreparedStatement psItem = connection.prepareStatement(
-                    "INSERT INTO order_item (order_id, product_id, quantity, unit_price, vat_frozen) "
-                            + "VALUES (?, ?, ?, ?, ?)")) {
+                    "INSERT INTO order_item (order_id, product_id, quantity, unit_price, vat_frozen, product_name) "
+                            + "VALUES (?, ?, ?, ?, ?, ?)")) {
 
                 for (CartItem item : cart.getCart().values()) {
                     psItem.setInt(1, orderID);
@@ -47,6 +47,7 @@ public class OrdersDAO {
                     psItem.setInt(3, item.getQuantity());
                     psItem.setBigDecimal(4, item.getProduct().getPrice());   // prezzo congelato
                     psItem.setBigDecimal(5, item.getProduct().getVat());     // IVA congelata
+                    psItem.setString(6, item.getProduct().getName());
                     psItem.executeUpdate();
                 }
             }

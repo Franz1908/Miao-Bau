@@ -105,6 +105,7 @@ CREATE TABLE order_item (
     quantity      INT           NOT NULL,
     unit_price    DECIMAL(10,2) NOT NULL,
     vat_frozen    DECIMAL(5,2)  NOT NULL, -- iva
+    product_name  VARCHAR(100)  NOT NULL,
     PRIMARY KEY (order_id, product_id),
     CONSTRAINT fk_item_order
         FOREIGN KEY (order_id) REFERENCES orders(order_id)
