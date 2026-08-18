@@ -41,7 +41,6 @@ public class CheckoutController extends HttpServlet {
         try {
             int orderID = new OrdersDAO().doSave(order, cart);
             cart.clearCart();
-
             response.sendRedirect(request.getContextPath() + "/confirmation?orderId=" + orderID);
         } catch (SQLException e) {
             throw new ServletException(e);

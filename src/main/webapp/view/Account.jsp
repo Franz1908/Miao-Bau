@@ -17,6 +17,7 @@
         <button type="submit">Logout</button>
       </form>
      <a href="${pageContext.request.contextPath}/cart">Carrello</a>
+     <a href="${pageContext.request.contextPath}/orders">Visualizza ordini</a>
     <%
       } else {
     %>

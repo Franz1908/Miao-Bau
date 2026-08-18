@@ -3,8 +3,12 @@ package com.example.miaobau.dao;
 import com.example.miaobau.config.DBConnection;
 import com.example.miaobau.model.CartBean;
 import com.example.miaobau.model.CartItem;
+import com.example.miaobau.model.OrderItemBean;
 import com.example.miaobau.model.OrdersBean;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.*;
 
 public class OrdersDAO {
@@ -66,6 +70,56 @@ public class OrdersDAO {
                 connection.close();
             }
         }
+    }
+
+    public List<OrdersBean> doRetriveByCustomer(int customerID) throws SQLException {
+        List<OrdersBean> orders = new ArrayList<>();
+        String query = "SELECT * FROM orders WHERE customer_id = ? ORDER BY order_date DESC";
+
+        try (Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, customerID);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()){
+                    OrdersBean order = new OrdersBean();
+                    order.setCustomerID(rs.getInt("customer_id"));
+                    order.setOrderID(rs.getInt("order_id"));
+                    order.setTotalPrice(rs.getBigDecimal("total_price"));
+                    order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
+                    orders.add(order);
+                }
+            }
+        }
+
+        return orders;
+    }
+
+    public List<OrderItemBean> doRetrieveItemsByOrder(int orderId) throws SQLException {
+        List<OrderItemBean> ordersItem = new ArrayList<>();
+        String query = "SELECT * FROM order_item WHERE order_id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, orderId);
+
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next()){
+                    OrderItemBean orderItem = new OrderItemBean();
+                    orderItem.setOrderID(rs.getInt("order_id"));
+                    orderItem.setProductID(rs.getInt("product_id"));
+                    orderItem.setProductName(rs.getString("product_name"));
+                    orderItem.setQuantity(rs.getInt("quantity"));
+                    orderItem.setUnitPrice(rs.getBigDecimal("unit_price"));
+                    orderItem.setVatFrozen(rs.getBigDecimal("vat_frozen"));
+                    ordersItem.add(orderItem);
+                }
+            }
+        }
+
+        return ordersItem;
     }
 
 }
