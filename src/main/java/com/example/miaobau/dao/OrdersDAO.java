@@ -122,4 +122,26 @@ public class OrdersDAO {
         return ordersItem;
     }
 
+    public OrdersBean doRetriveByID(int orderID) throws SQLException {
+        OrdersBean order = new OrdersBean();
+        String query = "SELECT * FROM orders WHERE order_id = ?";
+
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, orderID);
+
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    order.setOrderID(rs.getInt("order_id"));
+                    order.setCustomerID(rs.getInt("customer_id"));
+                    order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
+                    order.setTotalPrice(rs.getBigDecimal("total_price"));
+                }
+            }
+        }
+
+        return order;
+    }
+
 }
