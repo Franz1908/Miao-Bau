@@ -122,3 +122,9 @@ VALUES
  'Ciotola in acciaio inox antiscivolo, capacità 1 litro.',
  8.90, 22.00, FALSE, NULL, 'img/ciotola_inox.jpg', 'CosyPet', FALSE,
  NULL, NULL, 'L', 'Argento', 'Acciaio');
+
+-- ============================================================
+-- ADMIN
+-- ============================================================
+INSERT INTO admin (username, email, password_hash) VALUES
+                                                  ('admin', 'admin@miaobau.it', 'U/x4jphbBuEEvM3lvqux4Q==:6Vqil8IXH9JV4lRWSuVCztsPKkVfG0CFHj1UtpqzF+M=');
