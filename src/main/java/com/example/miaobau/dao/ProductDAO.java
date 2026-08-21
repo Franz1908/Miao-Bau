@@ -181,6 +181,17 @@ public class ProductDAO {
         }
     }
 
+    public void doRestore(int productID) throws SQLException {
+        String query = "UPDATE product SET is_deleted = FALSE WHERE product_id = ?";
+
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)){
+
+            ps.setInt(1, productID);
+            ps.executeUpdate();
+        }
+    }
+
     public List<ProductBean> doRetriveAllForAdmin() throws SQLException {
         List<ProductBean> products = new ArrayList<>();
         String query = "SELECT * FROM product";
@@ -192,7 +203,7 @@ public class ProductDAO {
             while(rs.next()){
                 products.add(mapRow(rs));
             }
-            
+
         }
 
         return products;
