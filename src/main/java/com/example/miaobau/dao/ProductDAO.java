@@ -125,6 +125,96 @@ public class ProductDAO {
         return products;
     }
 
+    public void doSave(ProductBean productBean) throws SQLException {
+        String query =
+                "INSERT INTO product " +
+                        "(category_id, species_id, name, description, price, vat, " +
+                        "on_sale, discount_percentage, image, brand, " +
+                        "weight, ingredients, size, color, material) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)){
+
+            setProductParameters(ps, productBean);
+            ps.executeUpdate();
+        }
+    }
+
+    public void doUpdate(ProductBean productBean) throws SQLException{
+        String query =
+                "UPDATE product SET " +
+                        "category_id = ?, " +
+                        "species_id = ?, " +
+                        "name = ?, " +
+                        "description = ?, " +
+                        "price = ?, " +
+                        "vat = ?, " +
+                        "on_sale = ?, " +
+                        "discount_percentage = ?, " +
+                        "image = ?, " +
+                        "brand = ?, " +
+                        "weight = ?, " +
+                        "ingredients = ?, " +
+                        "size = ?, " +
+                        "color = ?, " +
+                        "material = ? " +
+                        "WHERE product_id = ?";
+
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)){
+
+            setProductParameters(ps, productBean);
+            ps.setInt(16, productBean.getProductID());
+            ps.executeUpdate();
+        }
+    }
+
+    public void doDelete(int productID) throws SQLException {
+        String query = "UPDATE product SET is_deleted = TRUE WHERE product_id = ?";
+
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)){
+
+            ps.setInt(1, productID);
+            ps.executeUpdate();
+        }
+    }
+
+    public List<ProductBean> doRetriveAllForAdmin() throws SQLException {
+        List<ProductBean> products = new ArrayList<>();
+        String query = "SELECT * FROM product";
+
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery()){
+
+            while(rs.next()){
+                products.add(mapRow(rs));
+            }
+            
+        }
+
+        return products;
+    }
+
+    private void setProductParameters(PreparedStatement ps, ProductBean productBean) throws SQLException {
+        ps.setInt(1, productBean.getCategoryID());
+        ps.setInt(2, productBean.getSpeciesID());
+        ps.setString(3, productBean.getName());
+        ps.setString(4, productBean.getDescription());
+        ps.setBigDecimal(5, productBean.getPrice());
+        ps.setBigDecimal(6, productBean.getVat());
+        ps.setBoolean(7, productBean.isOnSale());
+        ps.setBigDecimal(8, productBean.getDiscountPercentage());
+        ps.setString(9, productBean.getImage());
+        ps.setString(10, productBean.getBrand());
+        ps.setBigDecimal(11, productBean.getWeight());
+        ps.setString(12, productBean.getIngredients());
+        ps.setString(13, productBean.getSize());
+        ps.setString(14, productBean.getColor());
+        ps.setString(15, productBean.getMaterial());
+    }
 
     // Metodo di supporto: trasforma la riga corrente del ResultSet in un ProductBean.
     private ProductBean mapRow(ResultSet rs) throws SQLException {
