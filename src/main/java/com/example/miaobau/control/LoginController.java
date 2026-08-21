@@ -39,14 +39,13 @@ public class LoginController extends HttpServlet {
         } catch (SQLException e) {
             throw new ServletException(e);
         }
-
-
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(request.getSession().getAttribute("customer") != null){
             response.sendRedirect(request.getContextPath() + "/account");
+            return;
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/Login.jsp");
         dispatcher.forward(request, response);
