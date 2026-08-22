@@ -15,6 +15,7 @@ public class OrdersDAO {
 
     public int doSave(OrdersBean order, CartBean cart) throws SQLException {
         Connection connection = null;
+
         try {
             connection = DBConnection.getConnection();
             connection.setAutoCommit(false);   // inizio transazione

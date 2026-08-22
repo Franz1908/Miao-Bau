@@ -32,12 +32,12 @@
         }
     %>
 
-    <p>Nome cliente: <%= order.getCustomerFirstName() + " " + order.getCustomerLastName()%> </p>
-    <p>Email cliente: <%= order.getCustomerEmail() %></p>
+    <p>Nome cliente: <%= customer %> </p>
+    <p>Email cliente: <%= customerEmail %></p>
     <%
         if (customerPhone != null) {
     %>
-        <p>Telefono cliente: <%= order.getCustomerPhone() %></p>
+        <p>Telefono cliente: <%= customerPhone %></p>
     <%
         } else {
     %>
