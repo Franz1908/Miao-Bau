@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerDAO {
 
@@ -14,7 +16,7 @@ public class CustomerDAO {
         String query = "INSERT INTO customer (first_name, last_name, email, phone, birth_date, password_hash) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try(Connection connection = DBConnection.getConnection();
+        try (Connection connection = DBConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(query)){
 
             ps.setString(1, customerBean.getFirstName());
@@ -41,7 +43,7 @@ public class CustomerDAO {
 
             ps.setString(1, email);
 
-            try(ResultSet rs = ps.executeQuery()){
+            try (ResultSet rs = ps.executeQuery()){
                 if(rs.next()){
                     customerBean = new CustomerBean();
                     customerBean.setCustomerID(rs.getInt("customer_id"));
@@ -59,6 +61,32 @@ public class CustomerDAO {
         }
 
         return customerBean;
+    }
+
+    public List<CustomerBean> doRetriveAll() throws SQLException {
+        List<CustomerBean> customers = new ArrayList<>();
+        String query = "SELECT customer_id, first_name, last_name, email, birth_date, phone FROM customer";
+
+        try (Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                CustomerBean customer = new CustomerBean();
+                customer.setCustomerID(rs.getInt("customer_id"));
+                customer.setFirstName(rs.getString("last_name"));
+                customer.setLastName(rs.getString("last_name"));
+                customer.setEmail(rs.getString("email"));
+                customer.setPhone(rs.getString("phone"));
+                java.sql.Date birthDate = rs.getDate("birth_date");
+                if (birthDate != null) {
+                    customer.setBirthDate(birthDate.toLocalDate());
+                }
+                customers.add(customer);
+            }
+        }
+
+        return customers;
     }
 
 }

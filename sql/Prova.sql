@@ -1,2 +1,0 @@
-ALTER TABLE product
-    MODIFY COLUMN name VARCHAR(150);

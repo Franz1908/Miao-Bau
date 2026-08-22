@@ -11,6 +11,10 @@ public class OrdersBean {
     private int customerID;
     private LocalDateTime orderDate;
     private BigDecimal totalPrice;
+    private String customerFirstName;
+    private String customerLastName;
+    private String customerEmail;
+    private String customerPhone;
     private List <OrderItemBean> items = new ArrayList<>();
 
     public OrdersBean(){}
@@ -35,6 +39,16 @@ public class OrdersBean {
         this.items = items;
     }
 
+    public void setCustomerFirstName(String customerFirstName) {
+        this.customerFirstName = customerFirstName;
+    }
+
+    public void setCustomerEmail(String customerEmail) { this.customerEmail = customerEmail; }
+
+    public void setCustomerLastName(String customerLastName) { this.customerLastName = customerLastName; }
+
+    public void setCustomerPhone(String customerPhone) { this.customerPhone = customerPhone; }
+
     public int getOrderID(){
         return orderID;
     }
@@ -54,6 +68,14 @@ public class OrdersBean {
     public List<OrderItemBean> getItems(){
         return items;
     }
+
+    public String getCustomerEmail() { return customerEmail; }
+
+    public String getCustomerLastName() { return customerLastName; }
+
+    public String getCustomerFirstName() { return customerFirstName; }
+
+    public String getCustomerPhone() { return customerPhone; }
 
     public void addItem(OrderItemBean item){
         items.add(item);

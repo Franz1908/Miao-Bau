@@ -123,16 +123,17 @@ public class OrdersDAO {
     }
 
     public OrdersBean doRetriveByID(int orderID) throws SQLException {
-        OrdersBean order = new OrdersBean();
+        OrdersBean order = null;
         String query = "SELECT * FROM orders WHERE order_id = ?";
 
-        try(Connection connection = DBConnection.getConnection();
+        try (Connection connection = DBConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(query)) {
 
             ps.setInt(1, orderID);
 
             try(ResultSet rs = ps.executeQuery()){
                 if(rs.next()){
+                    order = new OrdersBean();
                     order.setOrderID(rs.getInt("order_id"));
                     order.setCustomerID(rs.getInt("customer_id"));
                     order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
@@ -142,6 +143,72 @@ public class OrdersDAO {
         }
 
         return order;
+    }
+
+    public OrdersBean doRetrieveByIdWithCustomer(int orderID) throws SQLException {
+        OrdersBean order = null;
+        String query =
+                "SELECT o.*, " +
+                        "       c.first_name AS customer_first_name, " +
+                        "       c.last_name AS customer_last_name, " +
+                        "       c.email AS customer_email, " +
+                        "       c.phone AS customer_phone " +
+                        "FROM orders o " +
+                        "JOIN customer c ON o.customer_id = c.customer_id " +
+                        "WHERE o.order_id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, orderID);
+
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    order = new OrdersBean();
+                    order.setOrderID(rs.getInt("order_id"));
+                    order.setCustomerID(rs.getInt("customer_id"));
+                    order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
+                    order.setTotalPrice(rs.getBigDecimal("total_price"));
+                    order.setCustomerFirstName(rs.getString("customer_first_name"));
+                    order.setCustomerLastName(rs.getString("customer_last_name"));
+                    order.setCustomerEmail(rs.getString("customer_email"));
+                    order.setCustomerPhone(rs.getString("customer_phone"));
+                }
+            }
+        }
+
+        return order;
+    }
+
+    public List<OrdersBean> doRetriveAll() throws SQLException {
+        List<OrdersBean> orders = new ArrayList<>();
+        String query =
+                "SELECT o.*, " +
+                        "       c.first_name AS customer_first_name, " +
+                        "       c.last_name AS customer_last_name, " +
+                        "       c.email AS customer_email " +
+                        "FROM orders o " +
+                        "JOIN customer c ON o.customer_id = c.customer_id " +
+                        "ORDER BY o.order_date DESC";;
+
+        try (Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                OrdersBean order = new OrdersBean();
+                order.setOrderID(rs.getInt("order_id"));
+                order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
+                order.setTotalPrice(rs.getBigDecimal("total_price"));
+                order.setCustomerID(rs.getInt("customer_id"));
+                order.setCustomerFirstName(rs.getString("customer_first_name"));
+                order.setCustomerLastName(rs.getString("customer_last_name"));
+                order.setCustomerEmail(rs.getString("customer_email"));
+                orders.add(order);
+            }
+        }
+
+        return orders;
     }
 
 }
