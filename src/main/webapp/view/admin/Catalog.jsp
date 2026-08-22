@@ -26,7 +26,7 @@
         <%
             if (product.isDeleted()) {
         %>
-            <form method="post" action="${pageContext.request.contextPath}/admin/product/delete">
+            <form method="post" action="${pageContext.request.contextPath}/admin/product/restore">
                 <input type="hidden" name="productId" value="<%= product.getProductID() %>">
                 <button type="submit">Ripristina prodotto</button>
             </form>
