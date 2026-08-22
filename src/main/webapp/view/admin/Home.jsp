@@ -11,5 +11,10 @@
 
   <h1>Bentornato <%= adminBean.getUsername() %></h1>
 
+  <a href="${pageContext.request.contextPath}/admin/catalog">Gestisci prodotti</a>
+  <a href="${pageContext.request.contextPath}/admin/product/insert">Aggiungi prodotto</a>
+  <a href="">Vedi ordini</a>
+  <a href="">Vedi utenti</a>
+
 </body>
 </html>
