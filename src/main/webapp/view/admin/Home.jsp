@@ -14,7 +14,7 @@
   <a href="${pageContext.request.contextPath}/admin/catalog">Gestisci prodotti</a>
   <a href="${pageContext.request.contextPath}/admin/product/insert">Aggiungi prodotto</a>
   <a href="${pageContext.request.contextPath}/admin/orders">Vedi ordini</a>
-  <a href="">Vedi utenti</a>
+  <a href="${pageContext.request.contextPath}/admin/customers">Vedi utenti</a>
 
 </body>
 </html>
