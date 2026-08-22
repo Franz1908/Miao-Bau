@@ -16,11 +16,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/admin/product/insert")
-public class ProductInsertController extends HttpServlet {
+@WebServlet("/admin/product/update")
+public class ProductUpdateController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer productID = ParseUtil.parseIntOrNull(request.getParameter("productId"));
         String name = request.getParameter("name");
         String brand = request.getParameter("brand");
         String description = request.getParameter("description");
@@ -110,6 +111,7 @@ public class ProductInsertController extends HttpServlet {
 
         // Creazione e popolamento del ProductBean
         ProductBean product = new ProductBean();
+        product.setProductID(productID);
         product.setName(name);
         product.setBrand(brand);
         product.setDescription(description);
@@ -127,7 +129,7 @@ public class ProductInsertController extends HttpServlet {
         product.setMaterial(emptyToNull(material));
 
         try {
-            new ProductDAO().doSave(product);
+            new ProductDAO().doUpdate(product);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
@@ -137,7 +139,19 @@ public class ProductInsertController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/view/admin/Insert.jsp");
+        Integer productID = ParseUtil.parseIntOrNull(request.getParameter("productId"));
+
+        if (productID != null) {
+            ProductDAO productDAO = new ProductDAO();
+            try {
+                ProductBean productBean = productDAO.doRetrieveById(productID);
+                request.setAttribute("product", productBean);
+            } catch (SQLException e) {
+                throw new ServletException(e);
+            }
+        }
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/view/admin/Update.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -152,4 +166,5 @@ public class ProductInsertController extends HttpServlet {
             errors.add(fieldName + " è troppo lungo (massimo " + maxLength + " caratteri)");
         }
     }
+
 }

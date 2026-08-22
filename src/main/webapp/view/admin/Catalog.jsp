@@ -22,7 +22,7 @@
         <p>Nome prodotto: <%= product.getName() %></p>
         <p>Marca prodotto: <%= product.getBrand() %></p>
         <p>Prezzo prodotto: <%= product.getPrice() %></p>
-        <a href="">Modifica prodotto</a>
+        <a href="${pageContext.request.contextPath}/admin/product/update?productId=<%= product.getProductID() %>">Modifica prodotto</a>
         <%
             if (product.isDeleted()) {
         %>
