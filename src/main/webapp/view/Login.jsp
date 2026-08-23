@@ -23,6 +23,9 @@
         <br>
 
         <button type="submit">Accedi</button>
+        <br>
+
+        <a href="${pageContext.request.contextPath}/register">Non sei registrato?</a>
 
     </form>
 </body>

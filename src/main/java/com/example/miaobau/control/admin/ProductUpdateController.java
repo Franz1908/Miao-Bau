@@ -158,7 +158,6 @@ public class ProductUpdateController extends HttpServlet {
             throw new ServletException(e);
         }
 
-
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/admin/Update.jsp");
         dispatcher.forward(request, response);
     }
