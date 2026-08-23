@@ -23,9 +23,7 @@ public class AdminOrdersController extends HttpServlet {
 
         try {
             List<OrdersBean> orders = new OrdersDAO().doRetriveAll();
-            List<CustomerBean> customers = new CustomerDAO().doRetriveAll();
             request.setAttribute("orders", orders);
-            request.setAttribute("customers", customers);
         } catch (SQLException e) {
             throw new ServletException(e);
         }

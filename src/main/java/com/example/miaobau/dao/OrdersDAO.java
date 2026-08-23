@@ -84,12 +84,7 @@ public class OrdersDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()){
-                    OrdersBean order = new OrdersBean();
-                    order.setCustomerID(rs.getInt("customer_id"));
-                    order.setOrderID(rs.getInt("order_id"));
-                    order.setTotalPrice(rs.getBigDecimal("total_price"));
-                    order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
-                    orders.add(order);
+                    orders.add(mapOrderBase(rs));
                 }
             }
         }
@@ -106,8 +101,8 @@ public class OrdersDAO {
 
             ps.setInt(1, orderId);
 
-            try(ResultSet rs = ps.executeQuery()){
-                while(rs.next()){
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
                     OrderItemBean orderItem = new OrderItemBean();
                     orderItem.setOrderID(rs.getInt("order_id"));
                     orderItem.setProductID(rs.getInt("product_id"));
@@ -132,13 +127,9 @@ public class OrdersDAO {
 
             ps.setInt(1, orderID);
 
-            try(ResultSet rs = ps.executeQuery()){
-                if(rs.next()){
-                    order = new OrdersBean();
-                    order.setOrderID(rs.getInt("order_id"));
-                    order.setCustomerID(rs.getInt("customer_id"));
-                    order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
-                    order.setTotalPrice(rs.getBigDecimal("total_price"));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    order = mapOrderBase(rs);
                 }
             }
         }
@@ -163,13 +154,9 @@ public class OrdersDAO {
 
             ps.setInt(1, orderID);
 
-            try(ResultSet rs = ps.executeQuery()){
-                if(rs.next()){
-                    order = new OrdersBean();
-                    order.setOrderID(rs.getInt("order_id"));
-                    order.setCustomerID(rs.getInt("customer_id"));
-                    order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
-                    order.setTotalPrice(rs.getBigDecimal("total_price"));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    order = mapOrderBase(rs);
                     order.setCustomerFirstName(rs.getString("customer_first_name"));
                     order.setCustomerLastName(rs.getString("customer_last_name"));
                     order.setCustomerEmail(rs.getString("customer_email"));
@@ -197,11 +184,7 @@ public class OrdersDAO {
             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                OrdersBean order = new OrdersBean();
-                order.setOrderID(rs.getInt("order_id"));
-                order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
-                order.setTotalPrice(rs.getBigDecimal("total_price"));
-                order.setCustomerID(rs.getInt("customer_id"));
+                OrdersBean order = mapOrderBase(rs);
                 order.setCustomerFirstName(rs.getString("customer_first_name"));
                 order.setCustomerLastName(rs.getString("customer_last_name"));
                 order.setCustomerEmail(rs.getString("customer_email"));
@@ -210,6 +193,64 @@ public class OrdersDAO {
         }
 
         return orders;
+    }
+
+    public List<OrdersBean> doRetrieveFiltered(String email, LocalDateTime dateFrom, LocalDateTime dateTo) throws SQLException {
+        List<OrdersBean> orders = new ArrayList<>();
+        StringBuilder query = new StringBuilder(
+                "SELECT o.*, " +
+                        "c.first_name AS customer_first_name, c.last_name AS customer_last_name, " +
+                        "c.email AS customer_email " +
+                        "FROM orders o " +
+                        "JOIN customer c ON o.customer_id = c.customer_id " +
+                        "WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (email != null && !email.isBlank()) {
+            query.append(" AND c.email LIKE ?");
+            params.add("%" + email.trim() + "%");
+        }
+
+        if (dateFrom != null) {
+            query.append(" AND o.order_date >= ?");
+            params.add(Timestamp.valueOf(dateFrom));
+        }
+
+        if (dateTo != null) {
+            query.append(" AND o.order_date <= ?");
+            params.add(Timestamp.valueOf(dateTo));
+        }
+
+        query.append(" ORDER_BY o.order_date DESC");
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    OrdersBean order = mapOrderBase(rs);
+                    order.setCustomerFirstName(rs.getString("customer_first_name"));
+                    order.setCustomerLastName(rs.getString("customer_last_name"));
+                    order.setCustomerEmail(rs.getString("customer_email"));
+                    orders.add(order);
+                }
+            }
+        }
+
+        return orders;
+    }
+
+    private OrdersBean mapOrderBase (ResultSet rs) throws SQLException {
+        OrdersBean order = new OrdersBean();
+        order.setCustomerID(rs.getInt("customer_id"));
+        order.setOrderID(rs.getInt("order_id"));
+        order.setTotalPrice(rs.getBigDecimal("total_price"));
+        order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
+        return order;
     }
 
 }
