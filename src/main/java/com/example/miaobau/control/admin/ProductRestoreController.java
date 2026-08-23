@@ -18,14 +18,18 @@ public class ProductRestoreController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer productID = ParseUtil.parseIntOrNull(request.getParameter("productId"));
 
-        if(productID != null){
-            try {
-                new ProductDAO().doRestore(productID);
-                response.sendRedirect(request.getContextPath() + "/admin/catalog");
-            } catch (SQLException e) {
-                throw new ServletException(e);
-            }
+        if (productID == null) {
+            response.sendRedirect(request.getContextPath() + "/admin/catalog");
+            return;
         }
+
+        try {
+            new ProductDAO().doRestore(productID);
+            response.sendRedirect(request.getContextPath() + "/admin/catalog");
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
     }
 
 }

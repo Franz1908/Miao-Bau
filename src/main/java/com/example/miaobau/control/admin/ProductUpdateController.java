@@ -22,6 +22,10 @@ public class ProductUpdateController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer productID = ParseUtil.parseIntOrNull(request.getParameter("productId"));
+        if (productID == null) {
+            response.sendRedirect(request.getContextPath() + "/admin/catalog");
+            return;
+        }
         String name = request.getParameter("name");
         String brand = request.getParameter("brand");
         String description = request.getParameter("description");
@@ -141,15 +145,19 @@ public class ProductUpdateController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer productID = ParseUtil.parseIntOrNull(request.getParameter("productId"));
 
-        if (productID != null) {
-            ProductDAO productDAO = new ProductDAO();
-            try {
-                ProductBean productBean = productDAO.doRetrieveById(productID);
-                request.setAttribute("product", productBean);
-            } catch (SQLException e) {
-                throw new ServletException(e);
-            }
+        if (productID == null) {
+            response.sendRedirect(request.getContextPath() + "/admin/catalog");
+            return;
         }
+
+        ProductDAO productDAO = new ProductDAO();
+        try {
+            ProductBean productBean = productDAO.doRetrieveById(productID);
+            request.setAttribute("product", productBean);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/admin/Update.jsp");
         dispatcher.forward(request, response);

@@ -22,7 +22,6 @@ public class AdminOrdersController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         String email = request.getParameter("email");
         String dateFromStr = request.getParameter("dateFrom");
         String dateToStr = request.getParameter("dateTo");

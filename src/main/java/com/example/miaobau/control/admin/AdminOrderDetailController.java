@@ -20,19 +20,22 @@ public class AdminOrderDetailController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer orderID = ParseUtil.parseIntOrNull(request.getParameter("orderId"));
 
-        if (orderID != null) {
-            try {
-                OrdersDAO ordersDAO = new OrdersDAO();
-                OrdersBean order = ordersDAO.doRetrieveByIdWithCustomer(orderID);
-                if (order == null) {
-                    response.sendRedirect(request.getContextPath() + "/admin/orders");
-                    return;
-                }
-                order.setItems(ordersDAO.doRetrieveItemsByOrder(orderID));
-                request.setAttribute("order", order);
-            } catch (SQLException e) {
-                throw new ServletException(e);
+        if (orderID == null) {
+            response.sendRedirect(request.getContextPath() + "/admin/orders");
+            return;
+        }
+
+        try {
+            OrdersDAO ordersDAO = new OrdersDAO();
+            OrdersBean order = ordersDAO.doRetrieveByIdWithCustomer(orderID);
+            if (order == null) {
+                response.sendRedirect(request.getContextPath() + "/admin/orders");
+                return;
             }
+            order.setItems(ordersDAO.doRetrieveItemsByOrder(orderID));
+            request.setAttribute("order", order);
+        } catch (SQLException e) {
+            throw new ServletException(e);
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/admin/OrderDetail.jsp");
