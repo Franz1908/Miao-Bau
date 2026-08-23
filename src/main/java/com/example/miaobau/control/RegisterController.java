@@ -119,7 +119,7 @@ public class RegisterController extends HttpServlet {
         }
 
         // Controllo telefono opzionale
-        if (telephone != null && !telephone.isEmpty()) {
+        if (telephone != null && !telephone.isBlank()) {
             customerBean.setPhone(telephone);
         }
 

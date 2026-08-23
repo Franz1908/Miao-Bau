@@ -22,6 +22,7 @@ public class CheckoutController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         CustomerBean customerBean = (CustomerBean) session.getAttribute("customer");
+
         if(customerBean == null){
             response.sendRedirect(request.getContextPath() + "/login");
             return;

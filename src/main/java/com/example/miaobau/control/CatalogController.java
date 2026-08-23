@@ -4,6 +4,7 @@ import com.example.miaobau.dao.ProductDAO;
 import com.example.miaobau.model.CategoryBean;
 import com.example.miaobau.model.ProductBean;
 import com.example.miaobau.model.SpeciesBean;
+import com.example.miaobau.utils.ParseUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,40 +18,33 @@ import java.util.List;
 
 @WebServlet("/catalog")
 public class CatalogController extends HttpServlet {
-
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ProductDAO productDAO = new ProductDAO();
-        String speciesParam = request.getParameter("speciesId");
-        String categoryParam = request.getParameter("categoryId");
+        Integer speciesID = ParseUtil.parseIntOrNull(request.getParameter("speciesId"));
+        Integer categoryID = ParseUtil.parseIntOrNull(request.getParameter("categoryId"));
 
         try {
             List<ProductBean> products;
             String title;
 
-            if (speciesParam == null) {
-                // Nessun filtro: tutto il catalogo
+            if (speciesID == null) {
+                // Nessun filtro valido di specie: tutto il catalogo
                 products = productDAO.doRetrieveAll();
                 title = "Catalogo prodotti";
-
-            } else if (categoryParam == null) {
+            } else if (categoryID == null) {
                 // Solo specie
-                int speciesId = Integer.parseInt(speciesParam);
-                products = productDAO.doRetrieveBySpecies(speciesId);
-                title = "Prodotti per " + findSpeciesName(speciesId);
-
+                products = productDAO.doRetrieveBySpecies(speciesID);
+                title = "Prodotti per " + findSpeciesName(speciesID);
             } else {
                 // Specie + categoria
-                int speciesId = Integer.parseInt(speciesParam);
-                int categoryId = Integer.parseInt(categoryParam);
-                products = productDAO.doRetrieveBySpeciesAndCategory(speciesId, categoryId);
-                title = "Prodotti per " + findSpeciesName(speciesId)
-                        + ": " + findCategoryName(categoryId);
+                products = productDAO.doRetrieveBySpeciesAndCategory(speciesID, categoryID);
+                title = "Prodotti per " + findSpeciesName(speciesID)
+                        + ": " + findCategoryName(categoryID);
             }
 
             request.setAttribute("products", products);
             request.setAttribute("title", title);
-
         } catch (SQLException e) {
             throw new ServletException(e);
         }
@@ -59,7 +53,6 @@ public class CatalogController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    // Cerca il nome della specie nell'application scope (caricato dal listener)
     private String findSpeciesName(int speciesId) {
         List<SpeciesBean> species = (List<SpeciesBean>) getServletContext().getAttribute("species");
         for (SpeciesBean s : species) {
@@ -70,7 +63,6 @@ public class CatalogController extends HttpServlet {
         return "";
     }
 
-    // Cerca il nome della categoria nell'application scope
     private String findCategoryName(int categoryId) {
         List<CategoryBean> categories = (List<CategoryBean>) getServletContext().getAttribute("categories");
         for (CategoryBean c : categories) {

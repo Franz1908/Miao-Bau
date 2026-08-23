@@ -3,6 +3,7 @@ package com.example.miaobau.control;
 import com.example.miaobau.dao.ProductDAO;
 import com.example.miaobau.model.CartBean;
 import com.example.miaobau.model.ProductBean;
+import com.example.miaobau.utils.ParseUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,20 +32,23 @@ public class CartController extends HttpServlet {
         if ("clear".equals(action)) {
             cart.clearCart();
         } else if (action != null) {
-            int productId = Integer.parseInt(request.getParameter("productId"));
-            switch (action) {
-                case "add":
-                case "increase":
-                    int quantity = Integer.parseInt(request.getParameter("quantity"));
-                    add(cart, productId, quantity);
-                    break;
-                case "remove":
-                    remove(cart, productId);
-                    break;
-                case "decrease":
-                    decrease(cart, productId);
-                    break;
+            Integer productID = ParseUtil.parseIntOrNull(request.getParameter("productId"));
+            if (productID != null) {
+                switch (action) {
+                    case "add":
+                    case "increase":
+                        Integer quantity = ParseUtil.parseIntOrNull(request.getParameter("quantity"));
+                        add(cart, productID, quantity != null ? quantity : 1);
+                        break;
+                    case "remove":
+                        remove(cart, productID);
+                        break;
+                    case "decrease":
+                        decrease(cart, productID);
+                        break;
+                }
             }
+
         }
 
         response.sendRedirect(request.getContextPath() + "/cart");
@@ -58,6 +62,9 @@ public class CartController extends HttpServlet {
     private void add(CartBean cart, int productId, int quantity) throws ServletException {
         try {
             ProductBean product = new ProductDAO().doRetrieveById(productId);
+            if (product == null) {
+                return;
+            }
             if(quantity < 1){
                 quantity = 1;
             }

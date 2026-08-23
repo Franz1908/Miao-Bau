@@ -2,6 +2,7 @@ package com.example.miaobau.control;
 
 import com.example.miaobau.dao.ProductDAO;
 import com.example.miaobau.model.ProductBean;
+import com.example.miaobau.utils.ParseUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 @WebServlet("/product")
 public class ProductController extends HttpServlet {
@@ -19,7 +21,11 @@ public class ProductController extends HttpServlet {
         ProductDAO productDAO = new ProductDAO();
 
         try {
-            ProductBean product = productDAO.doRetrieveById(Integer.parseInt(request.getParameter("productId")));
+            Integer productID = ParseUtil.parseIntOrNull(request.getParameter("productId"));
+            ProductBean product = null;
+            if (productID != null) {
+                product = productDAO.doRetrieveById(productID);
+            }
             request.setAttribute("product", product);
         } catch (SQLException e) {
             throw new ServletException(e);

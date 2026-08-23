@@ -3,6 +3,7 @@ package com.example.miaobau.control;
 import com.example.miaobau.dao.OrdersDAO;
 import com.example.miaobau.model.CustomerBean;
 import com.example.miaobau.model.OrdersBean;
+import com.example.miaobau.utils.ParseUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,15 +19,19 @@ public class OrderDetailController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         HttpSession session = request.getSession();
         CustomerBean customer = (CustomerBean) session.getAttribute("customer");
+
         if (customer == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        int orderID = Integer.parseInt(request.getParameter("orderId"));
+        Integer orderID = ParseUtil.parseIntOrNull(request.getParameter("orderId"));
+        if (orderID == null) {
+            response.sendRedirect(request.getContextPath() + "/orders");
+            return;
+        }
 
         try {
             OrdersDAO ordersDAO = new OrdersDAO();
