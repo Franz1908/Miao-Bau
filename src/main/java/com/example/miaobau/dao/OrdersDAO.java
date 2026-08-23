@@ -168,33 +168,6 @@ public class OrdersDAO {
         return order;
     }
 
-    public List<OrdersBean> doRetriveAll() throws SQLException {
-        List<OrdersBean> orders = new ArrayList<>();
-        String query =
-                "SELECT o.*, " +
-                        "       c.first_name AS customer_first_name, " +
-                        "       c.last_name AS customer_last_name, " +
-                        "       c.email AS customer_email " +
-                        "FROM orders o " +
-                        "JOIN customer c ON o.customer_id = c.customer_id " +
-                        "ORDER BY o.order_date DESC";;
-
-        try (Connection connection = DBConnection.getConnection();
-            PreparedStatement ps = connection.prepareStatement(query);
-            ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                OrdersBean order = mapOrderBase(rs);
-                order.setCustomerFirstName(rs.getString("customer_first_name"));
-                order.setCustomerLastName(rs.getString("customer_last_name"));
-                order.setCustomerEmail(rs.getString("customer_email"));
-                orders.add(order);
-            }
-        }
-
-        return orders;
-    }
-
     public List<OrdersBean> doRetrieveFiltered(String email, LocalDateTime dateFrom, LocalDateTime dateTo) throws SQLException {
         List<OrdersBean> orders = new ArrayList<>();
         StringBuilder query = new StringBuilder(
@@ -221,7 +194,7 @@ public class OrdersDAO {
             params.add(Timestamp.valueOf(dateTo));
         }
 
-        query.append(" ORDER_BY o.order_date DESC");
+        query.append(" ORDER BY o.order_date DESC");
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(query.toString())) {
