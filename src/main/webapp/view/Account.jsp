@@ -18,6 +18,17 @@
         <p>Cognome: <%= customerBean.getLastName() %></p>
         <p>Email: <%= customerBean.getEmail() %></p>
         <%
+            if (customerBean.getBirthDate() != null) {
+        %>
+        <p>Data di nascita: <%= customerBean.getBirthDate() %></p>
+        <%
+        } else {
+        %>
+        <p>Data di nascita: non impostata</p>
+        <%
+            }
+        %>
+        <%
             if (customerBean.getPhone() != null) {
         %>
             <p>Telefono: <%= customerBean.getPhone() %></p>

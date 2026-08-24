@@ -89,4 +89,44 @@ public class CustomerDAO {
         return customers;
     }
 
+    public void doUpdate(CustomerBean customerBean) throws SQLException {
+        String query =
+                "UPDATE customer SET " +
+                        "first_name = ?, " +
+                        "last_name = ?, " +
+                        "email = ?, " +
+                        "phone = ?, " +
+                        "birth_date = ? " +
+                        "WHERE customer_id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, customerBean.getFirstName());
+            ps.setString(2, customerBean.getLastName());
+            ps.setString(3, customerBean.getEmail());
+            ps.setString(4, customerBean.getPhone());
+            if (customerBean.getBirthDate() != null) {
+                ps.setDate(5, java.sql.Date.valueOf(customerBean.getBirthDate()));
+            } else {
+                ps.setNull(5, java.sql.Types.DATE);
+            }
+            ps.setInt(6, customerBean.getCustomerID());
+            ps.executeUpdate();
+        }
+    }
+
+    public void doUpdatePassword(int customerID, String password) throws SQLException {
+        String query = "UPDATE customer SET password = ? WHERE customer_id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, password);
+            ps.setInt(2, customerID);
+            ps.executeUpdate();
+        }
+
+    }
+
 }
