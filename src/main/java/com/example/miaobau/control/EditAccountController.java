@@ -1,10 +1,7 @@
 package com.example.miaobau.control;
 
 import com.example.miaobau.dao.CustomerDAO;
-import com.example.miaobau.dao.ProductDAO;
 import com.example.miaobau.model.CustomerBean;
-import com.example.miaobau.model.ProductBean;
-import com.example.miaobau.utils.ParseUtil;
 import com.example.miaobau.utils.PasswordUtil;
 
 import javax.servlet.RequestDispatcher;
