@@ -21,6 +21,7 @@ public class OrderDetailController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         CustomerBean customer = (CustomerBean) session.getAttribute("customer");
+        OrdersDAO ordersDAO = new OrdersDAO();
 
         Integer orderID = ParseUtil.parseIntOrNull(request.getParameter("orderId"));
         if (orderID == null) {
@@ -29,7 +30,6 @@ public class OrderDetailController extends HttpServlet {
         }
 
         try {
-            OrdersDAO ordersDAO = new OrdersDAO();
             OrdersBean order = ordersDAO.doRetriveByID(orderID);
 
             if (order == null || order.getCustomerID() != customer.getCustomerID()) {

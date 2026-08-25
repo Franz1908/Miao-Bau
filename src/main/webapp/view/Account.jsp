@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.miaobau.model.CustomerBean" %>
+<%@ page import="com.example.miaobau.model.AddressBean" %>
+<%@ page import="java.util.List" %>
 <%
     CustomerBean customerBean = (CustomerBean) session.getAttribute("customer");
 %>
@@ -42,6 +44,32 @@
 
         <a href="${pageContext.request.contextPath}/secure/account/edit">Modifica dati</a>
 
+        <h3>I miei indirizzi</h3>
+        <%
+            List<AddressBean> addresses = (List<AddressBean>) request.getAttribute("addresses");
+            if (addresses == null || addresses.isEmpty()) {
+        %>
+            <p>Non hai ancora indirizzi salvati.</p>
+        <%
+            } else {
+                for (AddressBean address : addresses) {
+        %>
+            <div>
+                <p><%= address.getStreet() %>, <%= address.getCivicNumber() %></p>
+                <p><%= address.getPostalCode() %> <%= address.getCity() %> (<%= address.getCountry() %>)</p>
+                <form method="post" action="${pageContext.request.contextPath}/secure/address/delete">
+                    <input type="hidden" name="addressId" value="<%= address.getAddressID() %>">
+                    <button type="submit">Elimina indirizzo</button>
+                </form>
+            </div>
+            <hr>
+        <%
+                }
+            }
+        %>
+
+        <a href="${pageContext.request.contextPath}/secure/address/new">Aggiungi indirizzo</a>
+
         <h3>Sezioni</h3>
         <a href="${pageContext.request.contextPath}/cart">Carrello</a>
         <a href="${pageContext.request.contextPath}/secure/orders">Visualizza ordini</a>
@@ -54,6 +82,19 @@
     %>
         <a href="${pageContext.request.contextPath}/register">Registrati</a>
         <a href="${pageContext.request.contextPath}/login">Accedi</a>
+    <%
+        }
+    %>
+
+    <%
+        String ciao = (String) request.getAttribute("ciao");
+        if (ciao == null || ciao.isBlank()) {
+    %>
+        <p>Niente if</p>
+    <%
+        } else {
+    %>
+        <p>If eseguit <%=ciao%></p>
     <%
         }
     %>

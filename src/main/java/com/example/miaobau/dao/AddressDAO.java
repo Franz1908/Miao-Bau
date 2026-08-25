@@ -49,7 +49,7 @@ public class AddressDAO {
     }
 
     public void doDelete(int addressID) throws SQLException {
-        String query = "UPDATE address SET is_deleted = true WHERE address_id = ?";
+        String query = "UPDATE address SET is_deleted = TRUE WHERE address_id = ?";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
