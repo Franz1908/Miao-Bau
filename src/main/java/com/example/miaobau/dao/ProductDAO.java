@@ -126,8 +126,7 @@ public class ProductDAO {
     }
 
     public void doSave(ProductBean productBean) throws SQLException {
-        String query =
-                "INSERT INTO product " +
+        String query =  "INSERT INTO product " +
                         "(category_id, species_id, name, description, price, vat, " +
                         "on_sale, discount_percentage, image, brand, " +
                         "weight, ingredients, size, color, material) " +
@@ -142,8 +141,7 @@ public class ProductDAO {
     }
 
     public void doUpdate(ProductBean productBean) throws SQLException{
-        String query =
-                "UPDATE product SET " +
+        String query =  "UPDATE product SET " +
                         "category_id = ?, " +
                         "species_id = ?, " +
                         "name = ?, " +

@@ -23,12 +23,13 @@ public class OrdersDAO {
 
             // Inserimento della testata dell'ordine
             try (PreparedStatement psOrder = connection.prepareStatement(
-                    "INSERT INTO orders (customer_id, order_date, total_price) VALUES (?, ?, ?)",
+                    "INSERT INTO orders (customer_id, order_date, total_price, address_id) VALUES (?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS)) {
 
                 psOrder.setInt(1, order.getCustomerID());
                 psOrder.setTimestamp(2, Timestamp.valueOf(order.getOrderDate()));
                 psOrder.setBigDecimal(3, cart.getTotal());
+                psOrder.setInt(4, order.getAddressID());
                 psOrder.executeUpdate();
 
                 // Recupero dell'id generato per collegare le righe
@@ -223,6 +224,7 @@ public class OrdersDAO {
         order.setOrderID(rs.getInt("order_id"));
         order.setTotalPrice(rs.getBigDecimal("total_price"));
         order.setOrderDate(rs.getObject("order_date", LocalDateTime.class));
+        order.setAddressID(rs.getInt("address_id"));
         return order;
     }
 

@@ -9,6 +9,7 @@ public class OrdersBean {
 
     private int orderID;
     private int customerID;
+    private int addressID;
     private LocalDateTime orderDate;
     private BigDecimal totalPrice;
     private String customerFirstName;
@@ -25,6 +26,10 @@ public class OrdersBean {
 
     public void setCustomerID(int customerID){
         this.customerID = customerID;
+    }
+
+    public void setAddressID(int addressID) {
+        this.addressID = addressID;
     }
 
     public void setOrderDate(LocalDateTime orderDate){
@@ -55,6 +60,10 @@ public class OrdersBean {
 
     public int getCustomerID(){
         return customerID;
+    }
+
+    public int getAddressID() {
+        return addressID;
     }
 
     public LocalDateTime getOrderDate(){

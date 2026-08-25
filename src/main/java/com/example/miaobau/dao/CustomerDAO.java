@@ -19,16 +19,7 @@ public class CustomerDAO {
         try (Connection connection = DBConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(query)){
 
-            ps.setString(1, customerBean.getFirstName());
-            ps.setString(2, customerBean.getLastName());
-            ps.setString(3, customerBean.getEmail());
-            ps.setString(4, customerBean.getPhone());
-
-            if (customerBean.getBirthDate() != null) {
-                ps.setDate(5, java.sql.Date.valueOf(customerBean.getBirthDate()));
-            } else {
-                ps.setNull(5, java.sql.Types.DATE);
-            }
+            setCustomerParameters(ps, customerBean);
             ps.setString(6, customerBean.getPasswordHash());
             return ps.executeUpdate();
         }
@@ -102,22 +93,13 @@ public class CustomerDAO {
         try (Connection connection = DBConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(query)) {
 
-            ps.setString(1, customerBean.getFirstName());
-            ps.setString(2, customerBean.getLastName());
-            ps.setString(3, customerBean.getEmail());
-            ps.setString(4, customerBean.getPhone());
-            if (customerBean.getBirthDate() != null) {
-                ps.setDate(5, java.sql.Date.valueOf(customerBean.getBirthDate()));
-            } else {
-                ps.setNull(5, java.sql.Types.DATE);
-            }
-            ps.setInt(6, customerBean.getCustomerID());
+           setCustomerParameters(ps, customerBean);
             ps.executeUpdate();
         }
     }
 
     public void doUpdatePassword(int customerID, String password) throws SQLException {
-        String query = "UPDATE customer SET password = ? WHERE customer_id = ?";
+        String query = "UPDATE customer SET password_hash = ? WHERE customer_id = ?";
 
         try (Connection connection = DBConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(query)) {
@@ -127,6 +109,19 @@ public class CustomerDAO {
             ps.executeUpdate();
         }
 
+    }
+
+    private void setCustomerParameters(PreparedStatement ps, CustomerBean customerBean) throws SQLException {
+        ps.setString(1, customerBean.getFirstName());
+        ps.setString(2, customerBean.getLastName());
+        ps.setString(3, customerBean.getEmail());
+        ps.setString(4, customerBean.getPhone());
+        if (customerBean.getBirthDate() != null) {
+            ps.setDate(5, java.sql.Date.valueOf(customerBean.getBirthDate()));
+        } else {
+            ps.setNull(5, java.sql.Types.DATE);
+        }
+        ps.setInt(6, customerBean.getCustomerID());
     }
 
 }

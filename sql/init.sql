@@ -82,6 +82,7 @@ CREATE TABLE address (
     postal_code VARCHAR(5)  NOT NULL,
     city        VARCHAR(50) NOT NULL,
     country     VARCHAR(50) NOT NULL,
+    is_deleted  BOOLEAN     NOT NULL DEFAULT FALSE,
     CONSTRAINT fk_address_customer
         FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
         ON DELETE CASCADE
@@ -91,10 +92,13 @@ CREATE TABLE address (
 CREATE TABLE orders (
     order_id    INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT           NOT NULL,
+    address_id  INT           NOT NULL,
     order_date  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     total_price DECIMAL(10,2) NOT NULL,
     CONSTRAINT fk_orders_customer
         FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+    CONSTRAINT fk_orders_address
+        FOREIGN KEY (address_id) REFERENCES address(address_id),
     CONSTRAINT chk_total_positive CHECK (total_price >= 0)
 );
 
@@ -105,7 +109,7 @@ CREATE TABLE order_item (
     quantity      INT           NOT NULL,
     unit_price    DECIMAL(10,2) NOT NULL,
     vat_frozen    DECIMAL(5,2)  NOT NULL, -- iva
-    product_name  VARCHAR(100)  NOT NULL,
+    product_name  VARCHAR(150)  NOT NULL,
     PRIMARY KEY (order_id, product_id),
     CONSTRAINT fk_item_order
         FOREIGN KEY (order_id) REFERENCES orders(order_id)
