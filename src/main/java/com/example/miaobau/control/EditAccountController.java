@@ -17,18 +17,12 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/account/edit")
+@WebServlet("/secure/account/edit")
 public class EditAccountController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CustomerBean customerBean = (CustomerBean) request.getSession().getAttribute("customer");
-
-        if (customerBean == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
@@ -130,13 +124,6 @@ public class EditAccountController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        CustomerBean customerBean = (CustomerBean) request.getSession().getAttribute("customer");
-
-        if (customerBean == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/EditAccount.jsp");
         dispatcher.forward(request, response);
     }

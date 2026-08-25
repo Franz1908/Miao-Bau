@@ -15,18 +15,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-@WebServlet("/checkout")
+@WebServlet("/secure/checkout")
 public class CheckoutController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         CustomerBean customerBean = (CustomerBean) session.getAttribute("customer");
-
-        if(customerBean == null){
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
 
         CartBean cart = (CartBean) session.getAttribute("cart");
         if(cart == null || cart.getCart().isEmpty()){
@@ -42,7 +37,7 @@ public class CheckoutController extends HttpServlet {
         try {
             int orderID = new OrdersDAO().doSave(order, cart);
             cart.clearCart();
-            response.sendRedirect(request.getContextPath() + "/confirmation?orderId=" + orderID);
+            response.sendRedirect(request.getContextPath() + "/secure/confirmation?orderId=" + orderID);
         } catch (SQLException e) {
             throw new ServletException(e);
         }

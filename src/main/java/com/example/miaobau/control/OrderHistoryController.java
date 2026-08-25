@@ -15,18 +15,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/orders")
+@WebServlet("/secure/orders")
 public class OrderHistoryController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         CustomerBean customer = (CustomerBean) session.getAttribute("customer");
-
-        if(customer == null){
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
 
         try {
             List<OrdersBean> orders = new OrdersDAO().doRetriveByCustomer(customer.getCustomerID());

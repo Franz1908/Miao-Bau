@@ -22,7 +22,7 @@
             <p>Numero ordine: <%= order.getOrderID() %></p>
             <p>Data ordine: <%= order.getOrderDate() %></p>
             <p>Totale ordine: <%= order.getTotalPrice() %></p>
-            <a href="${pageContext.request.contextPath}/order-detail?orderId=<%= order.getOrderID() %>">Vedi dettaglio</a>
+            <a href="${pageContext.request.contextPath}/secure/order-detail?orderId=<%= order.getOrderID() %>">Vedi dettaglio</a>
         </div>
         <hr>
     <%

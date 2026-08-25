@@ -40,11 +40,11 @@
             }
         %>
 
-        <a href="${pageContext.request.contextPath}/account/edit">Modifica dati</a>
+        <a href="${pageContext.request.contextPath}/secure/account/edit">Modifica dati</a>
 
         <h3>Sezioni</h3>
         <a href="${pageContext.request.contextPath}/cart">Carrello</a>
-        <a href="${pageContext.request.contextPath}/orders">Visualizza ordini</a>
+        <a href="${pageContext.request.contextPath}/secure/orders">Visualizza ordini</a>
 
         <form method="post" action="${pageContext.request.contextPath}/logout">
             <button type="submit">Logout</button>

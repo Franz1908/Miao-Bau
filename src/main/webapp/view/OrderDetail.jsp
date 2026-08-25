@@ -30,6 +30,6 @@
 
     <p><strong>Totale ordine: <%= order.getTotalPrice() %></strong></p>
 
-    <a href="${pageContext.request.contextPath}/orders">Torna ai miei ordini</a>
+    <a href="${pageContext.request.contextPath}/secure/orders">Torna ai miei ordini</a>
 </body>
 </html>

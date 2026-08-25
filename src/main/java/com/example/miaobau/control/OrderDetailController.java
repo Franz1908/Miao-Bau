@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/order-detail")
+@WebServlet("/secure/order-detail")
 public class OrderDetailController extends HttpServlet {
 
     @Override
@@ -22,14 +22,9 @@ public class OrderDetailController extends HttpServlet {
         HttpSession session = request.getSession();
         CustomerBean customer = (CustomerBean) session.getAttribute("customer");
 
-        if (customer == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
         Integer orderID = ParseUtil.parseIntOrNull(request.getParameter("orderId"));
         if (orderID == null) {
-            response.sendRedirect(request.getContextPath() + "/orders");
+            response.sendRedirect(request.getContextPath() + "/secure/orders");
             return;
         }
 
@@ -38,7 +33,7 @@ public class OrderDetailController extends HttpServlet {
             OrdersBean order = ordersDAO.doRetriveByID(orderID);
 
             if (order == null || order.getCustomerID() != customer.getCustomerID()) {
-                response.sendRedirect(request.getContextPath() + "/orders");
+                response.sendRedirect(request.getContextPath() + "/secure/orders");
                 return;
             }
 

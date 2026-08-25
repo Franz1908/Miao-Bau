@@ -22,7 +22,7 @@
         }
     %>
 
-    <form method="post" action="${pageContext.request.contextPath}/edit-account">
+    <form method="post" action="${pageContext.request.contextPath}/secure/account/edit">
 
         <h3>Dati personali</h3>
 
