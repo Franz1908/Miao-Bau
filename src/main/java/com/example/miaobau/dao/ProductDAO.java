@@ -31,7 +31,7 @@ public class ProductDAO {
 
     public ProductBean doRetrieveById(int id) throws SQLException {
         ProductBean product = null;
-        String query = "SELECT * FROM product WHERE product_id = ?";
+        String query = "SELECT * FROM product WHERE product_id = ? AND is_deleted = FALSE";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
@@ -66,14 +66,14 @@ public class ProductDAO {
         return products;
     }
 
-    public List<ProductBean> doRetrieveBySpecies(int speciesId) throws SQLException{
+    public List<ProductBean> doRetrieveBySpecies(int speciesID) throws SQLException{
         List<ProductBean> products = new ArrayList<>();
-        String query = "SELECT * FROM product WHERE species_id = ?";
+        String query = "SELECT * FROM product WHERE species_id = ? AND is_deleted = false";
 
         try(Connection connection = DBConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(query)) {
 
-            ps.setInt(1, speciesId);
+            ps.setInt(1, speciesID);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -85,14 +85,14 @@ public class ProductDAO {
         return products;
     }
 
-    public List<ProductBean> doRetriveByCategory(int categoryId) throws SQLException{
+    public List<ProductBean> doRetriveByCategory(int categoryID) throws SQLException{
         List<ProductBean> products = new ArrayList<>();
-        String query = "SELECT * FROM product WHERE category_id = ?";
+        String query = "SELECT * FROM product WHERE category_id = ? and is_deleted = FALSE";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
 
-            ps.setInt(1, categoryId);
+            ps.setInt(1, categoryID);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -104,15 +104,15 @@ public class ProductDAO {
         return products;
     }
 
-    public List<ProductBean> doRetrieveBySpeciesAndCategory(int speciesId, int categoryId) throws SQLException{
+    public List<ProductBean> doRetrieveBySpeciesAndCategory(int speciesID, int categoryID) throws SQLException{
         List<ProductBean> products = new ArrayList<>();
-        String query = "SELECT * FROM product WHERE category_id = ? AND species_id = ?";
+        String query = "SELECT * FROM product WHERE category_id = ? AND species_id = ? AND is_deleted = FALSE";
 
         try(Connection connection = DBConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(query)){
 
-            ps.setInt(1, categoryId);
-            ps.setInt(2, categoryId);
+            ps.setInt(1, categoryID);
+            ps.setInt(2, speciesID);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -188,6 +188,26 @@ public class ProductDAO {
             ps.setInt(1, productID);
             ps.executeUpdate();
         }
+    }
+
+    public ProductBean doRetrieveByIdForAdmin(int id) throws SQLException {
+        ProductBean product = null;
+        String query = "SELECT * FROM product WHERE product_id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    product = mapRow(rs);
+                }
+            }
+
+        }
+
+        return product;
     }
 
     public List<ProductBean> doRetriveAllForAdmin() throws SQLException {

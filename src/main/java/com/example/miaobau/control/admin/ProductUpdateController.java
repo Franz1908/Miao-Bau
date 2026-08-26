@@ -152,7 +152,7 @@ public class ProductUpdateController extends HttpServlet {
 
         ProductDAO productDAO = new ProductDAO();
         try {
-            ProductBean productBean = productDAO.doRetrieveById(productID);
+            ProductBean productBean = productDAO.doRetrieveByIdForAdmin(productID);
             request.setAttribute("product", productBean);
         } catch (SQLException e) {
             throw new ServletException(e);
