@@ -1,6 +1,8 @@
 package com.example.miaobau.control;
 
+import com.example.miaobau.dao.AddressDAO;
 import com.example.miaobau.dao.OrdersDAO;
+import com.example.miaobau.model.AddressBean;
 import com.example.miaobau.model.CustomerBean;
 import com.example.miaobau.model.OrdersBean;
 import com.example.miaobau.utils.ParseUtil;
@@ -21,6 +23,7 @@ public class OrderDetailController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         CustomerBean customer = (CustomerBean) session.getAttribute("customer");
+        AddressBean address;
         OrdersDAO ordersDAO = new OrdersDAO();
 
         Integer orderID = ParseUtil.parseIntOrNull(request.getParameter("orderId"));
@@ -37,9 +40,10 @@ public class OrderDetailController extends HttpServlet {
                 return;
             }
 
+            address = new AddressDAO().doRetriveByID(order.getAddressID());
             order.setItems(ordersDAO.doRetrieveItemsByOrder(orderID));
             request.setAttribute("order", order);
-
+            request.setAttribute("address", address);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
