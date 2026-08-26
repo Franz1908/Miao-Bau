@@ -3,10 +3,7 @@ package com.example.miaobau.dao;
 import com.example.miaobau.config.DBConnection;
 import com.example.miaobau.model.AddressBean;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,17 +31,23 @@ public class AddressDAO {
     public int doSave(AddressBean address) throws SQLException {
         String query = "INSERT INTO address (customer_id, street, civic_number, postal_code, city, country) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
-
         try (Connection connection = DBConnection.getConnection();
-            PreparedStatement ps = connection.prepareStatement(query)) {
-
+             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, address.getCustomerID());
             ps.setString(2, address.getStreet());
             ps.setString(3, address.getCivicNumber());
             ps.setString(4, address.getPostalCode());
             ps.setString(5, address.getCity());
             ps.setString(6, address.getCountry());
-            return ps.executeUpdate();
+            ps.executeUpdate();
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Creazione indirizzo fallita, nessun id ottenuto");
+                }
+            }
         }
     }
 

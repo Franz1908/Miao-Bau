@@ -85,18 +85,5 @@
     <%
         }
     %>
-
-    <%
-        String ciao = (String) request.getAttribute("ciao");
-        if (ciao == null || ciao.isBlank()) {
-    %>
-        <p>Niente if</p>
-    <%
-        } else {
-    %>
-        <p>If eseguit <%=ciao%></p>
-    <%
-        }
-    %>
 </body>
 </html>
