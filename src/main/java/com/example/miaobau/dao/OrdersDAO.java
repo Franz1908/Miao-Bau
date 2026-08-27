@@ -51,7 +51,12 @@ public class OrdersDAO {
                     psItem.setInt(1, orderID);
                     psItem.setInt(2, item.getProduct().getProductID());
                     psItem.setInt(3, item.getQuantity());
-                    psItem.setBigDecimal(4, item.getProduct().getPrice());   // prezzo congelato
+                    if (item.getProduct().isOnSale()) {
+                        psItem.setBigDecimal(4, item.getProduct().getDiscountedPrice()); // prezzo scontato congelato
+                    }
+                    else {
+                        psItem.setBigDecimal(4, item.getProduct().getPrice()); // prezzo non scontato congelato
+                    }
                     psItem.setBigDecimal(5, item.getProduct().getVat());     // IVA congelata
                     psItem.setString(6, item.getProduct().getName());
                     psItem.executeUpdate();

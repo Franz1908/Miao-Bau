@@ -1,6 +1,7 @@
 package com.example.miaobau.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class ProductBean {
 
@@ -160,6 +161,17 @@ public class ProductBean {
 
     public String getSize() {
         return size;
+    }
+
+    // dentro ProductBean
+    public BigDecimal getDiscountedPrice() {
+        if (!isOnSale() || discountPercentage == null) {
+            return price;   // nessuno sconto: prezzo pieno
+        }
+        BigDecimal discount = price
+                .multiply(discountPercentage)
+                .divide(new BigDecimal("100"));
+        return price.subtract(discount).setScale(2, RoundingMode.HALF_UP);
     }
 
 }

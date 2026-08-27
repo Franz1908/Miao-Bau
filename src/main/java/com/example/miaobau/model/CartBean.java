@@ -49,7 +49,12 @@ public class CartBean {
         BigDecimal total = BigDecimal.ZERO;
 
         for(CartItem item : cart.values()){
-            total = total.add(item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            if (item.getProduct().isOnSale()) {
+                total = total.add(item.getProduct().getDiscountedPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            }
+            else {
+                total = total.add(item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            }
         }
 
         return total;
