@@ -8,7 +8,7 @@
     // Dati caricati dalla Servlet in scope "application" / "session"
     List<CategoryBean> categories = (List<CategoryBean>) application.getAttribute("categories");
     List<SpeciesBean>  species    = (List<SpeciesBean>)  application.getAttribute("species");
-    CustomerBean       customerBean = (CustomerBean) session.getAttribute("customer");
+    CustomerBean navCustomerBean = (CustomerBean) session.getAttribute("customer");
     // Numero di articoli nel carrello per il badge (0 se non impostato)
     CartBean navCart = (CartBean) session.getAttribute("cart");
     int cartCount = (navCart != null) ? navCart.getTotalQuantity() : 0;
@@ -55,7 +55,7 @@
             <!-- Area account + carrello -->
             <ul class="navbar-nav align-items-lg-center">
                 <li class="nav-item">
-                    <% if (customerBean != null) { %>
+                    <% if (navCustomerBean != null) { %>
                         <a class="nav-link" href="${pageContext.request.contextPath}/account">Account</a>
                     <% } else { %>
                         <a class="nav-link" href="${pageContext.request.contextPath}/account">Accedi</a>

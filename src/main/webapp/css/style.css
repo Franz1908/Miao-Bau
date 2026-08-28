@@ -418,3 +418,286 @@ h1, h2, h3, h4, h5, h6,
     position: sticky;
     top: 1rem;
 }
+
+/* =======================================================================
+   AUTENTICAZIONE (Login / Register)
+   Card centrata su sfondo panna con zampette decorative (.mb-paw).
+   ======================================================================= */
+.mb-auth {
+    position: relative;
+    overflow: hidden;
+    padding: 3rem 1rem;
+}
+.mb-auth-card {
+    position: relative;
+    z-index: 1;                 /* sopra le zampette */
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--mb-card);
+    border: 1px solid var(--mb-bordo);
+    border-radius: 1.25rem;
+    box-shadow: 0 8px 30px rgba(43, 45, 66, .08);
+    padding: 2.5rem 2rem;
+}
+/* Variante piu' larga per il form di registrazione (piu' campi) */
+.mb-auth-card.mb-auth-wide {
+    max-width: 640px;
+}
+.mb-auth-head {
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+.mb-auth-emoji {
+    display: block;
+    font-size: 2.75rem;
+    line-height: 1;
+    margin-bottom: .5rem;
+}
+.mb-auth-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    color: var(--mb-primario);
+    margin-bottom: .25rem;
+}
+.mb-auth-sub {
+    color: #6c757d;
+    margin: 0;
+    font-size: .95rem;
+}
+
+/* Link secondario sotto al form ("Non hai un account? Registrati") */
+.mb-auth-alt {
+    text-align: center;
+    margin: 1.25rem 0 0;
+    font-size: .9rem;
+    color: #6c757d;
+}
+.mb-auth-alt a {
+    color: var(--mb-primario);
+    font-weight: 700;
+    text-decoration: none;
+}
+.mb-auth-alt a:hover {
+    color: var(--mb-primario-chiaro);
+    text-decoration: underline;
+}
+
+/* =======================================================================
+   FORM DEL BRAND (etichette, input, alert)
+   Riutilizzabile ovunque aggiungendo class="mb-form" al <form>.
+   ======================================================================= */
+.mb-form .form-label {
+    font-weight: 600;
+    color: var(--mb-testo);
+    margin-bottom: .3rem;
+}
+.mb-form .form-control {
+    border: 1px solid var(--mb-bordo);
+    border-radius: .6rem;
+    padding: .6rem .85rem;
+}
+.mb-form .form-control:focus {
+    border-color: var(--mb-primario-chiaro);
+    box-shadow: 0 0 0 .2rem rgba(82, 183, 136, .25); /* alone verde salvia */
+}
+.mb-form .form-text {
+    color: #6c757d;
+    font-size: .82rem;
+}
+
+/* Alert riutilizzabile per messaggi di errore (rosso caldo del brand) */
+.mb-alert {
+    border-radius: .75rem;
+    padding: .85rem 1rem;
+    margin-bottom: 1.25rem;
+    font-size: .9rem;
+}
+.mb-alert-error {
+    background: #FCEBE7;
+    border: 1px solid #F3C6BB;
+    color: #B23A22;
+}
+.mb-alert ul {
+    margin: 0;
+    padding-left: 1.15rem;
+}
+.mb-alert ul li + li {
+    margin-top: .2rem;
+}
+
+/* =======================================================================
+   PAGINA ACCOUNT
+   ======================================================================= */
+/* Intestazione con saluto e (a destra) bottone di logout */
+.mb-account-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.75rem;
+}
+.mb-account-hero h1 {
+    margin: 0;
+}
+.mb-account-hero p {
+    color: #6c757d;
+    margin: .25rem 0 0;
+}
+
+/* Pannello bianco riutilizzabile (dati, indirizzi, sezioni) */
+.mb-panel {
+    background: var(--mb-card);
+    border: 1px solid var(--mb-bordo);
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(43, 45, 66, .06);
+    padding: 1.5rem;
+}
+.mb-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+.mb-panel-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    color: var(--mb-primario);
+    font-size: 1.15rem;
+    margin: 0;
+}
+
+/* Griglia dei dati anagrafici: coppie etichetta + valore */
+.mb-data-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.5rem;
+}
+.mb-data-item {
+    display: flex;
+    flex-direction: column;
+}
+.mb-data-label {
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: .15rem;
+}
+.mb-data-value {
+    font-weight: 600;
+    color: var(--mb-testo);
+    word-break: break-word;
+}
+/* Valore non impostato (grigio, corsivo) */
+.mb-data-value.mb-data-empty {
+    color: #9a9384;
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Card di un singolo indirizzo */
+.mb-address {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 100%;
+    background: #fff;
+    border: 1px solid var(--mb-bordo);
+    border-radius: .85rem;
+    padding: 1.1rem 1.25rem;
+}
+.mb-address-street {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--mb-testo);
+    margin: 0;
+}
+.mb-address-city {
+    color: #6c757d;
+    font-size: .9rem;
+    margin: .15rem 0 0;
+}
+
+/* Bottone icona (es. elimina indirizzo) */
+.mb-icon-btn {
+    border: none;
+    background: none;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 1.05rem;
+    line-height: 1;
+    padding: .15rem .25rem;
+    border-radius: .4rem;
+    transition: color .15s ease, background .15s ease;
+}
+.mb-icon-btn:hover {
+    color: var(--mb-cta);
+    background: var(--mb-sfondo);
+}
+
+/* Riquadro tratteggiato "aggiungi indirizzo" */
+.mb-address-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    height: 100%;
+    min-height: 92px;
+    border: 2px dashed var(--mb-bordo);
+    border-radius: .85rem;
+    padding: 1.1rem;
+    color: var(--mb-primario);
+    font-weight: 700;
+    text-decoration: none;
+    transition: all .15s ease;
+}
+.mb-address-add:hover {
+    border-color: var(--mb-primario-chiaro);
+    background: var(--mb-sfondo);
+    color: var(--mb-primario);
+}
+
+/* Link rapido (Carrello, Ordini...) */
+.mb-quicklink {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    height: 100%;
+    background: #fff;
+    border: 1px solid var(--mb-bordo);
+    border-radius: .85rem;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    color: var(--mb-testo);
+    font-weight: 600;
+    transition: all .15s ease;
+}
+.mb-quicklink:hover {
+    border-color: var(--mb-primario-chiaro);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(43, 45, 66, .08);
+    color: var(--mb-primario);
+}
+.mb-quicklink-ico {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+.mb-quicklink-arrow {
+    margin-left: auto;
+    color: var(--mb-primario-chiaro);
+    font-weight: 700;
+}
+
+/* Su schermi piccoli la griglia dati diventa a colonna singola */
+@media (max-width: 575.98px) {
+    .mb-data-grid {
+        grid-template-columns: 1fr;
+    }
+    .mb-auth-card {
+        padding: 2rem 1.25rem;
+    }
+}
