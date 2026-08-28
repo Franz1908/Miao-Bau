@@ -1,0 +1,332 @@
+/* 1) Import dei Google Fonts (Nunito per titoli/brand, Open Sans per il testo) */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Open+Sans:wght@400;600;700&display=swap');
+
+/* 2) Variabili CSS con la palette del brand.*/
+:root {
+    --mb-primario:        #2D6A4F; /* Verde bosco/salvia  - navbar, titoli */
+    --mb-primario-chiaro: #52B788; /* Verde salvia chiaro - hover, accenti */
+    --mb-cta:             #E76F51; /* Arancio albicocca   - pulsanti CTA   */
+    --mb-cta-hover:       #D95D39; /* Arancio scuro        - hover CTA      */
+    --mb-sfondo:          #FAF6F0; /* Panna/neutro caldo   - sfondo pagina  */
+    --mb-card:            #FFFFFF; /* Bianco               - sfondo card    */
+    --mb-testo:           #2B2D42; /* Antracite scuro      - testo          */
+    --mb-bordo:           #E9ECEF; /* Grigio/sabbia chiaro - bordi          */
+}
+
+/* 3) Impostazioni di base della pagina */
+body {
+    background-color: var(--mb-sfondo);
+    color: var(--mb-testo);
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Titoli e nome del brand usano Nunito */
+h1, h2, h3, h4, h5, h6,
+.mb-brand {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    color: var(--mb-primario);
+}
+
+/* =======================================================================
+   NAVBAR
+   ======================================================================= */
+.mb-navbar {
+    background-color: var(--mb-primario);
+}
+
+/* Logo/brand nella navbar (testo bianco su verde) */
+.mb-navbar .mb-brand {
+    color: #FFFFFF;
+    font-size: 1.5rem;
+    letter-spacing: .3px;
+}
+
+/* Link della navbar */
+.mb-navbar .nav-link {
+    color: #FFFFFF;
+    font-weight: 600;
+}
+.mb-navbar .nav-link:hover,
+.mb-navbar .nav-link:focus {
+    color: var(--mb-primario-chiaro);
+}
+
+/* Voci del menu a tendina (categorie) */
+.mb-navbar .dropdown-menu {
+    border: 1px solid var(--mb-bordo);
+    border-radius: .6rem;
+}
+.mb-navbar .dropdown-item:hover {
+    background-color: var(--mb-sfondo);
+    color: var(--mb-primario);
+}
+
+/* Badge numerico del carrello */
+.mb-cart-badge {
+    background-color: var(--mb-cta);
+    color: #FFFFFF;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* =======================================================================
+   BOTTONI CUSTOM
+   ======================================================================= */
+
+/* Bottone primario verde (es. "Vai al catalogo", ricerca) */
+.btn-mb-primario {
+    background-color: var(--mb-primario);
+    border: 1px solid var(--mb-primario);
+    color: #FFFFFF;
+    font-weight: 600;
+}
+.btn-mb-primario:hover {
+    background-color: var(--mb-primario-chiaro);
+    border-color: var(--mb-primario-chiaro);
+    color: #FFFFFF;
+}
+
+/* Bottone Call To Action arancio ("Aggiungi al carrello", sconti) */
+.btn-mb-cta {
+    background-color: var(--mb-cta);
+    border: 1px solid var(--mb-cta);
+    color: #FFFFFF;
+    font-weight: 700;
+}
+.btn-mb-cta:hover {
+    background-color: var(--mb-cta-hover);
+    border-color: var(--mb-cta-hover);
+    color: #FFFFFF;
+}
+
+/* =======================================================================
+   PILLOLE DI FILTRO (categorie/specie)
+   ======================================================================= */
+.mb-filtro {
+    background-color: #FFFFFF;
+    border: 1px solid var(--mb-bordo);
+    color: var(--mb-primario);
+    border-radius: 50rem;      /* forma a pillola */
+    padding: .4rem 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .15s ease-in-out;
+}
+.mb-filtro:hover {
+    background-color: var(--mb-primario-chiaro);
+    border-color: var(--mb-primario-chiaro);
+    color: #FFFFFF;
+}
+/* Pillola attiva (filtro selezionato) */
+.mb-filtro.attivo {
+    background-color: var(--mb-primario);
+    border-color: var(--mb-primario);
+    color: #FFFFFF;
+}
+
+/* =======================================================================
+   CARD PRODOTTO
+   ======================================================================= */
+.mb-card {
+    background-color: var(--mb-card);
+    border: 1px solid var(--mb-bordo);
+    border-radius: 1rem;                  /* angoli arrotondati */
+    box-shadow: 0 2px 8px rgba(43, 45, 66, .06); /* ombra leggera */
+    transition: transform .15s ease, box-shadow .15s ease;
+    overflow: hidden;
+}
+.mb-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(43, 45, 66, .12);
+}
+
+/* Contenitore immagine: altezza fissa uguale per tutte le card */
+.mb-img-box {
+    position: relative;
+    height: 200px;
+    background-color: var(--mb-sfondo);
+    overflow: hidden;
+}
+/* Immagine prodotto: riempie il contenitore in modo ordinato */
+.mb-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+/* Segnaposto "foto prodotto": La classe .mb-img-vuota viene aggiunta dall'onerror. */
+.mb-img-vuota::after {
+    content: "foto prodotto";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    font-size: .85rem;
+    color: #9a9384;
+    background-color: var(--mb-sfondo);
+}
+
+/* Badge di categoria sopra la card (es. "Bio", "Cani") */
+.mb-badge {
+    background-color: var(--mb-primario-chiaro);
+    color: #FFFFFF;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    border-radius: 50rem;
+}
+/* Variante badge "Bio" */
+.mb-badge-bio {
+    background-color: var(--mb-primario);
+}
+/* Badge sconto (arancio) */
+.mb-badge-sconto {
+    background-color: var(--mb-cta);
+    color: #FFFFFF;
+}
+
+/* Nome prodotto dentro la card.
+   line-clamp taglia il testo a max 2 righe con i puntini (...). */
+.mb-card .mb-nome {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--mb-testo);
+    font-size: 1.05rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Marca prodotto (testo secondario) */
+.mb-card .mb-marca {
+    color: #6c757d;
+    font-size: .85rem;
+}
+
+/* Descrizione breve.
+   line-clamp taglia il testo a max 3 righe con i puntini (...),
+   cosi' tutte le card restano della stessa altezza. */
+.mb-card .mb-descrizione {
+    color: var(--mb-testo);
+    font-size: .9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Prezzo ben visibile */
+.mb-prezzo {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--mb-primario);
+}
+/* Prezzo vecchio barrato quando c'è lo sconto */
+.mb-prezzo-vecchio {
+    color: #6c757d;
+    text-decoration: line-through;
+    font-size: .95rem;
+}
+/* Prezzo scontato in arancio */
+.mb-prezzo-sconto {
+    color: var(--mb-cta);
+}
+
+/* =======================================================================
+   FOOTER
+   ======================================================================= */
+.mb-footer {
+    background-color: var(--mb-primario);
+    color: #FFFFFF;
+}
+.mb-footer a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.mb-footer a:hover {
+    color: var(--mb-primario-chiaro);
+}
+.mb-footer .mb-footer-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+/* =======================================================================
+   STATO VUOTO / PAGINE DI ERRORE
+   Componente riutilizzabile (EmptyState.jsp): card bianca centrata con
+   illustrazione o icona, titolo, testo e bottone opzionale.
+   Usato per: 404, 500, carrello vuoto, nessun ordine, prodotto non
+   disponibile, nessun risultato di ricerca...
+   ======================================================================= */
+
+/* Sezione che contiene la card e le zampette di sfondo */
+.mb-empty {
+    position: relative;
+    overflow: hidden;
+    padding: 3rem 1rem;
+}
+
+/* Card bianca centrata */
+.mb-empty-card {
+    position: relative;
+    z-index: 1;                 /* sopra le zampette */
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--mb-card);
+    border: 1px solid var(--mb-bordo);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 30px rgba(43, 45, 66, .08);
+    padding: 2.5rem 2rem;
+    text-align: center;
+}
+
+/* Titolo dello stato vuoto (Nunito, verde, maiuscolo) */
+.mb-empty-card .mb-empty-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--mb-testo);
+    letter-spacing: .5px;
+    margin-bottom: 1rem;
+}
+
+/* Testo descrittivo */
+.mb-empty-card .mb-empty-text {
+    color: #6c757d;
+    max-width: 480px;
+    margin: 0 auto 1.5rem;
+}
+
+/* Illustrazione */
+.mb-empty-card .mb-empty-img {
+    max-width: 320px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto 1.75rem;
+    display: block;
+}
+
+/* Icona emoji (usata quando non c'e' un'immagine) */
+.mb-empty-card .mb-empty-icon {
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: 1.25rem;
+}
+
+/* Zampette decorative sullo sfondo (usano l'emoji 🐾).
+   position:absolute + opacita' bassa: pura decorazione. */
+.mb-paw {
+    position: absolute;
+    font-size: 2rem;
+    opacity: .12;
+    user-select: none;
+    z-index: 0;
+}
+.mb-paw-1 { top: 8%;  left: 6%;  transform: rotate(-20deg); }
+.mb-paw-2 { top: 20%; right: 8%; transform: rotate(15deg); font-size: 1.4rem; }
+.mb-paw-3 { bottom: 12%; left: 12%; transform: rotate(10deg); font-size: 1.6rem; }
+.mb-paw-4 { bottom: 8%;  right: 10%; transform: rotate(-15deg); }

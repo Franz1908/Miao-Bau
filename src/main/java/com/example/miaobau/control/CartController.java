@@ -51,7 +51,11 @@ public class CartController extends HttpServlet {
 
         }
 
-        response.sendRedirect(request.getContextPath() + "/cart");
+        String back = request.getHeader("Referer");
+        if (back == null) {
+            back = request.getContextPath() + "/catalog";
+        }
+        response.sendRedirect(back);
     }
 
     @Override

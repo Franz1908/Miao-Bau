@@ -60,4 +60,14 @@ public class CartBean {
         return total;
     }
 
+    public int getTotalQuantity() {
+        int quantity = 0;
+
+        for (CartItem item : cart.values()) {
+            quantity = quantity + item.getQuantity();
+        }
+
+        return quantity;
+    }
+
 }
