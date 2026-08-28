@@ -703,6 +703,7 @@ h1, h2, h3, h4, h5, h6,
     }
 }
 
+
 /* =======================================================================
    CHECKOUT (OrderSummary.jsp)
    ======================================================================= */
@@ -805,4 +806,49 @@ h1, h2, h3, h4, h5, h6,
     font-family: 'Nunito', sans-serif;
     font-weight: 800;
     color: var(--mb-primario);
+}
+
+
+/* =======================================================================
+   STORICO ORDINI (Orders.jsp)
+   ======================================================================= */
+/* Riga-card di un ordine nella lista */
+.mb-order-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+    background: var(--mb-card);
+    border: 1px solid var(--mb-bordo);
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(43, 45, 66, .06);
+    padding: 1.25rem 1.5rem;
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+.mb-order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(43, 45, 66, .10);
+}
+/* Coppia etichetta + valore dentro la card ordine */
+.mb-order-field {
+    display: flex;
+    flex-direction: column;
+}
+.mb-order-flabel {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: .15rem;
+}
+.mb-order-fvalue {
+    font-weight: 600;
+    color: var(--mb-testo);
+}
+.mb-order-total-val {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    color: var(--mb-primario);
+    font-size: 1.15rem;
 }
