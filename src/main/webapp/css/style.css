@@ -419,6 +419,7 @@ h1, h2, h3, h4, h5, h6,
     top: 1rem;
 }
 
+
 /* =======================================================================
    AUTENTICAZIONE (Login / Register)
    Card centrata su sfondo panna con zampette decorative (.mb-paw).
@@ -700,4 +701,108 @@ h1, h2, h3, h4, h5, h6,
     .mb-auth-card {
         padding: 2rem 1.25rem;
     }
+}
+
+/* =======================================================================
+   CHECKOUT (OrderSummary.jsp)
+   ======================================================================= */
+/* Opzione indirizzo: etichetta-card selezionabile che avvolge un radio */
+.mb-addr-option {
+    display: flex;
+    gap: .65rem;
+    align-items: flex-start;
+    margin: 0;
+    background: #fff;
+    border: 1px solid var(--mb-bordo);
+    border-radius: .75rem;
+    padding: .85rem 1rem;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+.mb-addr-option:hover {
+    border-color: var(--mb-primario-chiaro);
+}
+/* Evidenzia la card quando il radio interno e' selezionato */
+.mb-addr-option:has(input:checked) {
+    border-color: var(--mb-primario);
+    background: #F1F7F3;
+    box-shadow: inset 0 0 0 1px var(--mb-primario);
+}
+.mb-addr-option input[type="radio"] {
+    margin-top: .2rem;
+    accent-color: var(--mb-primario);
+    flex-shrink: 0;
+}
+.mb-addr-main {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--mb-testo);
+}
+.mb-addr-sub {
+    color: #6c757d;
+    font-size: .9rem;
+}
+
+/* Blocco "nuovo indirizzo" (form annidato) */
+.mb-newaddr {
+    border: 1px dashed var(--mb-bordo);
+    border-radius: .85rem;
+    padding: 1.1rem;
+    background: var(--mb-sfondo);
+}
+
+/* Riga prodotto nel riepilogo ordine (card .mb-summary) */
+.mb-order-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: .65rem 0;
+    border-bottom: 1px solid var(--mb-bordo);
+}
+.mb-order-line:last-of-type {
+    border-bottom: none;
+}
+.mb-order-name {
+    font-weight: 600;
+    color: var(--mb-testo);
+}
+.mb-order-meta {
+    color: #6c757d;
+    font-size: .85rem;
+}
+.mb-order-price {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--mb-primario);
+    white-space: nowrap;
+}
+
+/* =======================================================================
+   CONFERMA ORDINE (Confirmation.jsp)
+   ======================================================================= */
+/* Cerchio verde con spunta */
+.mb-success-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: rgba(82, 183, 136, .15);
+    color: var(--mb-primario);
+    font-size: 2.75rem;
+    line-height: 1;
+    margin: 0 auto 1.25rem;
+}
+/* Pillola con il numero d'ordine */
+.mb-order-badge {
+    display: inline-block;
+    background: var(--mb-sfondo);
+    border: 1px solid var(--mb-bordo);
+    border-radius: 50rem;
+    padding: .4rem 1.1rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    color: var(--mb-primario);
 }
