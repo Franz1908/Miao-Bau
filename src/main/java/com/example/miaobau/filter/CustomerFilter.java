@@ -18,6 +18,8 @@ public class CustomerFilter implements Filter {
         CustomerBean customerBean = (CustomerBean) httpRequest.getSession().getAttribute("customer");
 
         if (customerBean == null) {
+            String destination = httpRequest.getRequestURI();
+            httpRequest.getSession().setAttribute("redirectAfterLogin", destination);
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
             return;
         }

@@ -28,8 +28,14 @@ public class LoginController extends HttpServlet {
             if(customerBean != null && PasswordUtil.verifyPassword(password, customerBean.getPasswordHash())){
                 HttpSession session = request.getSession();
                 customerBean.setPasswordHash(null);
+                String redirectAfterLogin = (String) session.getAttribute("redirectAfterLogin");
                 session.setAttribute("customer", customerBean);
-                response.sendRedirect(request.getContextPath() + "/account");
+                if (redirectAfterLogin == null) {
+                    response.sendRedirect(request.getContextPath() + "/account");
+                    return;
+                }
+                session.removeAttribute("redirectAfterLogin");
+                response.sendRedirect(redirectAfterLogin);
             }
             else{
                 request.setAttribute("loginError", "Email o password errati");
