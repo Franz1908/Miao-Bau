@@ -10,8 +10,8 @@
     List<SpeciesBean>  species    = (List<SpeciesBean>)  application.getAttribute("species");
     CustomerBean       customerBean = (CustomerBean) session.getAttribute("customer");
     // Numero di articoli nel carrello per il badge (0 se non impostato)
-    CartBean cart = (CartBean) session.getAttribute("cart");
-    int cartCount = (cart != null) ? cart.getTotalQuantity() : 0;
+    CartBean navCart = (CartBean) session.getAttribute("cart");
+    int cartCount = (navCart != null) ? navCart.getTotalQuantity() : 0;
 %>
 <nav class="navbar navbar-expand-lg mb-navbar shadow-sm">
     <div class="container">

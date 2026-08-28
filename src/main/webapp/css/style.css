@@ -1,7 +1,9 @@
 /* 1) Import dei Google Fonts (Nunito per titoli/brand, Open Sans per il testo) */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Open+Sans:wght@400;600;700&display=swap');
 
-/* 2) Variabili CSS con la palette del brand.*/
+/* 2) Variabili CSS con la palette del brand.
+   Sono raccolte qui in un unico punto: cambia un colore qui e si aggiorna
+   in tutta la pagina. */
 :root {
     --mb-primario:        #2D6A4F; /* Verde bosco/salvia  - navbar, titoli */
     --mb-primario-chiaro: #52B788; /* Verde salvia chiaro - hover, accenti */
@@ -18,6 +20,17 @@ body {
     background-color: var(--mb-sfondo);
     color: var(--mb-testo);
     font-family: 'Open Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+/* Il contenuto centrale spinge il footer verso il basso */
+body > main {
+    flex: 1 0 auto;
+}
+/* Il footer non si comprime */
+.mb-footer {
+    flex-shrink: 0;
 }
 
 /* Titoli e nome del brand usano Nunito */
@@ -154,7 +167,8 @@ h1, h2, h3, h4, h5, h6,
     object-fit: cover;
     display: block;
 }
-/* Segnaposto "foto prodotto": La classe .mb-img-vuota viene aggiunta dall'onerror. */
+/* Segnaposto "foto prodotto": mostrato via CSS quando l'immagine
+   manca o non carica. La classe .mb-img-vuota viene aggiunta dall'onerror. */
 .mb-img-vuota::after {
     content: "foto prodotto";
     position: absolute;
@@ -330,3 +344,77 @@ h1, h2, h3, h4, h5, h6,
 .mb-paw-2 { top: 20%; right: 8%; transform: rotate(15deg); font-size: 1.4rem; }
 .mb-paw-3 { bottom: 12%; left: 12%; transform: rotate(10deg); font-size: 1.6rem; }
 .mb-paw-4 { bottom: 8%;  right: 10%; transform: rotate(-15deg); }
+
+/* =======================================================================
+   CARRELLO
+   ======================================================================= */
+
+/* Riga prodotto nel carrello (card bianca) */
+.mb-cart-row {
+    background: var(--mb-card);
+    border: 1px solid var(--mb-bordo);
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(43, 45, 66, .06);
+    padding: 1rem;
+}
+
+/* Immagine piccola del prodotto nel carrello */
+.mb-cart-img {
+    width: 90px;
+    height: 90px;
+    border-radius: .6rem;
+    flex-shrink: 0;
+}
+
+/* Selettore quantita' (- valore +) */
+.mb-qty {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--mb-bordo);
+    border-radius: 50rem;
+    overflow: hidden;
+}
+.mb-qty button {
+    border: none;
+    background: #fff;
+    color: var(--mb-primario);
+    font-weight: 700;
+    width: 34px;
+    height: 34px;
+    line-height: 1;
+    cursor: pointer;
+}
+.mb-qty button:hover {
+    background: var(--mb-sfondo);
+}
+.mb-qty .mb-qty-val {
+    min-width: 34px;
+    text-align: center;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Bottone "rimuovi" testuale */
+.mb-remove {
+    border: none;
+    background: none;
+    color: #6c757d;
+    font-size: .85rem;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+}
+.mb-remove:hover {
+    color: var(--mb-cta);
+}
+
+/* Card riepilogo ordine */
+.mb-summary {
+    background: var(--mb-card);
+    border: 1px solid var(--mb-bordo);
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(43, 45, 66, .06);
+    padding: 1.5rem;
+    position: sticky;
+    top: 1rem;
+}
