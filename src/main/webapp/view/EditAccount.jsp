@@ -12,7 +12,7 @@
     <h1>Modifica i tuoi dati</h1>
 
     <%
-        List<String> errors = (List<String>) request.getAttribute("errorMessage");
+        List<String> errors = (List<String>) request.getAttribute("errors");
         if (errors != null) {
             for (String error : errors) {
     %>
