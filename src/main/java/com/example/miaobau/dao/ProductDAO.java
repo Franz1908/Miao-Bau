@@ -49,13 +49,36 @@ public class ProductDAO {
         return product;
     }
 
-    public List<ProductBean> doRetriveDiscountedProduct() throws SQLException{
+    public List<ProductBean> doRetriveDiscountedProducts() throws SQLException{
         List<ProductBean> products = new ArrayList<>();
-        String query = "SELECT * FROM product WHERE on_sale = true";
+        String query = "SELECT * FROM product WHERE on_sale = true AND is_deleted = FALSE";
 
         try (Connection connection = DBConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(query);
             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                products.add(mapRow(rs));
+            }
+
+        }
+
+        return products;
+    }
+
+    public List<ProductBean> doRetrivePopularProducts() throws SQLException {
+        List<ProductBean> products = new ArrayList<>();
+        String query =  "SELECT p.* " +
+                        "FROM product p " +
+                        "JOIN order_item oi ON oi.product_id = p.product_id " +
+                        "WHERE p.is_deleted = FALSE " +
+                        "GROUP BY p.product_id " +
+                        "ORDER BY SUM(oi.quantity) DESC " +
+                        "LIMIT 10;";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 products.add(mapRow(rs));
