@@ -1,48 +1,76 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<html>
+<%
+    List<String> errors = (List<String>) request.getAttribute("errors");
+%>
+<!DOCTYPE html>
+<html lang="it">
 <head>
-    <title>Aggiungi indirizzo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aggiungi indirizzo &mdash; Miao &amp; Bau</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-    <h1>Aggiungi un indirizzo</h1>
 
-    <%
-        List<String> errors = (List<String>) request.getAttribute("errors");
-        if (errors != null) {
-            for (String error : errors) {
-    %>
-        <p><%= error %></p>
-    <%
-            }
-        }
-    %>
+<%@ include file="Navbar.jsp" %>
 
-    <form method="post" action="${pageContext.request.contextPath}/secure/address/new">
+<main class="container my-4">
+    <a href="${pageContext.request.contextPath}/account" class="text-decoration-none d-inline-block mb-3">&larr; Torna all'account</a>
 
-        <label for="street">Via</label>
-        <input type="text" name="street" id="street" required>
-        <br>
+    <div class="mb-auth-card">
+        <div class="mb-auth-head">
+            <span class="mb-auth-emoji">&#128205;</span>
+            <h1 class="mb-auth-title h3">Aggiungi un indirizzo</h1>
+            <p class="mb-auth-sub">Salva un nuovo indirizzo di spedizione.</p>
+        </div>
 
-        <label for="civicNumber">Numero civico</label>
-        <input type="text" name="civicNumber" id="civicNumber" required>
-        <br>
+        <% if (errors != null && !errors.isEmpty()) { %>
+        <div class="mb-alert mb-alert-error">
+            <ul>
+                <% for (String error : errors) { %>
+                <li><%= error %></li>
+                <% } %>
+            </ul>
+        </div>
+        <% } %>
 
-        <label for="postalCode">CAP</label>
-        <input type="text" name="postalCode" id="postalCode" required>
-        <br>
+        <form class="mb-form" method="post" action="${pageContext.request.contextPath}/secure/address/new">
+            <div class="row g-3">
+                <div class="col-12 col-md-8">
+                    <label for="street" class="form-label">Via</label>
+                    <input type="text" class="form-control" name="street" id="street" required>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label for="civicNumber" class="form-label">Numero civico</label>
+                    <input type="text" class="form-control" name="civicNumber" id="civicNumber" required>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label for="postalCode" class="form-label">CAP</label>
+                    <input type="text" class="form-control" name="postalCode" id="postalCode"
+                           placeholder="84121" pattern="\d{5}" required>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label for="city" class="form-label">Citt&agrave;</label>
+                    <input type="text" class="form-control" name="city" id="city" required>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label for="country" class="form-label">Paese</label>
+                    <input type="text" class="form-control" name="country" id="country" placeholder="Italia" required>
+                </div>
+            </div>
 
-        <label for="city">Città</label>
-        <input type="text" name="city" id="city" required>
-        <br>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <button type="submit" class="btn btn-mb-cta px-4 py-2">Aggiungi indirizzo</button>
+                <a href="${pageContext.request.contextPath}/account" class="btn btn-mb-primario px-4 py-2">Annulla</a>
+            </div>
+        </form>
+    </div>
+</main>
 
-        <label for="country">Paese</label>
-        <input type="text" name="country" id="country" required>
-        <br>
+<%@ include file="Footer.jsp" %>
 
-        <button type="submit">Aggiungi</button>
-    </form>
-
-    <a href="${pageContext.request.contextPath}/account">Torna all'account</a>
+<script src="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
