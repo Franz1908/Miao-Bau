@@ -97,7 +97,7 @@ public class ProductUpdateController extends HttpServlet {
 
         if (!errors.isEmpty()) {
             request.setAttribute("errorMessage", errors);
-            request.getRequestDispatcher("/view/admin/Insert.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/admin/Update.jsp").forward(request, response);
             return;
         }
 
@@ -109,7 +109,7 @@ public class ProductUpdateController extends HttpServlet {
 
         if (!errors.isEmpty()) {
             request.setAttribute("errorMessage", errors);
-            request.getRequestDispatcher("/view/admin/Insert.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/admin/Update.jsp").forward(request, response);
             return;
         }
 
