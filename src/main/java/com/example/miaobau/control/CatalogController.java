@@ -14,41 +14,51 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/catalog")
 public class CatalogController extends HttpServlet {
+
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        ProductDAO productDAO = new ProductDAO();
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+
         Integer speciesID = ParseUtil.parseIntOrNull(request.getParameter("speciesId"));
         Integer categoryID = ParseUtil.parseIntOrNull(request.getParameter("categoryId"));
+        String filter = request.getParameter("filter");
+        ProductDAO productDAO = new ProductDAO();
+        List<ProductBean> products;
+        String title;
 
         try {
-            List<ProductBean> products;
-            String title;
+            if (filter != null && filter.equals("sale")) {
+                products = productDAO.doRetriveDiscountedProducts();
+                title = "Prodotti in sconto";
 
-            if (speciesID == null) {
-                // Nessun filtro valido di specie: tutto il catalogo
+            } else if (filter != null && filter.equals("popular")) {
+                products = productDAO.doRetrivePopularProducts();
+                title = "Prodotti popolari";
+
+            } else if (speciesID == null) {
                 products = productDAO.doRetrieveAll();
                 title = "Catalogo prodotti";
+
             } else if (categoryID == null) {
-                // Solo specie
                 products = productDAO.doRetrieveBySpecies(speciesID);
                 title = "Prodotti per " + findSpeciesName(speciesID);
+
             } else {
-                // Specie + categoria
                 products = productDAO.doRetrieveBySpeciesAndCategory(speciesID, categoryID);
                 title = "Prodotti per " + findSpeciesName(speciesID)
                         + ": " + findCategoryName(categoryID);
             }
-
-            request.setAttribute("products", products);
-            request.setAttribute("title", title);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
 
+        request.setAttribute("products", products);
+        request.setAttribute("title", title);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/Catalog.jsp");
         dispatcher.forward(request, response);
     }

@@ -16,7 +16,7 @@
 <nav class="navbar navbar-expand-lg mb-navbar shadow-sm">
     <div class="container">
         <!-- Logo / nome del brand -->
-        <a class="navbar-brand mb-brand" href="${pageContext.request.contextPath}/catalog">🐾 Miao &amp; Bau</a>
+        <a class="navbar-brand mb-brand" href="${pageContext.request.contextPath}/home">🐾 Miao &amp; Bau</a>
         <!-- Bottone hamburger per il menu su mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#menuPrincipale" aria-controls="menuPrincipale"
@@ -44,6 +44,12 @@
                         </ul>
                     </li>
                 <% } %>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold" style="color: var(--mb-cta);"
+                       href="${pageContext.request.contextPath}/catalog?filter=sale">
+                        &#127991; Offerte
+                    </a>
+                </li>
             </ul>
             <!-- Barra di ricerca semplice -->
             <form class="d-flex me-lg-3 my-2 my-lg-0" role="search"
