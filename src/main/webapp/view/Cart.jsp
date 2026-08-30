@@ -65,7 +65,7 @@
                     <!-- Immagine prodotto (con segnaposto CSS se manca) -->
                     <div class="mb-img-box mb-cart-img<%= img.isEmpty() ? " mb-img-vuota" : "" %>">
                         <% if (!img.isEmpty()) { %>
-                        <img src="${pageContext.request.contextPath}/images/<%= img %>"
+                        <img src="${pageContext.request.contextPath}/img/products/<%= img %>"
                              class="mb-card-img"
                              alt="<%= item.getProduct().getName() %>"
                              onerror="this.onerror=null; this.style.display='none'; this.parentNode.classList.add('mb-img-vuota');">

@@ -59,7 +59,7 @@
                 <div class="mb-img-box<%= img.isEmpty() ? " mb-img-vuota" : "" %>"
                      style="height:360px; border-radius:.75rem;">
                     <% if (!img.isEmpty()) { %>
-                    <img src="<%= ctx %>/images/<%= img %>"
+                    <img src="<%= ctx %>/img/products/<%= img %>"
                          class="mb-card-img"
                          alt="<%= product.getName() %>"
                          onerror="this.onerror=null; this.style.display='none'; this.parentNode.classList.add('mb-img-vuota');">

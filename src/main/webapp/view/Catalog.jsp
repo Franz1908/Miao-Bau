@@ -82,7 +82,7 @@
                      nasconde l'<img> e attiva il segnaposto CSS -->
                 <div class="mb-img-box<%= img.isEmpty() ? " mb-img-vuota" : "" %>">
                     <% if (!img.isEmpty()) { %>
-                    <img src="${pageContext.request.contextPath}/images/<%= img %>"
+                    <img src="${pageContext.request.contextPath}/img/products/<%= img %>"
                          class="mb-card-img"
                          alt="<%= product.getName() %>"
                          onerror="this.onerror=null; this.style.display='none'; this.parentNode.classList.add('mb-img-vuota');">
