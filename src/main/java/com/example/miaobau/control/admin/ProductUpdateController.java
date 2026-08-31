@@ -91,13 +91,18 @@ public class ProductUpdateController extends HttpServlet {
 
         // Peso opzionale: valido solo se, quando presente, è un numero positivo
         BigDecimal weight = ParseUtil.parseBigDecimalOrNull(weightStr);
-        if (weightStr != null && !weightStr.isBlank() && weight == null) {
-            errors.add("Il peso inserito non è valido");
+        if (weightStr != null && !weightStr.isBlank()) {
+            if (weight == null) {
+                errors.add("Il peso inserito non è valido");
+            } else if (weight.compareTo(BigDecimal.ZERO) <= 0) {
+                errors.add("Il peso deve essere maggiore di zero");
+            }
         }
 
         if (!errors.isEmpty()) {
-            request.setAttribute("errorMessage", errors);
-            request.getRequestDispatcher("/view/admin/Update.jsp").forward(request, response);
+            forwardWithErrors(request, response, buildProduct(productID, name, brand, description,
+                    categoryId, speciesId, price, vat, onSale, discountPercentage,
+                    image, weight, ingredients, size, color, material), errors);
             return;
         }
 
@@ -108,29 +113,16 @@ public class ProductUpdateController extends HttpServlet {
         validateLenght(ingredients, "Ingredienti", 2500, errors);
 
         if (!errors.isEmpty()) {
-            request.setAttribute("errorMessage", errors);
-            request.getRequestDispatcher("/view/admin/Update.jsp").forward(request, response);
+            forwardWithErrors(request, response, buildProduct(productID, name, brand, description,
+                    categoryId, speciesId, price, vat, onSale, discountPercentage,
+                    image, weight, ingredients, size, color, material), errors);
             return;
         }
 
         // Creazione e popolamento del ProductBean
-        ProductBean product = new ProductBean();
-        product.setProductID(productID);
-        product.setName(name);
-        product.setBrand(brand);
-        product.setDescription(description);
-        product.setCategoryID(categoryId);
-        product.setSpeciesID(speciesId);
-        product.setPrice(price);
-        product.setVat(vat);
-        product.setOnSale(onSale);
-        product.setDiscountPercentage(discountPercentage);
-        product.setImage(emptyToNull(image));
-        product.setWeight(weight);
-        product.setIngredients(emptyToNull(ingredients));
-        product.setSize(emptyToNull(size));
-        product.setColor(emptyToNull(color));
-        product.setMaterial(emptyToNull(material));
+        ProductBean product = buildProduct(productID, name, brand, description,
+                categoryId, speciesId, price, vat, onSale, discountPercentage,
+                image, weight, ingredients, size, color, material);
 
         try {
             new ProductDAO().doUpdate(product);
@@ -172,6 +164,36 @@ public class ProductUpdateController extends HttpServlet {
         if (value != null && value.length() > maxLength) {
             errors.add(fieldName + " è troppo lungo (massimo " + maxLength + " caratteri)");
         }
+    }
+
+    // costruisce il ProductBean dai valori inviati (per salvataggio o per ripopolare il form dopo un errore)
+    private ProductBean buildProduct(int productID, String name, String brand, String description, Integer categoryId, Integer speciesId, BigDecimal price, BigDecimal vat,
+                                     boolean onSale, BigDecimal discountPercentage, String image, BigDecimal weight, String ingredients, String size, String color, String material) {
+        ProductBean product = new ProductBean();
+        product.setProductID(productID);
+        product.setName(name);
+        product.setBrand(brand);
+        product.setDescription(description);
+        if (categoryId != null) product.setCategoryID(categoryId);
+        if (speciesId != null) product.setSpeciesID(speciesId);
+        product.setPrice(price);
+        product.setVat(vat);
+        product.setOnSale(onSale);
+        product.setDiscountPercentage(discountPercentage);
+        product.setImage(emptyToNull(image));
+        product.setWeight(weight);
+        product.setIngredients(emptyToNull(ingredients));
+        product.setSize(emptyToNull(size));
+        product.setColor(emptyToNull(color));
+        product.setMaterial(emptyToNull(material));
+        return product;
+    }
+
+    // in caso di errori, rimanda al form di modifica con i dati inseriti e l'elenco errori
+    private void forwardWithErrors(HttpServletRequest request, HttpServletResponse response,ProductBean product, List<String> errors) throws ServletException, IOException {
+        request.setAttribute("product", product);
+        request.setAttribute("errorMessage", errors);
+        request.getRequestDispatcher("/view/admin/Update.jsp").forward(request, response);
     }
 
 }
