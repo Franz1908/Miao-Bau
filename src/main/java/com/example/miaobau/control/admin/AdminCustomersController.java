@@ -19,7 +19,7 @@ public class AdminCustomersController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<CustomerBean> customers = new CustomerDAO().doRetriveAll();
+            List<CustomerBean> customers = new CustomerDAO().doRetrieveAll();
             request.setAttribute("customers", customers);
         } catch (SQLException e) {
             throw new RuntimeException(e);

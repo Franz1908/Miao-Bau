@@ -54,7 +54,7 @@ public class CustomerDAO {
         return customerBean;
     }
 
-    public List<CustomerBean> doRetriveAll() throws SQLException {
+    public List<CustomerBean> doRetrieveAll() throws SQLException {
         List<CustomerBean> customers = new ArrayList<>();
         String query = "SELECT customer_id, first_name, last_name, email, birth_date, phone FROM customer";
 
@@ -65,7 +65,7 @@ public class CustomerDAO {
             while (rs.next()) {
                 CustomerBean customer = new CustomerBean();
                 customer.setCustomerID(rs.getInt("customer_id"));
-                customer.setFirstName(rs.getString("last_name"));
+                customer.setFirstName(rs.getString("first_name"));
                 customer.setLastName(rs.getString("last_name"));
                 customer.setEmail(rs.getString("email"));
                 customer.setPhone(rs.getString("phone"));
