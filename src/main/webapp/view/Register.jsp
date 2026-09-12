@@ -72,7 +72,7 @@
                     <div class="col-12">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" name="password" id="password" minlength="8"
-                               maxlength="16" pattern="(?=.*[^a-zA-Z0-9])" required>
+                               maxlength="16" pattern="(?=.*[0-9])(?=.*[^a-zA-Z0-9]).*" required>
                         <div class="form-text">
                             Minimo 8 caratteri (max 16), con almeno un numero e un carattere speciale.
                         </div>
@@ -105,6 +105,7 @@
 
 <!-- Bootstrap JS (locale) per navbar responsive e menu a tendina -->
 <script src="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/validation-common.js"></script>
 <script src="${pageContext.request.contextPath}/js/register.js"></script>
 </body>
 </html>

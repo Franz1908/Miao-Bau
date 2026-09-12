@@ -35,11 +35,15 @@
                 <div class="mb-alert mb-alert-error"><%= errorMessage %></div>
             <% } %>
 
-            <form class="mb-form" method="post" action="${pageContext.request.contextPath}/login">
+            <div id="clientErrors" class="mb-alert mb-alert-error" style="display: none">
+                <ul id="clientErrorsList"></ul>
+            </div>
+
+            <form class="mb-form" method="post" id="loginForm" action="${pageContext.request.contextPath}/login">
                 <div class="mb-3">
                     <label for="email" class="form-label">E-mail</label>
                     <input type="email" class="form-control" name="email" id="email"
-                           placeholder="nome@esempio.it" required>
+                           placeholder="nome@esempio.it" pattern="^[\w.+-]+@[\w-]+\.[\w.-]+$" required>
                 </div>
 
                 <div class="mb-3">
@@ -64,5 +68,7 @@
 
 <!-- Bootstrap JS (locale) per navbar responsive e menu a tendina -->
 <script src="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/validation-common.js"></script>
+<script src="${pageContext.request.contextPath}/js/login.js"></script>
 </body>
 </html>

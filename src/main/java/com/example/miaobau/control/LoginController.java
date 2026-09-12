@@ -19,9 +19,16 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email").trim();
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
         CustomerDAO customerDAO = new CustomerDAO();
+
+        if (email == null || email.isBlank() || password == null || password.isBlank()) {
+            request.setAttribute("loginError", "Email o password errati");
+            request.getRequestDispatcher("/view/Login.jsp").forward(request, response);
+            return;
+        }
+        email = email.trim();
 
         try {
             CustomerBean customerBean = customerDAO.doRetriveByEmail(email);
