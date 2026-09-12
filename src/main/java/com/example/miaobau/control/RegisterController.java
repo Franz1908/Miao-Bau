@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +81,18 @@ public class RegisterController extends HttpServlet {
             errors.add("La password deve contenere almeno un carattere speciale");
         }
 
+        // Controllo data di nascita opzionale
+        if (birthDateStr != null && !birthDateStr.isBlank()) {
+            try {
+                birthDate = LocalDate.parse(birthDateStr);
+                if (birthDate.isAfter(LocalDate.now())) {
+                    errors.add("Non puoi inserire una data di nascita futura");
+                }
+            } catch (DateTimeParseException e) {
+                errors.add("Data di nascita non valida");
+            }
+        }
+
         /*
          * Se ci sono errori nei controlli di formato,
          * non procedo con il controllo sul database.
@@ -96,7 +109,7 @@ public class RegisterController extends HttpServlet {
                 errors.add("E-mail già registrata");
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new ServletException(e);
         }
 
         // Se l'email è già registrata, fermo la registrazione
@@ -111,12 +124,7 @@ public class RegisterController extends HttpServlet {
         customerBean.setLastName(lastName);
         customerBean.setEmail(email);
         customerBean.setPasswordHash(PasswordUtil.hashPassword(password));
-
-        // Controllo data di nascita opzionale
-        if (birthDateStr != null && !birthDateStr.isEmpty()) {
-            birthDate = LocalDate.parse(birthDateStr);
-            customerBean.setBirthDate(birthDate);
-        }
+        customerBean.setBirthDate(birthDate);
 
         // Controllo telefono opzionale
         if (telephone != null && !telephone.isBlank()) {
@@ -138,6 +146,7 @@ public class RegisterController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute("customer") != null) {
             response.sendRedirect(request.getContextPath() + "/account");
+            return;
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/Register.jsp");
         dispatcher.forward(request, response);
