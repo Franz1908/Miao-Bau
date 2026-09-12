@@ -1,3 +1,8 @@
+// register.js — validazione client del form di registrazione.
+
+// --- Riferimenti agli elementi del DOM (presi una volta sola) ---
+// @type serve solo all'editor per l'autocompletamento su .value/.validity
+
 /** @type {HTMLInputElement} **/
 const firstName = document.getElementById("firstName");
 /** @type {HTMLInputElement} **/
@@ -12,121 +17,166 @@ const birthDate = document.getElementById("birthDate");
 const telephone = document.getElementById("telephone");
 /** @type {HTMLFormElement} **/
 const registerForm = document.getElementById("registerForm");
-const firstNameError = document.getElementById("firstNameError");
-const lastNameError = document.getElementById("lastNameError");
-const emailError = document.getElementById("emailError");
-const passwordError = document.getElementById("passwordError");
-const birthDateError = document.getElementById("birthDateError");
+
+// Contenitore unico degli errori client + la sua lista <ul>,
+const clientErrors = document.getElementById("clientErrors");
+const clientErrorsList = document.getElementById("clientErrorsList");
+
+
+// --- Una funzione di validazione per campo ---
+// Ognuna valida il proprio campo, aggiorna la lista errori
+// e restituisce true (valido) / false (non valido) per il submit.
 
 function firstNameValidation() {
-    if (firstName.checkValidity()) {
-        firstNameError.innerHTML = "";
-        firstNameError.classList.remove("text-danger");
-        return true;
-    }
+    // checkValidity() applica le regole HTML del campo (qui: required)
+    const isValid = firstName.checkValidity();
 
-    firstNameError.innerHTML = "Inserire un nome";
-    firstNameError.classList.add("text-danger");
-    return false;
+    // se valido rimuove il messaggio, se non valido lo aggiunge
+    setError("Inserire un nome", isValid);
+
+    return isValid;
 }
+
 
 function lastNameValidation() {
-    if (lastName.checkValidity()) {
-        lastNameError.innerHTML = "";
-        lastNameError.classList.remove("text-danger");
-        return true;
-    }
+    const isValid = lastName.checkValidity();
 
-    lastNameError.innerHTML = "Inserire un cognome";
-    lastNameError.classList.add("text-danger");
-    return false;
+    setError("Inserire un cognome", isValid);
+
+    return isValid;
 }
+
 
 function emailValidation() {
-    if (email.checkValidity()) {
-        emailError.innerHTML = "";
-        emailError.classList.remove("text-danger");
-        return true;
-    }
+    // pulisco sempre tutti i messaggi email (isValid=true = rimuovi)
+    setError("Inserire un'email", true);
+    setError("Inserire un'email valida", true);
 
-    if (email.validity.valueMissing) {
-        emailError.innerHTML = "Inserire un'email";
-        emailError.classList.add("text-danger");
-    } else if (email.validity.patternMismatch || email.validity.typeMismatch) {
-        emailError.innerHTML = "Inserire un'email valida";
-        emailError.classList.add("text-danger");
-    }
+    // se rispetta tutte le regole HTML è valida: esco subito
+    if (email.checkValidity()) return true;
+
+    // altrimenti capisco perché è invalida e mostro il messaggio giusto
+    if (email.validity.valueMissing)                                  // campo vuoto (required)
+        setError("Inserire un'email", false);
+    else if (email.validity.patternMismatch || email.validity.typeMismatch) // formato errato
+        setError("Inserire un'email valida", false);
+
     return false;
 }
+
 
 function passwordValidation() {
-    if (password.checkValidity()) {
-        passwordError.innerHTML = "";
-        passwordError.classList.remove("text-danger");
-        return true;
-    }
+    // pulisco sempre tutti i messaggi password prima di ricontrollare
+    setError("Inserire una password", true);
+    setError("La password deve contenere almeno un numero ed un carattere speciale", true);
+    setError("La password deve avere minimo 8 caratteri e massimo 16 caratteri", true);
 
-    if (password.validity.valueMissing) {
-        passwordError.innerHTML = "Inserire una password";
-        passwordError.classList.add("text-danger");
-    }
-    else if (password.validity.patternMismatch) {
-        passwordError.innerHTML = "La password deve contenere almeno un numero ed un carattere speciale";
-        passwordError.classList.add("text-danger");
-    }
-    else if (password.validity.tooShort || password.validity.tooLong) {
-        passwordError.innerHTML = "La password deve avere minimo 8 caratteri e massimo 16 caratteri";
-        passwordError.classList.add("text-danger");
-    }
+    if (password.checkValidity()) return true;
+
+    if (password.validity.valueMissing)                 // vuota (required)
+        setError("Inserire una password", false);
+    else if (password.validity.patternMismatch)         // non rispetta il pattern
+        setError("La password deve contenere almeno un numero ed un carattere speciale", false);
+    else if (password.validity.tooShort || password.validity.tooLong) // lunghezza fuori range
+        setError("La password deve avere minimo 8 caratteri e massimo 16 caratteri", false);
+
     return false;
 }
 
+
 function birthDateValidation() {
-    // 1. facoltativo: vuoto è valido
-    if (birthDate.value === "") {
-        birthDateError.innerHTML = "";
-        birthDateError.classList.remove("text-danger");
-        return true;
-    }
+    // pulisco sempre tutti i messaggi data
+    setError("Inserisci una data valida", true);
+    setError("Non puoi inserire una data futura", true);
 
-    // 2. c'è un valore: il browser lo considera una data valida?
+    // campo facoltativo: se vuoto è valido, non controllo altro
+    if (birthDate.value === "") return true;
+
+    // se compilato controllo se il browser lo riconosce come data ben formata
     if (!birthDate.checkValidity()) {
-        birthDateError.innerHTML = "Inserisci una data valida";
-        birthDateError.classList.add("text-danger");
+        setError("Inserisci una data valida", false);
         return false;
     }
 
-    // 3. è una data valida, ma non deve essere futura
-    const date = new Date(birthDate.value);
-    const today = new Date();
-
-    if (date > today) {
-        birthDateError.innerHTML = "Non puoi inserire una data futura";
-        birthDateError.classList.add("text-danger");
+    // data valida ma non deve essere futura
+    // new Date(valore) = data scelta --- new Date() = adesso
+    if (new Date(birthDate.value) > new Date()) {
+        setError("Non puoi inserire una data futura", false);
         return false;
     }
 
-    // 4. tutto ok
-    birthDateError.innerHTML = "";
-    birthDateError.classList.remove("text-danger");
     return true;
 }
 
+
+// --- Helper: aggiunge o rimuove un messaggio nella lista errori ---
+// message = testo dell'errore
+// isValid = true  -> campo a posto  -> RIMUOVO quel messaggio
+//           false -> campo errato   -> AGGIUNGO quel messaggio
+function setError(message, isValid) {
+
+    if (isValid) {
+        // cerco tra le voci <li> quella con questo testo e la tolgo
+        const errors = clientErrorsList.querySelectorAll("li");
+        errors.forEach(li => {
+            if (li.textContent === message) {   // identifico la voce dal suo testo
+                li.remove();                    // la rimuovo dalla lista
+            }
+        });
+
+    }
+    else {
+
+        // Evita di aggiungere lo stesso errore più volte
+        const errors = clientErrorsList.querySelectorAll("li");
+        const alreadyExists = Array.from(errors).some(li => {
+            return li.textContent === message;
+        });
+
+        if (!alreadyExists) {
+            const li = document.createElement("li"); // creo una nuova voce
+            li.textContent = message;                // ci metto il testo dell'errore
+            clientErrorsList.appendChild(li);        // la aggiungo alla lista
+        }
+    }
+
+    // Mostra/nasconde il contenitore degli errori
+    // (visibile solo se la lista ha almeno una voce)
+    clientErrors.style.display = clientErrorsList.children.length > 0 ? "" : "none";
+}
+
+
+// --- Aggancio agli eventi ---
+
+// blur = validazione "dal vivo": ogni campo si controlla appena l'utente lo lascia
 firstName.addEventListener("blur", firstNameValidation);
 lastName.addEventListener("blur", lastNameValidation);
 email.addEventListener("blur", emailValidation);
 password.addEventListener("blur", passwordValidation);
 birthDate.addEventListener("blur", birthDateValidation);
 
+
+// submit = controllo finale: rivalido TUTTI i campi, anche quelli
+// su cui l'utente non è mai passato (il loro blur non è mai scattato)
 registerForm.addEventListener("submit", function (evt) {
+
+    // chiamo tutte le funzioni PRIMA e salvo i risultati: così ognuna
+    // esegue e mostra il proprio errore (niente corto circuito dell'||)
     const okFirstName = firstNameValidation();
     const okLastName = lastNameValidation();
     const okEmail = emailValidation();
     const okPassword = passwordValidation();
     const okBirthDate = birthDateValidation();
 
-    if (!okFirstName || !okLastName || !okEmail || !okPassword || !okBirthDate) {
+    // se anche un solo campo è invalido, blocco l'invio;
+    // se sono tutti validi non chiamo preventDefault e il form parte
+    if (
+        !okFirstName ||
+        !okLastName ||
+        !okEmail ||
+        !okPassword ||
+        !okBirthDate
+    ) {
         evt.preventDefault();
     }
 });
-

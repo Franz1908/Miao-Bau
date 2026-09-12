@@ -46,24 +46,27 @@
                 </div>
             <% } %>
 
+            <!-- errori client (vuoto finché il JS non lo riempie) -->
+            <div id="clientErrors" class="mb-alert mb-alert-error" style="display:none;">
+                <ul id="clientErrorsList"></ul>
+            </div>
+
             <form class="mb-form" method="post" id="registerForm" action="${pageContext.request.contextPath}/register">
                 <div class="row g-3">
                     <div class="col-12 col-md-6">
                         <label for="firstName" class="form-label">Nome</label>
                         <input type="text" class="form-control" name="firstName" id="firstName" required>
-                        <span id="firstNameError"></span>
                     </div>
+
                     <div class="col-12 col-md-6">
                         <label for="lastName" class="form-label">Cognome</label>
                         <input type="text" class="form-control" name="lastName" id="lastName" required>
-                        <span id="lastNameError"></span>
                     </div>
 
                     <div class="col-12">
                         <label for="email" class="form-label">E-mail</label>
                         <input type="email" class="form-control" name="email" id="email"
                                placeholder="nome@esempio.it" pattern="^[\w.+-]+@[\w-]+\.[\w.-]+$" required>
-                        <span id="emailError"></span>
                     </div>
 
                     <div class="col-12">
@@ -73,13 +76,11 @@
                         <div class="form-text">
                             Minimo 8 caratteri (max 16), con almeno un numero e un carattere speciale.
                         </div>
-                        <span id="passwordError"></span>
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label for="birthDate" class="form-label">Data di nascita <span class="text-muted">(facoltativa)</span></label>
                         <input type="date" class="form-control" name="birthDate" id="birthDate">
-                        <span id="birthDateError"></span>
                     </div>
                     <div class="col-12 col-md-6">
                         <label for="telephone" class="form-label">Telefono <span class="text-muted">(facoltativo)</span></label>
