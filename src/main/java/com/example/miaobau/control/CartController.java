@@ -30,7 +30,7 @@ public class CartController extends HttpServlet {
             session.setAttribute("cart", cart);
         }
 
-        // "action" dice QUALE operazione fare: add / increase / decrease / remove / clear.
+        // "action" dice quale operazione fare: add / increase / decrease / remove / clear.
         String action = request.getParameter("action");
 
         if ("clear".equals(action)) {
