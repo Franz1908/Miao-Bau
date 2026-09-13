@@ -36,7 +36,11 @@
         </div>
         <% } %>
 
-        <form class="mb-form" method="post" action="${pageContext.request.contextPath}/secure/address/new">
+        <div id="clientErrors" class="mb-alert mb-alert-error" style="display: none">
+            <ul id="clientErrorsList"></ul>
+        </div>
+
+        <form class="mb-form" method="post" id="newAddressForm" action="${pageContext.request.contextPath}/secure/address/new">
             <div class="row g-3">
                 <div class="col-12 col-md-8">
                     <label for="street" class="form-label">Via</label>
@@ -72,5 +76,7 @@
 <%@ include file="Footer.jsp" %>
 
 <script src="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/validation-common.js"></script>
+<script src="${pageContext.request.contextPath}/js/new-address.js"></script>
 </body>
 </html>
