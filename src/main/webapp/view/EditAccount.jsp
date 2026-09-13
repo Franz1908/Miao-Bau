@@ -38,6 +38,10 @@
         </div>
         <% } %>
 
+        <div id="clientErrors" class="mb-alert mb-alert-error" style="display: none">
+            <ul id="clientErrorsList"></ul>
+        </div>
+
         <form class="mb-form" method="post" id="editAccountForm" action="${pageContext.request.contextPath}/secure/account/edit">
 
             <h2 class="mb-panel-title mb-3">Dati personali</h2>
