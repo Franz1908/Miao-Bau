@@ -38,7 +38,7 @@
         </div>
         <% } %>
 
-        <form class="mb-form" method="post" action="${pageContext.request.contextPath}/secure/account/edit">
+        <form class="mb-form" method="post" id="editAccountForm" action="${pageContext.request.contextPath}/secure/account/edit">
 
             <h2 class="mb-panel-title mb-3">Dati personali</h2>
             <div class="row g-3">
@@ -55,7 +55,7 @@
                 <div class="col-12">
                     <label for="email" class="form-label">E-mail</label>
                     <input type="email" class="form-control" name="email" id="email"
-                           value="<%= customer.getEmail() %>" required>
+                           value="<%= customer.getEmail() %>" pattern="^[\w.+-]+@[\w-]+\.[\w.-]+$" required>
                 </div>
                 <div class="col-12 col-md-6">
                     <label for="birthDate" class="form-label">Data di nascita <span class="text-muted">(facoltativa)</span></label>
@@ -80,11 +80,11 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <label for="newPassword" class="form-label">Nuova password</label>
-                    <input type="password" class="form-control" name="newPassword" id="newPassword">
+                    <input type="password" class="form-control" pattern="(?=.*[0-9])(?=.*[^a-zA-Z0-9]).*" name="newPassword" id="newPassword">
                 </div>
                 <div class="col-12 col-md-6">
                     <label for="confirmPassword" class="form-label">Conferma nuova password</label>
-                    <input type="password" class="form-control" name="confirmPassword" id="confirmPassword">
+                    <input type="password" class="form-control" pattern="(?=.*[0-9])(?=.*[^a-zA-Z0-9]).*" name="confirmPassword" id="confirmPassword">
                 </div>
             </div>
 
