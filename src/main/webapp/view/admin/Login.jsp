@@ -29,7 +29,7 @@
                 <div class="mb-alert mb-alert-error"><%= AdminErrorMessage %></div>
             <% } %>
 
-            <form class="mb-form" method="post" action="${pageContext.request.contextPath}/admin/login">
+            <form class="mb-form" method="post" id="adminForm" action="${pageContext.request.contextPath}/admin/login">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" name="username" id="username" required>

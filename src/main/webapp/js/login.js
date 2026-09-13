@@ -1,3 +1,8 @@
+// login.js — validazione client del form di login.
+
+// --- Riferimenti agli elementi del DOM (presi una volta sola) ---
+// @type serve solo all'editor per l'autocompletamento su .value/.validity
+
 /** @type {HTMLInputElement} **/
 const email = document.getElementById("email");
 /** @type {HTMLInputElement} **/
@@ -30,7 +35,6 @@ function passwordValidation() {
 }
 
 
-
 email.addEventListener("blur", emailValidation);
 password.addEventListener("blur", passwordValidation);
 
@@ -39,6 +43,7 @@ password.addEventListener("blur", passwordValidation);
 loginForm.addEventListener("submit", function (evt) {
     const okEmail = emailValidation();
     const okPassword = passwordValidation();
+
     if (!okEmail || !okPassword) {
         evt.preventDefault();
     }

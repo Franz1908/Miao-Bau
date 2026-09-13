@@ -26,19 +26,15 @@ const registerForm = document.getElementById("registerForm");
 function firstNameValidation() {
     // checkValidity() applica le regole HTML del campo (qui: required)
     const isValid = firstName.checkValidity();
-
     // se valido rimuove il messaggio, se non valido lo aggiunge
     setError("Inserire un nome", isValid);
-
     return isValid;
 }
 
 
 function lastNameValidation() {
     const isValid = lastName.checkValidity();
-
     setError("Inserire un cognome", isValid);
-
     return isValid;
 }
 
