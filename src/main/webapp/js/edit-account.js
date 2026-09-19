@@ -78,10 +78,12 @@ function newPasswordValidation() {
     // c'è un valore: dev'essere valido
     if (newPassword.checkValidity()) return true;
 
-    if (newPassword.validity.patternMismatch)
+    if (newPassword.validity.patternMismatch) {
         setError("La password deve contenere almeno un numero ed un carattere speciale", false);
-    else if (newPassword.validity.tooShort || newPassword.validity.tooLong)
+    }
+    else if (newPassword.validity.tooShort || newPassword.validity.tooLong) {
         setError("La password deve avere minimo 8 caratteri e massimo 16 caratteri", false);
+    }
 
     return false;
 }
@@ -90,8 +92,10 @@ function confirmPasswordValidation() {
     //pulisco sempre
     setError("Le password non coincidono", true);
 
+    // campo facoltativo: se vuota, non sto cambiando password → ok
     if (newPassword.value === "") return true;
 
+    // se la conferma password e la nuova password dell'utente sono diverse c'è un errore
     if (confirmPassword.value !== newPassword.value) {
         setError("Le password non coincidono", false);
         return false;
@@ -133,8 +137,9 @@ birthDate.addEventListener("blur", birthDateValidation);
 // submit = controllo finale: rivalido TUTTI i campi, anche quelli
 // su cui l'utente non è mai passato (il loro blur non è mai scattato)
 editAccountForm.addEventListener("submit", evt => {
-    // chiamo tutte le funzioni PRIMA e salvo i risultati: così ognuna
-    // esegue e mostra il proprio errore (niente corto circuito dell'||)
+
+    // chiamo tutte le funzioni PRIMA e salvo i risultati così ognuna
+    // esegue e mostra il proprio errore
     const okFirstName = firstNameValidation();
     const okLastName = lastNameValidation();
     const okEmail = emailValidation();

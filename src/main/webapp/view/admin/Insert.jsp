@@ -40,7 +40,7 @@
         </div>
     <% } %>
 
-    <form class="mb-form" method="post" action="${pageContext.request.contextPath}/admin/product/insert">
+    <form class="mb-form" method="post" id="productInsertForm" action="${pageContext.request.contextPath}/admin/product/insert">
         <div class="row g-4">
 
             <!-- Dati principali -->
@@ -153,15 +153,7 @@
 </main>
 
 <script src="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Abilita la percentuale di sconto solo se "in sconto" e' spuntato.
-    (function () {
-        var chk = document.getElementById('onSale');
-        var disc = document.getElementById('discountPercentage');
-        function sync() { disc.disabled = !chk.checked; if (!chk.checked) disc.value = ''; }
-        chk.addEventListener('change', sync);
-        sync();
-    })();
-</script>
+<script src="${pageContext.request.contextPath}/js/validation-common.js"></script>
+<script src="${pageContext.request.contextPath}/js/admin-insert.js.js"></script>
 </body>
 </html>
