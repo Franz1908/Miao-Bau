@@ -3,6 +3,7 @@ package com.example.miaobau.control.admin;
 import com.example.miaobau.dao.ProductDAO;
 import com.example.miaobau.model.ProductBean;
 import com.example.miaobau.utils.ParseUtil;
+import com.example.miaobau.utils.ProductValidator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -91,10 +92,10 @@ public class ProductInsertController extends HttpServlet {
         }
 
         //Controllo lunghezza caratteri
-        validateLenght(name, "Nome", 150, errors);
-        validateLenght(brand, "Marca", 50, errors);
-        validateLenght(description, "Descrizione", 2500, errors);
-        validateLenght(ingredients, "Ingredienti", 2500, errors);
+        ProductValidator.validateLenght(name, "Nome", 150, errors);
+        ProductValidator.validateLenght(brand, "Marca", 50, errors);
+        ProductValidator.validateLenght(description, "Descrizione", 2500, errors);
+        ProductValidator.validateLenght(ingredients, "Ingredienti", 2500, errors);
 
         if (!errors.isEmpty()) {
             request.setAttribute("errorMessage", errors);
@@ -103,22 +104,9 @@ public class ProductInsertController extends HttpServlet {
         }
 
         // Creazione e popolamento del ProductBean
-        ProductBean product = new ProductBean();
-        product.setName(name);
-        product.setBrand(brand);
-        product.setDescription(description);
-        product.setCategoryID(categoryId);
-        product.setSpeciesID(speciesId);
-        product.setPrice(price);
-        product.setVat(vat);
-        product.setOnSale(onSale);
-        product.setDiscountPercentage(discountPercentage);
-        product.setImage(emptyToNull(image));
-        product.setWeight(weight);
-        product.setIngredients(emptyToNull(ingredients));
-        product.setSize(emptyToNull(size));
-        product.setColor(emptyToNull(color));
-        product.setMaterial(emptyToNull(material));
+        ProductBean product = ProductValidator.buildProduct(null, name, brand, description,
+                categoryId, speciesId, price, vat, onSale, discountPercentage,
+                image, weight, ingredients, size, color, material);
 
         try {
             new ProductDAO().doSave(product);
@@ -135,15 +123,4 @@ public class ProductInsertController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    // helper locale: trasforma stringa vuota in null (per non salvare "" al posto di NULL)
-    private String emptyToNull(String value) {
-        return (value == null || value.isBlank()) ? null : value.trim();
-    }
-
-    //helper locale: valida la lunghezza dei campi
-    private void validateLenght(String value, String fieldName, int maxLength, List<String> errors) {
-        if (value != null && value.length() > maxLength) {
-            errors.add(fieldName + " è troppo lungo (massimo " + maxLength + " caratteri)");
-        }
-    }
 }

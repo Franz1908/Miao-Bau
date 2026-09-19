@@ -53,4 +53,9 @@ public class ParseUtil {
         }
     }
 
+    // trasforma stringa vuota in null (per non salvare "" al posto di NULL)
+    public static String emptyToNull(String value) {
+        return (value == null || value.isBlank()) ? null : value.trim();
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.miaobau.control.admin;
 import com.example.miaobau.dao.ProductDAO;
 import com.example.miaobau.model.ProductBean;
 import com.example.miaobau.utils.ParseUtil;
+import com.example.miaobau.utils.ProductValidator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -100,20 +101,20 @@ public class ProductUpdateController extends HttpServlet {
         }
 
         //Controllo lunghezza caratteri
-        validateLenght(name, "Nome", 150, errors);
-        validateLenght(brand, "Marca", 50, errors);
-        validateLenght(description, "Descrizione", 2500, errors);
-        validateLenght(ingredients, "Ingredienti", 2500, errors);
+        ProductValidator.validateLenght(name, "Nome", 150, errors);
+        ProductValidator.validateLenght(brand, "Marca", 50, errors);
+        ProductValidator.validateLenght(description, "Descrizione", 2500, errors);
+        ProductValidator.validateLenght(ingredients, "Ingredienti", 2500, errors);
 
         if (!errors.isEmpty()) {
-            forwardWithErrors(request, response, buildProduct(productID, name, brand, description,
+            forwardWithErrors(request, response, ProductValidator.buildProduct(productID, name, brand, description,
                     categoryId, speciesId, price, vat, onSale, discountPercentage,
                     image, weight, ingredients, size, color, material), errors);
             return;
         }
 
         // Creazione e popolamento del ProductBean
-        ProductBean product = buildProduct(productID, name, brand, description,
+        ProductBean product = ProductValidator.buildProduct(productID, name, brand, description,
                 categoryId, speciesId, price, vat, onSale, discountPercentage,
                 image, weight, ingredients, size, color, material);
 
@@ -145,41 +146,6 @@ public class ProductUpdateController extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/admin/Update.jsp");
         dispatcher.forward(request, response);
-    }
-
-    // helper locale: trasforma stringa vuota in null (per non salvare "" al posto di NULL)
-    private String emptyToNull(String value) {
-        return (value == null || value.isBlank()) ? null : value.trim();
-    }
-
-    //helper locale: valida la lunghezza dei campi
-    private void validateLenght(String value, String fieldName, int maxLength, List<String> errors) {
-        if (value != null && value.length() > maxLength) {
-            errors.add(fieldName + " è troppo lungo (massimo " + maxLength + " caratteri)");
-        }
-    }
-
-    // costruisce il ProductBean dai valori inviati (per salvataggio o per ripopolare il form dopo un errore)
-    private ProductBean buildProduct(int productID, String name, String brand, String description, Integer categoryId, Integer speciesId, BigDecimal price, BigDecimal vat,
-                                     boolean onSale, BigDecimal discountPercentage, String image, BigDecimal weight, String ingredients, String size, String color, String material) {
-        ProductBean product = new ProductBean();
-        product.setProductID(productID);
-        product.setName(name);
-        product.setBrand(brand);
-        product.setDescription(description);
-        if (categoryId != null) product.setCategoryID(categoryId);
-        if (speciesId != null) product.setSpeciesID(speciesId);
-        product.setPrice(price);
-        product.setVat(vat);
-        product.setOnSale(onSale);
-        product.setDiscountPercentage(discountPercentage);
-        product.setImage(emptyToNull(image));
-        product.setWeight(weight);
-        product.setIngredients(emptyToNull(ingredients));
-        product.setSize(emptyToNull(size));
-        product.setColor(emptyToNull(color));
-        product.setMaterial(emptyToNull(material));
-        return product;
     }
 
     // in caso di errori, rimanda al form di modifica con i dati inseriti e l'elenco errori
