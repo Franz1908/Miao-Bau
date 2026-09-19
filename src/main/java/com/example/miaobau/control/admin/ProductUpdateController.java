@@ -99,13 +99,6 @@ public class ProductUpdateController extends HttpServlet {
             }
         }
 
-        if (!errors.isEmpty()) {
-            forwardWithErrors(request, response, buildProduct(productID, name, brand, description,
-                    categoryId, speciesId, price, vat, onSale, discountPercentage,
-                    image, weight, ingredients, size, color, material), errors);
-            return;
-        }
-
         //Controllo lunghezza caratteri
         validateLenght(name, "Nome", 150, errors);
         validateLenght(brand, "Marca", 50, errors);
