@@ -48,10 +48,12 @@ function emailValidation() {
     if (email.checkValidity()) return true;
 
     // altrimenti capisco perché è invalida e mostro il messaggio giusto
-    if (email.validity.valueMissing)                                  // campo vuoto (required)
+    if (email.validity.valueMissing) {                                  // campo vuoto (required)
         setError("Inserire un'email", false);
-    else if (email.validity.patternMismatch || email.validity.typeMismatch) // formato errato
+    }
+    else if (email.validity.patternMismatch || email.validity.typeMismatch) { // formato errato
         setError("Inserire un'email valida", false);
+    }
 
     return false;
 }
@@ -115,7 +117,7 @@ birthDate.addEventListener("blur", birthDateValidation);
 registerForm.addEventListener("submit", function (evt) {
 
     // chiamo tutte le funzioni PRIMA e salvo i risultati: così ognuna
-    // esegue e mostra il proprio errore (niente corto circuito dell'||)
+    // esegue e mostra il proprio errore
     const okFirstName = firstNameValidation();
     const okLastName = lastNameValidation();
     const okEmail = emailValidation();

@@ -34,13 +34,18 @@ function passwordValidation() {
     return false;
 }
 
+// --- Aggancio agli eventi ---
 
+// blur = validazione "dal vivo": ogni campo si controlla appena l'utente lo lascia
 email.addEventListener("blur", emailValidation);
 password.addEventListener("blur", passwordValidation);
 
 // submit = controllo finale: rivalido TUTTI i campi, anche quelli
 // su cui l'utente non è mai passato (il loro blur non è mai scattato)
 loginForm.addEventListener("submit", function (evt) {
+
+    // chiamo tutte le funzioni PRIMA e salvo i risultati: così ognuna
+    // esegue e mostra il proprio errore
     const okEmail = emailValidation();
     const okPassword = passwordValidation();
 

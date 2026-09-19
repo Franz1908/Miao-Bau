@@ -24,12 +24,18 @@ function  passwordValidation() {
     return isValid;
 }
 
+// --- Aggancio agli eventi ---
+
+// blur = validazione "dal vivo": ogni campo si controlla appena l'utente lo lascia
 username.addEventListener("blur", usernameValidation);
 password.addEventListener("blur", passwordValidation);
 
 // submit = controllo finale: rivalido TUTTI i campi, anche quelli
 // su cui l'utente non è mai passato (il loro blur non è mai scattato)
 adminForm.addEventListener("submit", evt => {
+
+    // chiamo tutte le funzioni PRIMA e salvo i risultati: così ognuna
+    // esegue e mostra il proprio errore
     const okUsername = usernameValidation();
     const okPassword = passwordValidation();
 

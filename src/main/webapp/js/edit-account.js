@@ -58,17 +58,24 @@ function emailValidation() {
 }
 
 function currentPasswordValidation() {
+    // La password corrente serve SOLO se l'utente sta cambiando password.
+    // Quindi è obbligatoria a una condizione: c'è una nuova password
+    // (newPassword non vuota) ma manca quella corrente (currentPassword vuota).
     if (newPassword.value !== "" && currentPassword.value === "") {
-        setError("Inserire la password corrente", false);
+        setError("Inserire la password corrente", false);   // mostro l'errore
         return false;
     }
 
+    // In tutti gli altri casi va bene:
+    // - non sto cambiando password (newPassword vuota) → la corrente non serve
+    // - sto cambiando e ho compilato la corrente → ok
+    // In entrambi pulisco l'eventuale messaggio e considero valido.
     setError("Inserire la password corrente", true);
     return true;
 }
 
 function newPasswordValidation() {
-    // pulisco sempre
+    // pulisco sempre tutti i messaggi
     setError("La password deve avere minimo 8 caratteri e massimo 16 caratteri", true);
     setError("La password deve contenere almeno un numero ed un carattere speciale", true);
 
@@ -89,7 +96,7 @@ function newPasswordValidation() {
 }
 
 function confirmPasswordValidation() {
-    //pulisco sempre
+    //pulisco sempre tutti i messaggi
     setError("Le password non coincidono", true);
 
     // campo facoltativo: se vuota, non sto cambiando password → ok
@@ -128,6 +135,9 @@ function birthDateValidation() {
     return true;
 }
 
+// --- Aggancio agli eventi ---
+
+// blur = validazione "dal vivo": ogni campo si controlla appena l'utente lo lascia
 firstName.addEventListener("blur", firstNameValidation);
 lastName.addEventListener("blur", lastNameValidation);
 email.addEventListener("blur", emailValidation);
