@@ -159,6 +159,6 @@
 
 <script src="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/validation-common.js"></script>
-<script src="${pageContext.request.contextPath}/js/admin-insert.js.js"></script>
+<script src="${pageContext.request.contextPath}/js/admin-insert.js"></script>
 </body>
 </html>
