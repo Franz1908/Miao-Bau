@@ -89,6 +89,9 @@ public class ProductInsertController extends HttpServlet {
         BigDecimal weight = ParseUtil.parseBigDecimalOrNull(weightStr);
         if (weightStr != null && !weightStr.isBlank() && weight == null) {
             errors.add("Il peso inserito non è valido");
+            if (weight.compareTo(BigDecimal.ZERO) <= 0) {
+                errors.add("Il peso deve essere maggiore di zero");
+            }
         }
 
         //Controllo lunghezza caratteri
