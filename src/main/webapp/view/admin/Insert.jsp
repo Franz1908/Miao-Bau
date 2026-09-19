@@ -40,6 +40,11 @@
         </div>
     <% } %>
 
+    <!-- errori client (vuoto finché il JS non lo riempie) -->
+    <div id="clientErrors" class="mb-alert mb-alert-error" style="display:none;">
+        <ul id="clientErrorsList"></ul>
+    </div>
+
     <form class="mb-form" method="post" id="productInsertForm" action="${pageContext.request.contextPath}/admin/product/insert">
         <div class="row g-4">
 
