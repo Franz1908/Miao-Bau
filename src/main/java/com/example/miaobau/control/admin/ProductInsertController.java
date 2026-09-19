@@ -90,12 +90,6 @@ public class ProductInsertController extends HttpServlet {
             errors.add("Il peso inserito non è valido");
         }
 
-        if (!errors.isEmpty()) {
-            request.setAttribute("errorMessage", errors);
-            request.getRequestDispatcher("/view/admin/Insert.jsp").forward(request, response);
-            return;
-        }
-
         //Controllo lunghezza caratteri
         validateLenght(name, "Nome", 150, errors);
         validateLenght(brand, "Marca", 50, errors);
