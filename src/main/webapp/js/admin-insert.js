@@ -177,12 +177,18 @@ function weightValidation() {
 function syncDiscount() {
     // disabilita il campo discountPercentage se il prodotto non è in sconto
     discountPercentage.disabled = !onSale.checked;
+    // imposta required per il campo discountPercentage solo se onSale è checked
+    discountPercentage.required = onSale.checked;
     // pulisce il valore che era stato inserito nel campo discountPercentage se onSale
     // viene disabilitato in un secondo momento
     if (!onSale.checked) discountPercentage.value = "";
 }
 
-onSale.addEventListener("change", syncDiscount);
+onSale.addEventListener("change", () => {
+    syncDiscount();
+    // chiamata a discountPercentageValidation per pulire eventuali errori nel caso in cui il onSale venga deselezionato
+    discountPercentageValidation();
+});
 // chiamata iniziale: imposta lo stato giusto al caricamento
 syncDiscount();
 
