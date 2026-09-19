@@ -1,4 +1,4 @@
-// admin-insert.js — validazione client del form di inserimento di un nuovo prodotto.
+// admin-product-form.js — validazione client del form di inserimento di un nuovo prodotto.
 
 // --- Riferimenti agli elementi del DOM (presi una volta sola) ---
 // @type serve solo all'editor per l'autocompletamento su .value/.validity
@@ -26,7 +26,7 @@ const discountPercentage = document.getElementById("discountPercentage");
 /** @type {HTMLInputElement} **/
 const weight = document.getElementById("weight");
 /** @type {HTMLFormElement} **/
-const productInsertForm = document.getElementById("productInsertForm");
+const adminProductForm = document.getElementById("adminProductForm");
 
 
 // --- Una funzione di validazione per campo ---
@@ -209,7 +209,7 @@ weight.addEventListener("blur", weightValidation);
 
 // submit = controllo finale: rivalido TUTTI i campi, anche quelli
 // su cui l'utente non è mai passato (il loro blur non è mai scattato).
-productInsertForm.addEventListener("submit", evt => {
+adminProductForm.addEventListener("submit", evt => {
 
     // chiamo tutte le funzioni PRIMA e salvo i risultati così ognuna
     // esegue e mostra il proprio errore

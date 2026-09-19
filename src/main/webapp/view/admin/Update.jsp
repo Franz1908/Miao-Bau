@@ -55,7 +55,12 @@
         </div>
     <% } %>
 
-    <form class="mb-form" method="post" action="${pageContext.request.contextPath}/admin/product/update">
+    <!-- errori client (vuoto finché il JS non lo riempie) -->
+    <div id="clientErrors" class="mb-alert mb-alert-error" style="display:none;">
+        <ul id="clientErrorsList"></ul>
+    </div>
+
+    <form class="mb-form" method="post" id="adminProductForm" action="${pageContext.request.contextPath}/admin/product/update">
         <input type="hidden" name="productId" value="<%= product.getProductID() %>">
         <div class="row g-4">
 
@@ -168,13 +173,7 @@
 </main>
 
 <script src="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    (function () {
-        var chk = document.getElementById('onSale');
-        var disc = document.getElementById('discountPercentage');
-        function sync() { disc.disabled = !chk.checked; if (!chk.checked) disc.value = ''; }
-        chk.addEventListener('change', sync);
-    })();
-</script>
+<script src="${pageContext.request.contextPath}/js/validation-common.js"></script>
+<script src="${pageContext.request.contextPath}/js/admin-product-form.js"></script>
 </body>
 </html>
