@@ -59,6 +59,33 @@ function emailValidation() {
 }
 
 
+async function checkEmailAvailability() {
+    // pulisco sempre il messaggio prima
+    setError("E-mail già registrata", true);
+    if (!emailValidation()) return false;
+
+    try {
+        const result = await fetch("emailCheck?email=" + encodeURIComponent(email.value));
+        if (!result.ok) {
+            throw new Error("HTTP error" + result.status);
+        }
+
+        const data = await result.json();
+
+        if (data.available === false) {
+            setError("E-mail già registrata", false);
+            return false;
+        }
+
+        return true;
+    }
+    catch (error) {
+        console.error("Verifica e-mail non disponibile", error);
+        return true;
+    }
+}
+
+
 function passwordValidation() {
     // pulisco sempre tutti i messaggi password prima di ricontrollare
     setError("Inserire una password", true);
@@ -107,7 +134,7 @@ function birthDateValidation() {
 // blur = validazione "dal vivo": ogni campo si controlla appena l'utente lo lascia
 firstName.addEventListener("blur", firstNameValidation);
 lastName.addEventListener("blur", lastNameValidation);
-email.addEventListener("blur", emailValidation);
+email.addEventListener("blur", checkEmailAvailability);
 password.addEventListener("blur", passwordValidation);
 birthDate.addEventListener("blur", birthDateValidation);
 
