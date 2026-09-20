@@ -57,6 +57,42 @@ function emailValidation() {
     return false;
 }
 
+async function checkEmailAvailability() {
+    // pulisco sempre il messaggio prima di ricontrollare
+    setError("E-mail già registrata", true);
+
+    // se il formato non è valido non ha senso chiedere al server: esco
+    // (emailValidation ha già mostrato il messaggio di formato giusto)
+    if (!emailValidation()) return false;
+
+    try {
+        // chiamo la servlet passando l'email come parametro (codificato per @ e .)
+        const result = await fetch("emailCheck?email=" + encodeURIComponent(email.value));
+
+        // fetch NON fallisce sugli errori HTTP: controllo io lo stato
+        if (!result.ok) {
+            throw new Error("HTTP error" + result.status);
+        }
+
+        // converto la risposta JSON in oggetto: { available: true/false }
+        const data = await result.json();
+
+        // available=false = email già presa: mostro l'errore e blocco
+        if (data.available === false) {
+            setError("E-mail già registrata", false);
+            return false;
+        }
+
+        return true;   // email libera
+    }
+    catch (error) {
+        // fallimento silenzioso: se la verifica non è disponibile non blocco
+        // la registrazione (il controllo vero lo fa il server al submit)
+        console.error("Verifica e-mail non disponibile", error);
+        return true;
+    }
+}
+
 function currentPasswordValidation() {
     // La password corrente serve SOLO se l'utente sta cambiando password.
     // Quindi è obbligatoria a una condizione: c'è una nuova password
@@ -140,7 +176,7 @@ function birthDateValidation() {
 // blur = validazione "dal vivo": ogni campo si controlla appena l'utente lo lascia
 firstName.addEventListener("blur", firstNameValidation);
 lastName.addEventListener("blur", lastNameValidation);
-email.addEventListener("blur", emailValidation);
+email.addEventListener("blur", checkEmailAvailability);
 currentPassword.addEventListener("blur", currentPasswordValidation);
 birthDate.addEventListener("blur", birthDateValidation);
 
