@@ -44,7 +44,6 @@ public class PasswordUtil {
         } catch (NoSuchAlgorithmException  | InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }
