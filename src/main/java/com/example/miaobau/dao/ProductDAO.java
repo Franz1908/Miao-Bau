@@ -126,27 +126,6 @@ public class ProductDAO {
         return products;
     }
 
-    // Prodotti di una categoria — solo attivi. (Al momento non usato dai controller,
-    // ma disponibile per completezza dell'API del DAO.)
-    public List<ProductBean> doRetriveByCategory(int categoryID) throws SQLException{
-        List<ProductBean> products = new ArrayList<>();
-        String query = "SELECT * FROM product WHERE category_id = ? and is_deleted = FALSE";
-
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setInt(1, categoryID);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    products.add(mapRow(rs));
-                }
-            }
-        }
-
-        return products;
-    }
-
     // Navigazione combinata specie + categoria — solo attivi.
     public List<ProductBean> doRetrieveBySpeciesAndCategory(int speciesID, int categoryID) throws SQLException{
         List<ProductBean> products = new ArrayList<>();
