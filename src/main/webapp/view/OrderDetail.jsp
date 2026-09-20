@@ -28,6 +28,8 @@
     <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
         <h1 class="mb-0">Ordine n&deg; <%= order.getOrderID() %></h1>
         <span class="text-muted"><%= order.getOrderDate() != null ? order.getOrderDate().format(fmt) : "" %></span>
+        <a href="${pageContext.request.contextPath}/secure/invoice?orderId=<%= order.getOrderID() %>"
+           class="btn btn-mb-primario btn-sm ms-md-auto">&#129534; Scarica fattura</a>
     </div>
 
     <div class="row g-4">
