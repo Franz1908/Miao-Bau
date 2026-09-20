@@ -62,24 +62,34 @@ function emailValidation() {
 async function checkEmailAvailability() {
     // pulisco sempre il messaggio prima
     setError("E-mail già registrata", true);
+
+    // se il formato non è valido esco
+    // (emailValidation ha già mostrato il messaggio di formato giusto)
     if (!emailValidation()) return false;
 
     try {
+        // chiamo la servlet passando l'email come parametro
         const result = await fetch("emailCheck?email=" + encodeURIComponent(email.value));
+
+        // fetch NON fallisce sugli errori HTTP, controllo io lo stato
         if (!result.ok) {
             throw new Error("HTTP error" + result.status);
         }
 
+        // converto la risposta JSON in oggetto
         const data = await result.json();
 
+        // available=false = email già presa, mostro l'errore e blocco
         if (data.available === false) {
             setError("E-mail già registrata", false);
             return false;
         }
 
-        return true;
+        return true;   // email libera
     }
     catch (error) {
+        // se la verifica non è disponibile non blocco
+        // la registrazione (il controllo vero lo fa il server al submit)
         console.error("Verifica e-mail non disponibile", error);
         return true;
     }
