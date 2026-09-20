@@ -26,12 +26,17 @@ public class CatalogController extends HttpServlet {
         Integer speciesID = ParseUtil.parseIntOrNull(request.getParameter("speciesId"));
         Integer categoryID = ParseUtil.parseIntOrNull(request.getParameter("categoryId"));
         String filter = request.getParameter("filter");
+        String q = request.getParameter("q");
         ProductDAO productDAO = new ProductDAO();
         List<ProductBean> products;
         String title;
 
         try {
-            if (filter != null && filter.equals("sale")) {
+            if (q != null && !q.isBlank()) {
+                products = productDAO.doRetrieveByName(q);
+                title = "Risultati ricerca per: " + q;
+            }
+            else if (filter != null && filter.equals("sale")) {
                 products = productDAO.doRetriveDiscountedProducts();
                 title = "Prodotti in sconto";
 

@@ -250,6 +250,26 @@ public class ProductDAO {
         return products;
     }
 
+    public List<ProductBean> doRetrieveByName(String productName) throws SQLException {
+        List<ProductBean> products = new ArrayList<>();
+        String query = "SELECT * FROM product WHERE name LIKE ? AND is_deleted = FALSE LIMIT 10";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, "%" + productName + "%");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    products.add(mapRow(rs));
+                }
+            }
+
+        }
+
+        return products;
+    }
+
     private void setProductParameters(PreparedStatement ps, ProductBean productBean) throws SQLException {
         ps.setInt(1, productBean.getCategoryID());
         ps.setInt(2, productBean.getSpeciesID());

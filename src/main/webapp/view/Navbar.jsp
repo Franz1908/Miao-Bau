@@ -27,22 +27,22 @@
             <!-- Link categorie: una voce per specie con menu a tendina delle categorie -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <% for (SpeciesBean specie : species) { %>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <%= specie.getSpeciesName() %>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <% for (CategoryBean category : categories) { %>
-                                <li>
-                                    <a class="dropdown-item"
-                                       href="${pageContext.request.contextPath}/catalog?speciesId=<%= specie.getSpeciesID() %>&amp;categoryId=<%= category.getCategoryID() %>">
-                                        <%= category.getCategoryName() %>
-                                    </a>
-                                </li>
-                            <% } %>
-                        </ul>
-                    </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <%= specie.getSpeciesName() %>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <% for (CategoryBean category : categories) { %>
+                        <li>
+                            <a class="dropdown-item"
+                               href="${pageContext.request.contextPath}/catalog?speciesId=<%= specie.getSpeciesID() %>&amp;categoryId=<%= category.getCategoryID() %>">
+                                <%= category.getCategoryName() %>
+                            </a>
+                        </li>
+                        <% } %>
+                    </ul>
+                </li>
                 <% } %>
                 <li class="nav-item">
                     <a class="nav-link fw-bold" style="color: var(--mb-cta);"
@@ -52,19 +52,27 @@
                 </li>
             </ul>
             <!-- Barra di ricerca semplice -->
-            <form class="d-flex me-lg-3 my-2 my-lg-0" role="search"
+            <form class="d-flex me-lg-3 my-2 my-lg-0 position-relative" role="search"
                   method="get" action="${pageContext.request.contextPath}/catalog">
-                <input class="form-control me-2" type="search" name="q"
-                       placeholder="Cerca un prodotto..." aria-label="Cerca">
+                <input type="search" class="form-control me-2" name="q" id="searchBar"
+                       placeholder="Cerca un prodotto..." aria-label="Cerca"
+                       autocomplete="off">
                 <button class="btn btn-mb-primario" type="submit">Cerca</button>
+
+                <!-- Contenitore risultati ricerca (riempito via JS; nascosto se vuoto) -->
+                <div id="searchResults"
+                     class="mb-card position-absolute top-100 start-0 mt-1 p-0 overflow-hidden d-none"
+                     style="width: 100%; z-index: 1050; max-height: 22rem; overflow-y: auto;">
+                    <ul id="searchResultsList" class="list-group list-group-flush m-0"></ul>
+                </div>
             </form>
             <!-- Area account + carrello -->
             <ul class="navbar-nav align-items-lg-center">
                 <li class="nav-item">
                     <% if (navCustomerBean != null) { %>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/account">Account</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/account">Account</a>
                     <% } else { %>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/account">Accedi</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/account">Accedi</a>
                     <% } %>
                 </li>
                 <li class="nav-item">
@@ -80,3 +88,4 @@
         </div>
     </div>
 </nav>
+<script src="${pageContext.request.contextPath}/js/search.js"></script>
