@@ -36,6 +36,12 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+        <!-- Libreria JSON per Java-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20260522</version>
+        </dependency>
         <!-- Connection pool di Tomcat -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
