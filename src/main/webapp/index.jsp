@@ -221,17 +221,6 @@
 <%@ include file="/view/Footer.jsp" %>
 
 <script src="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Scorrimento dei caroselli con le frecce (di ~una card + gap alla volta).
-    document.querySelectorAll('.mb-scroll-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            var track = document.getElementById(btn.getAttribute('data-target'));
-            if (!track) return;
-            var item = track.querySelector(':scope > div');
-            var step = (item ? item.getBoundingClientRect().width : track.clientWidth * 0.8) + 24;
-            track.scrollBy({ left: parseInt(btn.getAttribute('data-dir'), 10) * step, behavior: 'smooth' });
-        });
-    });
-</script>
+<script src="${pageContext.request.contextPath}/js/home-carousel.js"></script>
 </body>
 </html>
