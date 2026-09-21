@@ -14,7 +14,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-// Controller del carrello: gestisce tutte le operazioni (aggiungi/incrementa/decrementa/rimuovi/svuota).
+/*
+ * Controller del carrello. Il carrello vive in SESSIONE.
+ * Tutte le operazioni passano da doPost con un
+ * parametro "action" che discrimina l'operazione:
+ */
 @WebServlet("/cart")
 public class CartController extends HttpServlet {
 
@@ -34,7 +38,7 @@ public class CartController extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("clear".equals(action)) {
-            // "costante".equals(param): idioma anti-NPE (regge anche action == null).
+            // "costante".equals(param): idioma (regge anche action == null).
             // Svuota tutto: non serve il productId.
             cart.clearCart();
         } else if (action != null) {
@@ -60,13 +64,13 @@ public class CartController extends HttpServlet {
         }
 
         // Dopo l'azione: riporto l'utente alla pagina di provenienza.
-        // Referer = URL della pagina da cui è partita la richiesta (lo manda il browser).
+        // Referer = URL della pagina da cui è partita la richiesta.
         String back = request.getHeader("Referer");
-        // Fallback: il Referer NON è garantito (privacy, richiesta a mano...). Se manca, vado al catalogo.
+        // Fallback: il Referer NON è garantito. Se manca, vado al catalogo.
         if (back == null) {
             back = request.getContextPath() + "/catalog";
         }
-        // REDIRECT (non forward) = pattern Post-Redirect-Get: così un F5 non ripete l'operazione sul carrello.
+        // redirect (non forward).
         response.sendRedirect(back);
     }
 

@@ -16,16 +16,23 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/*
+ * Controller del dettaglio di un singolo ordine (lato cliente).
+ * Mostra testata, indirizzo di spedizione e righe di un ordine.
+ */
 @WebServlet("/secure/order-detail")
 public class OrderDetailController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        // Cliente garantito dal filtro /secure: lo uso per il controllo di proprietà.
         CustomerBean customer = (CustomerBean) session.getAttribute("customer");
         AddressBean address;
         OrdersDAO ordersDAO = new OrdersDAO();
 
+        // Conversione sicura dell'id dall'URL. Se manca o non è un numero -> null:
+        // caso anomalo, redirect uniforme allo storico (guard clause all'inizio).
         Integer orderID = ParseUtil.parseIntOrNull(request.getParameter("orderId"));
         if (orderID == null) {
             response.sendRedirect(request.getContextPath() + "/secure/orders");
@@ -35,13 +42,18 @@ public class OrderDetailController extends HttpServlet {
         try {
             OrdersBean order = ordersDAO.doRetriveByID(orderID);
 
+            // Se l'ordine non esiste OPPURE non è del cliente loggato,
+            // redirect uniforme allo storico.
             if (order == null || order.getCustomerID() != customer.getCustomerID()) {
                 response.sendRedirect(request.getContextPath() + "/secure/orders");
                 return;
             }
 
+            // A questo punto l'ordine è valido e appartiene al cliente e recupero l'indirizzo
             address = new AddressDAO().doRetriveByID(order.getAddressID());
+            // Righe dell'ordine (prodotti con valori congelati) caricate nel bean.
             order.setItems(ordersDAO.doRetrieveItemsByOrder(orderID));
+
             request.setAttribute("order", order);
             request.setAttribute("address", address);
         } catch (SQLException e) {

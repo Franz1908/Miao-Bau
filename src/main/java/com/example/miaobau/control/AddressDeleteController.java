@@ -13,18 +13,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/*
+ * Controller per l'eliminazione (soft delete) di un indirizzo dall'account.
+ */
 @WebServlet("/secure/address/delete")
 public class AddressDeleteController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CustomerBean customerBean = (CustomerBean) request.getSession().getAttribute("customer");
+        // Id dall'input hidden del form, conversione sicura (null se mancante/non valido).
         Integer addressID = ParseUtil.parseIntOrNull(request.getParameter("addressId"));
         AddressDAO addressDAO = new AddressDAO();
 
         try {
             if (addressID != null) {
                 AddressBean addressBean = addressDAO.doRetriveByID(addressID);
+                // CONTROLLO IDOR: cancella solo se l'indirizzo è del cliente loggato.
                 if (addressBean.getCustomerID() == customerBean.getCustomerID()) {
                     addressDAO.doDelete(addressID);
                 }
@@ -33,6 +38,7 @@ public class AddressDeleteController extends HttpServlet {
             throw new ServletException(e);
         }
 
+        // Redirect all'account (POST-Redirect-GET): la lista si ricarica aggiornata.
         response.sendRedirect(request.getContextPath() + "/account");
     }
 }

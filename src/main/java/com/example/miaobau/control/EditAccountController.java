@@ -90,7 +90,7 @@ public class EditAccountController extends HttpServlet {
                 }
             }
 
-            // --- Se ci sono errori, torna al form senza salvare nulla ---
+            // Se ci sono errori, torna al form senza salvare nulla
             if (!errors.isEmpty()) {
                 request.setAttribute("errors", errors);
                 request.getRequestDispatcher("/view/EditAccount.jsp").forward(request, response);

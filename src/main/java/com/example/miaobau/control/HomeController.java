@@ -13,6 +13,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/*
+ * Controller della home page.
+ * Recupera i prodotti da mettere in vetrina (quelli in offerta e i più popolari)
+ * e li passa alla home.
+ */
 @WebServlet("/home")
 public class HomeController extends HttpServlet {
 
@@ -21,6 +26,7 @@ public class HomeController extends HttpServlet {
         ProductDAO productDAO = new ProductDAO();
 
         try {
+            // Due vetrine per la home: prodotti in sconto e prodotti più venduti.
             List<ProductBean> discountedProducts = productDAO.doRetriveDiscountedProducts();
             List<ProductBean> popularProducts = productDAO.doRetrivePopularProducts();
             request.setAttribute("discountedProducts", discountedProducts);
@@ -29,7 +35,7 @@ public class HomeController extends HttpServlet {
             throw new ServletException(e);
         }
 
-
+        // Forward a index.jsp, che fa da vista della home mostrando le due vetrine.
         RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);
     }
