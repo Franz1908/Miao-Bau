@@ -11,11 +11,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Controller del catalogo lato ADMIN (elenco prodotti per la gestione).
+ * Sotto /admin/*, quindi protetto dall'AdminFilter (solo admin loggati).
+ * Differenza rispetto al catalogo cliente: usa doRetriveAllForAdmin, che
+ * include ANCHE i prodotti soft-deleted, perché l'admin deve poterli vedere per
+ * modificarli o ripristinarli. Il catalogo cliente invece li nasconde.
+ */
 @WebServlet("/admin/catalog")
 public class AdminCatalogController extends HttpServlet{
 
@@ -25,6 +30,7 @@ public class AdminCatalogController extends HttpServlet{
         List<ProductBean> products;
 
         try {
+            // Tutti i prodotti, cancellati inclusi (vista di gestione).
             products = productDAO.doRetriveAllForAdmin();
             request.setAttribute("adminProducts", products);
         } catch (SQLException e) {
@@ -36,4 +42,3 @@ public class AdminCatalogController extends HttpServlet{
     }
 
 }
-

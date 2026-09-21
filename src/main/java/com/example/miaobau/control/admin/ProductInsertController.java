@@ -17,11 +17,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Controller per l'inserimento di un nuovo prodotto, lato admin.
+ * Sotto /admin/*, protetto dal filtro. doGet mostra il form; doPost valida tutti
+ * i campi (obbligatori, formati, coerenza sconto, lunghezze) e, se tutto è valido,
+ * costruisce il ProductBean e lo salva.
+ */
 @WebServlet("/admin/product/insert")
 public class ProductInsertController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Lettura di tutti i parametri del form. onSale è una checkbox: presente nella
+        // request solo se spuntata, quindi "!= null" significa "è spuntata".
         String name = request.getParameter("name");
         String brand = request.getParameter("brand");
         String description = request.getParameter("description");
@@ -39,11 +47,12 @@ public class ProductInsertController extends HttpServlet {
         String material = request.getParameter("material");
         List<String> errors = new ArrayList<>();
 
-        // Campi obbligatori
+        // --- Validazione dei campi obbligatori ---
         if (name == null || name.isBlank()) {
             errors.add("Inserire un nome");
         }
 
+        // Categoria/specie: conversione sicura, errore se mancante/non valida.
         Integer categoryId = ParseUtil.parseIntOrNull(categoryIdStr);
         if (categoryId == null) {
             errors.add("Inserire una categoria valida");
@@ -62,17 +71,21 @@ public class ProductInsertController extends HttpServlet {
             errors.add("Inserire una descrizione valida");
         }
 
+        // Prezzo: numerico e positivo.
         BigDecimal price = ParseUtil.parseBigDecimalOrNull(priceStr);
         if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
             errors.add("Inserire un prezzo valido");
         }
 
+        // IVA: numerica e nell'intervallo 0-100.
         BigDecimal vat = ParseUtil.parseBigDecimalOrNull(vatStr);
         if (vat == null || vat.compareTo(BigDecimal.ZERO) < 0 || vat.compareTo(new BigDecimal("100")) > 0) {
             errors.add("Inserire un'IVA valida");
         }
 
-        // Coerenza sconto
+        // --- Coerenza dello sconto ---
+        // Se in sconto, la percentuale deve essere valida (0 < x <= 100).
+        // Se NON in sconto, la percentuale va azzerata (coerenza col vincolo DB).
         BigDecimal discountPercentage = ParseUtil.parseBigDecimalOrNull(discountStr);
         if (onSale) {
             if (discountPercentage == null
@@ -81,32 +94,33 @@ public class ProductInsertController extends HttpServlet {
                 errors.add("Percentuale di sconto non valida");
             }
         } else {
-            // se non è in sconto, la percentuale non deve essere valorizzata
-            discountPercentage = null;
+            discountPercentage = null;   // niente sconto -> nessuna percentuale
         }
 
-        // Peso opzionale: valido solo se, quando presente, è un numero positivo
+        // Peso OPZIONALE: valido solo se, quando presente, è un numero positivo.
         BigDecimal weight = ParseUtil.parseBigDecimalOrNull(weightStr);
-        if (weightStr != null && !weightStr.isBlank() && weight == null) {
-            errors.add("Il peso inserito non è valido");
-            if (weight.compareTo(BigDecimal.ZERO) <= 0) {
-                errors.add("Il peso deve essere maggiore di zero");
+        if (weightStr != null && !weightStr.isBlank()) {          // l'utente ha scritto qualcosa
+            if (weight == null) {
+                errors.add("Il peso inserito non è valido");       // caso 1: non convertibile
+            } else if (weight.compareTo(BigDecimal.ZERO) <= 0) {
+                errors.add("Il peso deve essere maggiore di zero"); // caso 2: convertibile ma non positivo
             }
         }
 
-        //Controllo lunghezza caratteri
+        // Lunghezze massime (coerenti coi VARCHAR del DB): controllo lato server.
         ProductValidator.validateLenght(name, "Nome", 150, errors);
         ProductValidator.validateLenght(brand, "Marca", 50, errors);
         ProductValidator.validateLenght(description, "Descrizione", 2500, errors);
         ProductValidator.validateLenght(ingredients, "Ingredienti", 2500, errors);
 
+        // Un solo punto di uscita in caso di errori: torna al form con la lista.
         if (!errors.isEmpty()) {
             request.setAttribute("errorMessage", errors);
             request.getRequestDispatcher("/view/admin/Insert.jsp").forward(request, response);
             return;
         }
 
-        // Creazione e popolamento del ProductBean
+        // Tutto valido: costruisce il bean (productID null = nuovo) e salva.
         ProductBean product = ProductValidator.buildProduct(null, name, brand, description,
                 categoryId, speciesId, price, vat, onSale, discountPercentage,
                 image, weight, ingredients, size, color, material);
@@ -120,6 +134,7 @@ public class ProductInsertController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin/catalog");
     }
 
+    // Mostra il form di inserimento.
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/admin/Insert.jsp");

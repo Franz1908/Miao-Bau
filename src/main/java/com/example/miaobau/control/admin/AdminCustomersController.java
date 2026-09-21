@@ -13,6 +13,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/*
+ * Controller dell'elenco clienti lato ADMIN. Sotto /admin/*, protetto dal filtro.
+ * Recupera la lista dei clienti da mostrare all'admin.
+ */
 @WebServlet("/admin/customers")
 public class AdminCustomersController extends HttpServlet {
 
@@ -22,7 +26,7 @@ public class AdminCustomersController extends HttpServlet {
             List<CustomerBean> customers = new CustomerDAO().doRetrieveAll();
             request.setAttribute("customers", customers);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new ServletException(e);
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/admin/Customers.jsp");

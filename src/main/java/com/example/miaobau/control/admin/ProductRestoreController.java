@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/*
+ * Controller per il RIPRISTINO di un prodotto soft-deleted, lato admin.
+ * Speculare a ProductDeleteController: annulla il soft delete (is_deleted = FALSE),
+ * riportando il prodotto nel catalogo cliente.
+ */
 @WebServlet("/admin/product/restore")
 public class ProductRestoreController extends HttpServlet {
 
@@ -24,7 +29,7 @@ public class ProductRestoreController extends HttpServlet {
         }
 
         try {
-            new ProductDAO().doRestore(productID);
+            new ProductDAO().doRestore(productID);   // annulla il soft delete
             response.sendRedirect(request.getContextPath() + "/admin/catalog");
         } catch (SQLException e) {
             throw new ServletException(e);

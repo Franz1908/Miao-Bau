@@ -17,11 +17,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Controller per la MODIFICA di un prodotto esistente, lato admin.
+ * Sotto /admin/*, protetto dal filtro. doGet precompila il form coi dati attuali
+ * del prodotto; doPost valida (stessa logica dell'inserimento) e aggiorna.
+ * In caso di errori, ripopola il form coi dati inseriti (così l'admin non riscrive
+ * tutto) tramite l'helper forwardWithErrors.
+ */
 @WebServlet("/admin/product/update")
 public class ProductUpdateController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // L'id del prodotto da modificare (campo hidden del form). Senza, non si sa
+        // cosa aggiornare
         Integer productID = ParseUtil.parseIntOrNull(request.getParameter("productId"));
         if (productID == null) {
             response.sendRedirect(request.getContextPath() + "/admin/catalog");
@@ -44,7 +53,7 @@ public class ProductUpdateController extends HttpServlet {
         String material = request.getParameter("material");
         List<String> errors = new ArrayList<>();
 
-        // Campi obbligatori
+        // --- Validazione (identica all'inserimento) ---
         if (name == null || name.isBlank()) {
             errors.add("Inserire un nome");
         }
@@ -77,7 +86,8 @@ public class ProductUpdateController extends HttpServlet {
             errors.add("Inserire un'IVA valida");
         }
 
-        // Coerenza sconto
+        // Coerenza sconto: se in sconto la percentuale dev'essere valida; altrimenti
+        // si azzera (coerenza col vincolo CHECK del DB).
         BigDecimal discountPercentage = ParseUtil.parseBigDecimalOrNull(discountStr);
         if (onSale) {
             if (discountPercentage == null
@@ -86,11 +96,11 @@ public class ProductUpdateController extends HttpServlet {
                 errors.add("Percentuale di sconto non valida");
             }
         } else {
-            // se non è in sconto, la percentuale non deve essere valorizzata
             discountPercentage = null;
         }
 
-        // Peso opzionale: valido solo se, quando presente, è un numero positivo
+        // Peso opzionale: due casi separati correttamente (non convertibile / non
+        // positivo). compareTo chiamato solo nel ramo else, dove weight non è null.
         BigDecimal weight = ParseUtil.parseBigDecimalOrNull(weightStr);
         if (weightStr != null && !weightStr.isBlank()) {
             if (weight == null) {
@@ -100,12 +110,15 @@ public class ProductUpdateController extends HttpServlet {
             }
         }
 
-        //Controllo lunghezza caratteri
+        // Lunghezze massime dei campi.
         ProductValidator.validateLenght(name, "Nome", 150, errors);
         ProductValidator.validateLenght(brand, "Marca", 50, errors);
         ProductValidator.validateLenght(description, "Descrizione", 2500, errors);
         ProductValidator.validateLenght(ingredients, "Ingredienti", 2500, errors);
 
+        // In caso di errori: ricostruisce il bean coi dati inseriti (compreso il
+        // productID) e torna al form di modifica ripopolato + errori. Così l'admin
+        // corregge senza riscrivere tutto.
         if (!errors.isEmpty()) {
             forwardWithErrors(request, response, ProductValidator.buildProduct(productID, name, brand, description,
                     categoryId, speciesId, price, vat, onSale, discountPercentage,
@@ -113,7 +126,8 @@ public class ProductUpdateController extends HttpServlet {
             return;
         }
 
-        // Creazione e popolamento del ProductBean
+        // Tutto valido: costruisce il bean CON il productID (è una modifica, non un
+        // inserimento) e aggiorna.
         ProductBean product = ProductValidator.buildProduct(productID, name, brand, description,
                 categoryId, speciesId, price, vat, onSale, discountPercentage,
                 image, weight, ingredients, size, color, material);
@@ -127,6 +141,11 @@ public class ProductUpdateController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin/catalog");
     }
 
+    /*
+     * Mostra il form di modifica precompilato. Recupera il prodotto per id con
+     * doRetrieveByIdForAdmin (versione admin: include anche i prodotti cancellati,
+     * così l'admin può modificare/ripristinare un soft-deleted).
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer productID = ParseUtil.parseIntOrNull(request.getParameter("productId"));
@@ -138,6 +157,7 @@ public class ProductUpdateController extends HttpServlet {
 
         ProductDAO productDAO = new ProductDAO();
         try {
+            // Recupera anche se cancellato (a differenza del cliente).
             ProductBean productBean = productDAO.doRetrieveByIdForAdmin(productID);
             request.setAttribute("product", productBean);
         } catch (SQLException e) {
@@ -148,7 +168,8 @@ public class ProductUpdateController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    // in caso di errori, rimanda al form di modifica con i dati inseriti e l'elenco errori
+    // Helper: torna al form di modifica coi dati inseriti (ripopolamento) e gli
+    // errori, per non far riscrivere tutto all'admin dopo un errore di validazione.
     private void forwardWithErrors(HttpServletRequest request, HttpServletResponse response,ProductBean product, List<String> errors) throws ServletException, IOException {
         request.setAttribute("product", product);
         request.setAttribute("errorMessage", errors);

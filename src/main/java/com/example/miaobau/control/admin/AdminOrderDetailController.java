@@ -15,6 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/*
+ * Controller del dettaglio ordine lato ADMIN. Sotto /admin/*, protetto dal filtro.
+ * Mostra un ordine con i dati del cliente (chi ha ordinato) e l'indirizzo di spedizione.
+ */
 @WebServlet("/admin/order-detail")
 public class AdminOrderDetailController extends HttpServlet {
 
@@ -24,18 +28,27 @@ public class AdminOrderDetailController extends HttpServlet {
         OrdersDAO ordersDAO = new OrdersDAO();
         AddressBean address;
 
+        // Id mancante o non valido: torna all'elenco ordini admin (guard clause).
         if (orderID == null) {
             response.sendRedirect(request.getContextPath() + "/admin/orders");
             return;
         }
 
         try {
+            // Recupera l'ordine con i dati del cliente (join): l'admin vuole sapere
+            // chi ha ordinato. I dati cliente sono attuali (non congelati), presi
+            // in tempo reale dalla tabella customer.
             OrdersBean order = ordersDAO.doRetrieveByIdWithCustomer(orderID);
+            // Ordine inesistente: torna all'elenco. Qui non serve il controllo di
+            // proprietà (l'admin può vedere ogni ordine), basta che esista.
             if (order == null) {
                 response.sendRedirect(request.getContextPath() + "/admin/orders");
                 return;
             }
+            // Righe dell'ordine (prodotti con valori congelati).
             order.setItems(ordersDAO.doRetrieveItemsByOrder(orderID));
+            // Indirizzo di spedizione: doRetriveByID NON filtra is_deleted, così si
+            // mostra anche se il cliente l'ha poi cancellato (dato storico dell'ordine).
             address = new AddressDAO().doRetriveByID(order.getAddressID());
             request.setAttribute("order", order);
             request.setAttribute("address", address);
