@@ -38,7 +38,7 @@ public class InvoiceController extends HttpServlet {
             return;
         }
         try {
-            OrdersBean order = ordersDAO.doRetriveByID(orderID);
+            OrdersBean order = ordersDAO.doRetrieveByIdWithCustomer(orderID);
             // Ordine inesistente O non del cliente loggato -> stesso redirect.
             if (order == null || order.getCustomerID() != customer.getCustomerID()) {
                 response.sendRedirect(request.getContextPath() + "/secure/orders");
