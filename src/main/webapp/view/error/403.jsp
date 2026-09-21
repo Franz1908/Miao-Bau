@@ -1,10 +1,5 @@
 <%-- =======================================================================
      403.jsp  —  Pagina di errore "Accesso negato"
-     Registrala in web.xml:
-       <error-page>
-         <error-code>403</error-code>
-         <location>/view/error/403.jsp</location>
-       </error-page>
      Usa il frammento riutilizzabile EmptyState.jsp.
      ======================================================================= --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
