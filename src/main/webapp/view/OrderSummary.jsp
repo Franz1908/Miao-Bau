@@ -143,23 +143,8 @@
 <%@ include file="Footer.jsp" %>
 
 <script src="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Mostra i campi del nuovo indirizzo solo se e' selezionata l'opzione "new".
-    (function () {
-        var form = document.getElementById('checkoutForm');
-        if (!form) return;
-        var box = document.getElementById('newAddrBox');
-        function sync() {
-            var sel = form.querySelector('input[name="addressChoice"]:checked');
-            var isNew = sel && sel.value === 'new';
-            box.style.display = isNew ? '' : 'none';
-            box.querySelectorAll('input').forEach(function (i) { i.disabled = !isNew; });
-        }
-        form.querySelectorAll('input[name="addressChoice"]').forEach(function (r) {
-            r.addEventListener('change', sync);
-        });
-        sync();
-    })();
-</script>
+<script src="${pageContext.request.contextPath}/js/validation-common.js"></script>
+<script src="${pageContext.request.contextPath}/js/new-address.js"></script>
+<script src="${pageContext.request.contextPath}/js/checkout-address.js"></script>
 </body>
 </html>
