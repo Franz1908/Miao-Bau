@@ -47,62 +47,54 @@
 
         <% if (discountedProducts != null && !discountedProducts.isEmpty()) { %>
         <div class="position-relative">
-            <button type="button"
-                    class="btn btn-light rounded-circle shadow-sm position-absolute top-50 start-0 translate-middle-y d-none d-md-flex align-items-center justify-content-center mb-scroll-btn"
-                    style="width:2.75rem;height:2.75rem;z-index:2;margin-left:-.5rem;"
-                    aria-label="Precedente" data-target="carSale" data-dir="-1">&#8249;</button>
-            <button type="button"
-                    class="btn btn-light rounded-circle shadow-sm position-absolute top-50 end-0 translate-middle-y d-none d-md-flex align-items-center justify-content-center mb-scroll-btn"
-                    style="width:2.75rem;height:2.75rem;z-index:2;margin-right:-.5rem;"
-                    aria-label="Successivo" data-target="carSale" data-dir="1">&#8250;</button>
 
             <div class="d-flex flex-nowrap overflow-auto gap-4 pb-2" id="carSale" style="scroll-snap-type:x mandatory;scrollbar-width:none;">
                 <% for (ProductBean product : discountedProducts) { %>
-                    <div class="flex-shrink-0" style="width:16rem;scroll-snap-align:start;">
-                        <% String img = (product.getImage() == null) ? "" : product.getImage(); %>
-                        <div class="mb-card h-100 d-flex flex-column">
-                            <div class="mb-img-box<%= img.isEmpty() ? " mb-img-vuota" : "" %>">
-                                <% if (!img.isEmpty()) { %>
-                                <img src="${pageContext.request.contextPath}/img/products/<%= img %>"
-                                     class="mb-card-img" alt="<%= product.getName() %>"
-                                     onerror="this.onerror=null; this.style.display='none'; this.parentNode.classList.add('mb-img-vuota');">
+                <div class="flex-shrink-0" style="width:16rem;scroll-snap-align:start;">
+                    <% String img = (product.getImage() == null) ? "" : product.getImage(); %>
+                    <div class="mb-card h-100 d-flex flex-column">
+                        <div class="mb-img-box<%= img.isEmpty() ? " mb-img-vuota" : "" %>">
+                            <% if (!img.isEmpty()) { %>
+                            <img src="${pageContext.request.contextPath}/img/products/<%= img %>"
+                                 class="mb-card-img" alt="<%= product.getName() %>"
+                                 onerror="this.onerror=null; this.style.display='none'; this.parentNode.classList.add('mb-img-vuota');">
+                            <% } %>
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="mb-2">
+                                <span class="badge mb-badge mb-badge-bio">Bio</span>
+                                <% if (product.isOnSale()) { %>
+                                <span class="badge mb-badge-sconto">-<%= product.getDiscountPercentage() %>%</span>
                                 <% } %>
                             </div>
-                            <div class="p-3 d-flex flex-column flex-grow-1">
-                                <div class="mb-2">
-                                    <span class="badge mb-badge mb-badge-bio">Bio</span>
-                                    <% if (product.isOnSale()) { %>
-                                    <span class="badge mb-badge-sconto">-<%= product.getDiscountPercentage() %>%</span>
-                                    <% } %>
-                                </div>
-                                <p class="mb-nome mb-0"><%= product.getName() %></p>
-                                <p class="mb-marca mb-2"><%= product.getBrand() %></p>
-                                <p class="mb-descrizione flex-grow-1"><%= product.getDescription() %></p>
-                                <div class="mb-3">
-                                    <% if (product.isOnSale()) { %>
-                                    <span class="mb-prezzo mb-prezzo-sconto">&euro; <%= product.getDiscountedPrice() %></span>
-                                    <span class="mb-prezzo-vecchio ms-1">&euro; <%= product.getPrice() %></span>
-                                    <% } else { %>
-                                    <span class="mb-prezzo">&euro; <%= product.getPrice() %></span>
-                                    <% } %>
-                                </div>
-                                <div class="d-flex gap-2 mt-auto">
-                                    <a href="${pageContext.request.contextPath}/product?productId=<%= product.getProductID() %>" class="btn btn-outline-secondary flex-fill">Dettagli</a>
-                                    <form method="post" action="${pageContext.request.contextPath}/cart" class="flex-fill m-0">
-                                        <input type="hidden" name="action" value="add">
-                                        <input type="hidden" name="productId" value="<%= product.getProductID() %>">
-                                        <input type="hidden" name="quantity" value="1">
-                                        <button type="submit" class="btn btn-mb-cta w-100">Aggiungi</button>
-                                    </form>
-                                </div>
+                            <p class="mb-nome mb-0"><%= product.getName() %></p>
+                            <p class="mb-marca mb-2"><%= product.getBrand() %></p>
+                            <p class="mb-descrizione flex-grow-1"><%= product.getDescription() %></p>
+                            <div class="mb-3">
+                                <% if (product.isOnSale()) { %>
+                                <span class="mb-prezzo mb-prezzo-sconto">&euro; <%= product.getDiscountedPrice() %></span>
+                                <span class="mb-prezzo-vecchio ms-1">&euro; <%= product.getPrice() %></span>
+                                <% } else { %>
+                                <span class="mb-prezzo">&euro; <%= product.getPrice() %></span>
+                                <% } %>
+                            </div>
+                            <div class="d-flex gap-2 mt-auto">
+                                <a href="${pageContext.request.contextPath}/product?productId=<%= product.getProductID() %>" class="btn btn-outline-secondary flex-fill">Dettagli</a>
+                                <form method="post" action="${pageContext.request.contextPath}/cart" class="flex-fill m-0">
+                                    <input type="hidden" name="action" value="add">
+                                    <input type="hidden" name="productId" value="<%= product.getProductID() %>">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-mb-cta w-100">Aggiungi</button>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
                 <% } %>
             </div>
         </div>
         <% } else { %>
-            <p class="text-muted">Nessun prodotto in offerta al momento.</p>
+        <p class="text-muted">Nessun prodotto in offerta al momento.</p>
         <% } %>
     </section>
 
@@ -115,62 +107,54 @@
 
         <% if (popularProducts != null && !popularProducts.isEmpty()) { %>
         <div class="position-relative">
-            <button type="button"
-                    class="btn btn-light rounded-circle shadow-sm position-absolute top-50 start-0 translate-middle-y d-none d-md-flex align-items-center justify-content-center mb-scroll-btn"
-                    style="width:2.75rem;height:2.75rem;z-index:2;margin-left:-.5rem;"
-                    aria-label="Precedente" data-target="carPopular" data-dir="-1">&#8249;</button>
-            <button type="button"
-                    class="btn btn-light rounded-circle shadow-sm position-absolute top-50 end-0 translate-middle-y d-none d-md-flex align-items-center justify-content-center mb-scroll-btn"
-                    style="width:2.75rem;height:2.75rem;z-index:2;margin-right:-.5rem;"
-                    aria-label="Successivo" data-target="carPopular" data-dir="1">&#8250;</button>
 
             <div class="d-flex flex-nowrap overflow-auto gap-4 pb-2" id="carPopular" style="scroll-snap-type:x mandatory;scrollbar-width:none;">
                 <% for (ProductBean product : popularProducts) { %>
-                    <div class="flex-shrink-0" style="width:16rem;scroll-snap-align:start;">
-                        <% String img = (product.getImage() == null) ? "" : product.getImage(); %>
-                        <div class="mb-card h-100 d-flex flex-column">
-                            <div class="mb-img-box<%= img.isEmpty() ? " mb-img-vuota" : "" %>">
-                                <% if (!img.isEmpty()) { %>
-                                <img src="${pageContext.request.contextPath}/img/products/<%= img %>"
-                                     class="mb-card-img" alt="<%= product.getName() %>"
-                                     onerror="this.onerror=null; this.style.display='none'; this.parentNode.classList.add('mb-img-vuota');">
+                <div class="flex-shrink-0" style="width:16rem;scroll-snap-align:start;">
+                    <% String img = (product.getImage() == null) ? "" : product.getImage(); %>
+                    <div class="mb-card h-100 d-flex flex-column">
+                        <div class="mb-img-box<%= img.isEmpty() ? " mb-img-vuota" : "" %>">
+                            <% if (!img.isEmpty()) { %>
+                            <img src="${pageContext.request.contextPath}/img/products/<%= img %>"
+                                 class="mb-card-img" alt="<%= product.getName() %>"
+                                 onerror="this.onerror=null; this.style.display='none'; this.parentNode.classList.add('mb-img-vuota');">
+                            <% } %>
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="mb-2">
+                                <span class="badge mb-badge mb-badge-bio">Bio</span>
+                                <% if (product.isOnSale()) { %>
+                                <span class="badge mb-badge-sconto">-<%= product.getDiscountPercentage() %>%</span>
                                 <% } %>
                             </div>
-                            <div class="p-3 d-flex flex-column flex-grow-1">
-                                <div class="mb-2">
-                                    <span class="badge mb-badge mb-badge-bio">Bio</span>
-                                    <% if (product.isOnSale()) { %>
-                                    <span class="badge mb-badge-sconto">-<%= product.getDiscountPercentage() %>%</span>
-                                    <% } %>
-                                </div>
-                                <p class="mb-nome mb-0"><%= product.getName() %></p>
-                                <p class="mb-marca mb-2"><%= product.getBrand() %></p>
-                                <p class="mb-descrizione flex-grow-1"><%= product.getDescription() %></p>
-                                <div class="mb-3">
-                                    <% if (product.isOnSale()) { %>
-                                    <span class="mb-prezzo mb-prezzo-sconto">&euro; <%= product.getDiscountedPrice() %></span>
-                                    <span class="mb-prezzo-vecchio ms-1">&euro; <%= product.getPrice() %></span>
-                                    <% } else { %>
-                                    <span class="mb-prezzo">&euro; <%= product.getPrice() %></span>
-                                    <% } %>
-                                </div>
-                                <div class="d-flex gap-2 mt-auto">
-                                    <a href="${pageContext.request.contextPath}/product?productId=<%= product.getProductID() %>" class="btn btn-outline-secondary flex-fill">Dettagli</a>
-                                    <form method="post" action="${pageContext.request.contextPath}/cart" class="flex-fill m-0">
-                                        <input type="hidden" name="action" value="add">
-                                        <input type="hidden" name="productId" value="<%= product.getProductID() %>">
-                                        <input type="hidden" name="quantity" value="1">
-                                        <button type="submit" class="btn btn-mb-cta w-100">Aggiungi</button>
-                                    </form>
-                                </div>
+                            <p class="mb-nome mb-0"><%= product.getName() %></p>
+                            <p class="mb-marca mb-2"><%= product.getBrand() %></p>
+                            <p class="mb-descrizione flex-grow-1"><%= product.getDescription() %></p>
+                            <div class="mb-3">
+                                <% if (product.isOnSale()) { %>
+                                <span class="mb-prezzo mb-prezzo-sconto">&euro; <%= product.getDiscountedPrice() %></span>
+                                <span class="mb-prezzo-vecchio ms-1">&euro; <%= product.getPrice() %></span>
+                                <% } else { %>
+                                <span class="mb-prezzo">&euro; <%= product.getPrice() %></span>
+                                <% } %>
+                            </div>
+                            <div class="d-flex gap-2 mt-auto">
+                                <a href="${pageContext.request.contextPath}/product?productId=<%= product.getProductID() %>" class="btn btn-outline-secondary flex-fill">Dettagli</a>
+                                <form method="post" action="${pageContext.request.contextPath}/cart" class="flex-fill m-0">
+                                    <input type="hidden" name="action" value="add">
+                                    <input type="hidden" name="productId" value="<%= product.getProductID() %>">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-mb-cta w-100">Aggiungi</button>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
                 <% } %>
             </div>
         </div>
         <% } else { %>
-            <p class="text-muted">Ancora nessun prodotto popolare: torna dopo i primi ordini!</p>
+        <p class="text-muted">Ancora nessun prodotto popolare: torna dopo i primi ordini!</p>
         <% } %>
     </section>
 
@@ -221,6 +205,5 @@
 <%@ include file="/view/Footer.jsp" %>
 
 <script src="${pageContext.request.contextPath}/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/home-carousel.js"></script>
 </body>
 </html>
