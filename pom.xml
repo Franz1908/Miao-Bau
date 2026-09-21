@@ -30,12 +30,6 @@
             <artifactId>mysql-connector-j</artifactId>
             <version>8.4.0</version>
         </dependency>
-        <!-- JSTL: libreria di tag per scrivere le JSP in modo pulito -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
         <!-- Libreria JSON per Java-->
         <dependency>
             <groupId>org.json</groupId>
