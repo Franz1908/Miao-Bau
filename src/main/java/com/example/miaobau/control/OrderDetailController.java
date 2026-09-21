@@ -43,9 +43,9 @@ public class OrderDetailController extends HttpServlet {
             OrdersBean order = ordersDAO.doRetriveByID(orderID);
 
             // Se l'ordine non esiste OPPURE non è del cliente loggato,
-            // redirect uniforme allo storico.
+            // mando errore 403.
             if (order == null || order.getCustomerID() != customer.getCustomerID()) {
-                response.sendRedirect(request.getContextPath() + "/secure/orders");
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);  // 403
                 return;
             }
 

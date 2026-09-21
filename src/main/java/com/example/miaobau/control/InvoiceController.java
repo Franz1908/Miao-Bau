@@ -39,9 +39,9 @@ public class InvoiceController extends HttpServlet {
         }
         try {
             OrdersBean order = ordersDAO.doRetrieveByIdWithCustomer(orderID);
-            // Ordine inesistente O non del cliente loggato -> stesso redirect.
+            // Ordine inesistente O non del cliente loggato mando errore 403.
             if (order == null || order.getCustomerID() != customer.getCustomerID()) {
-                response.sendRedirect(request.getContextPath() + "/secure/orders");
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);  // 403
                 return;
             }
             // Ordine valido e di proprietà: carico indirizzo (senza filtro is_deleted,
