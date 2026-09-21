@@ -25,7 +25,7 @@
                 <h6 class="mb-footer-title mb-3">Contatti</h6>
                 <ul class="list-unstyled small">
                     <li class="mb-2">Progetto universitario</li>
-                    <li class="mb-2">Corso di Tecnologie Web</li>
+                    <li class="mb-2">Corso di Tecnologie Software per il Web</li>
                     <li class="mb-2">Email: info@miaoebau.it</li>
                 </ul>
             </div>
