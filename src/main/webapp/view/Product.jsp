@@ -57,10 +57,11 @@
                     String img = (product.getImage() == null) ? "" : product.getImage();
                 %>
                 <div class="mb-img-box<%= img.isEmpty() ? " mb-img-vuota" : "" %>"
-                     style="height:360px; border-radius:.75rem;">
+                     style="height:360px; border-radius:.75rem; background:#FFFFFF;">
                     <% if (!img.isEmpty()) { %>
                     <img src="<%= ctx %>/img/products/<%= img %>"
                          class="mb-card-img"
+                         style="object-fit:contain; padding:1rem;"
                          alt="<%= product.getName() %>"
                          onerror="this.onerror=null; this.style.display='none'; this.parentNode.classList.add('mb-img-vuota');">
                     <% } %>
